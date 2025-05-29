@@ -143,49 +143,40 @@ const sourcesList = {
   fr: `
     <h3>Sources scientifiques</h3>
     <ul>
-      <li><a href="https://www.santepubliquefrance.fr/determinants-de-sante/nutrition-et-activite-physique/articles/consommation-de-fruits-et-legumes-en-france-resultats-de-l-enquete-nutrinet-sante-2021" target="_blank">Santé publique France, NutriNet-Santé 2021</a></li>
-      <li><a href="https://www.anses.fr/fr/content/avis-et-rapports-de-lanses-sur-les-produits-laitiers" target="_blank">ANSES, Produits laitiers, 2022</a></li>
-      <li><a href="https://www.inserm.fr/dossier/alimentation-cerebrale/" target="_blank">Inserm, Alimentation cérébrale</a></li>
-      <li><a href="https://www.hsph.harvard.edu/nutritionsource/carbohydrates/carbohydrates-and-blood-sugar/" target="_blank">Harvard School of Public Health, 2021</a></li>
-      <li><a href="https://www.inserm.fr/actualite/cerveau-alimentation/" target="_blank">Inserm, 2020</a></li>
-      <li><a href="https://academic.oup.com/ajcn/article/109/5/1462/5475525" target="_blank">American Journal of Clinical Nutrition, 2019</a></li>
-      <li><a href="https://injep.fr/publication/pratiques-sportives-et-reussite-scolaire/" target="_blank">INJEP, 2022</a></li>
-      <li><a href="https://www.inserm.fr/actualite/sommeil-adolescents/" target="_blank">Inserm, 2021</a></li>
-      <li><a href="https://www.ofdt.fr/BDD/publications/docs/eftxofls.pdf" target="_blank">OFDT, 2020</a></li>
-      <li><a href="https://www.santepubliquefrance.fr/determinants-de-sante/sante-numerique/documents/article/temps-d-ecran-des-jeunes-en-france-en-2022" target="_blank">Santé Publique France, 2022 (écrans)</a></li>
-      <li><a href="https://www.inserm.fr/actualite/ecrans-et-sante-mentale-des-jeunes/" target="_blank">Inserm, 2023 (écrans)</a></li>
-      <li><a href="https://www.cnesco.fr/wp-content/uploads/2017/10/170929_performances.pdf" target="_blank">CNESCO, 2017</a></li>
-      <li><a href="https://www.education.gouv.fr/les-effets-du-soutien-parental-sur-la-reussite-scolaire-5890" target="_blank">Ministère de l'Éducation nationale, 2021</a></li>
-      <li><a href="https://www.cairn.info/revue-education-et-formations-2010-2-page-5.htm" target="_blank">Éducation & Formations, 2010</a></li>
-      <li><a href="https://www.inserm.fr/actualite/sante-mentale-adolescents/" target="_blank">Inserm, 2023</a></li>
-      <li><a href="https://www.oecd.org/fr/education/EDU_pisa2015_fiche_fr.pdf" target="_blank">OCDE, PISA 2015</a></li>
-      <li><a href="https://www.inserm.fr/actualite/amis-adolescence/" target="_blank">Inserm, 2022</a></li>
-      <li><a href="https://www.insee.fr/fr/statistiques/2381474" target="_blank">INSEE, Diplômes et salaires 2023</a></li>
-    </ul>`,
+      <li><a href="https://stewdy.com/vie-etudiante/alimentation-et-performance-scolaire/" target="_blank">Stewdy – L’alimentation impacte-t-elle la performance scolaire ? (2024)</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7002815/" target="_blank">NCBI – L'alimentation en milieu scolaire et la performance scolaire (2020)</a></li>
+      <li><a href="https://www.unesco.org/fr/articles/education-lunesco-appelle-ameliorer-la-qualite-des-repas-scolaires" target="_blank">UNESCO – Améliorer la qualité des repas scolaires (2024)</a></li>
+      <li><a href="https://schoolmealscoalition.org/sites/default/files/2024-06/Planet-Friendly-School-Meals-White-Paper-Executive-Summary_FR.pdf" target="_blank">School Meals Coalition – Repenser les systèmes alimentaires scolaires (2024, PDF)</a></li>
+      <li><a href="https://www.cerin.org/breves-scientifiques/insecurite-alimentaire-et-consequences-chez-l-enfant-resultats-d-une-synthese-d-etudes-qualitatives-europeennes/" target="_blank">Cerin – Insécurité alimentaire et conséquences chez l'enfant (2022)</a></li>
+      <li><a href="https://www.tableedeschefs.fr/post/panorama-de-l-%C3%A9ducation-culinaire-dans-le-monde" target="_blank">Table des Chefs – Panorama de l’éducation culinaire (2024)</a></li>
+      <li><a href="https://www.alloprof.qc.ca/fr/parents/articles/saines-habitudes-de-vie-et-activites-pedagogiques/alimentation-reussite-scolaire" target="_blank">Alloprof – Les bienfaits d'une saine alimentation sur la réussite scolaire</a></li>
+      <li><a href="https://www.mysherpa.be/fr/nos-conseils/lalimentation-un-pilier-de-la-reussite-academique/" target="_blank">My Sherpa – L'alimentation, un pilier de la réussite académique</a></li>
+      <li><a href="https://www.inserm.fr/dossier/sommeil/" target="_blank">Inserm – Dossier Sommeil et santé</a></li>
+      <li><a href="https://www.inserm.fr/dossier/sante-mentale-des-jeunes/" target="_blank">Inserm – Dossier Santé mentale des jeunes</a></li>
+      <li><a href="https://www.education.gouv.fr/les-effets-du-soutien-parental-sur-la-reussite-scolaire-5890" target="_blank">Ministère de l'Éducation nationale – Effets du soutien parental sur la réussite scolaire</a></li>
+      <li><a href="https://www.hcsp.fr/explore.cgi/avisrapportsdomaine?clefr=1102" target="_blank">HCSP – Avis sur l’usage des écrans chez les jeunes (2020)</a></li>
+      <li><a href="https://www.insee.fr/fr/statistiques/2381474" target="_blank">INSEE – Diplômes et salaires (2023)</a></li>
+    </ul>
+  `,
   en: `
     <h3>Scientific sources</h3>
     <ul>
-      <li><a href="https://www.santepubliquefrance.fr/determinants-de-sante/nutrition-et-activite-physique/articles/consommation-de-fruits-et-legumes-en-france-resultats-de-l-enquete-nutrinet-sante-2021" target="_blank">Santé publique France, NutriNet-Santé 2021</a></li>
-      <li><a href="https://www.anses.fr/fr/content/avis-et-rapports-de-lanses-sur-les-produits-laitiers" target="_blank">ANSES, Dairy products, 2022</a></li>
-      <li><a href="https://www.inserm.fr/dossier/alimentation-cerebrale/" target="_blank">Inserm, Brain Nutrition</a></li>
-      <li><a href="https://www.hsph.harvard.edu/nutritionsource/carbohydrates/carbohydrates-and-blood-sugar/" target="_blank">Harvard School of Public Health, 2021</a></li>
-      <li><a href="https://www.inserm.fr/actualite/cerveau-alimentation/" target="_blank">Inserm, 2020</a></li>
-      <li><a href="https://academic.oup.com/ajcn/article/109/5/1462/5475525" target="_blank">American Journal of Clinical Nutrition, 2019</a></li>
-      <li><a href="https://injep.fr/publication/pratiques-sportives-et-reussite-scolaire/" target="_blank">INJEP, 2022</a></li>
-      <li><a href="https://www.inserm.fr/actualite/sommeil-adolescents/" target="_blank">Inserm, 2021</a></li>
-      <li><a href="https://www.ofdt.fr/BDD/publications/docs/eftxofls.pdf" target="_blank">OFDT, 2020</a></li>
-      <li><a href="https://www.santepubliquefrance.fr/determinants-de-sante/sante-numerique/documents/article/temps-d-ecran-des-jeunes-en-france-en-2022" target="_blank">Santé Publique France, 2022 (screens)</a></li>
-      <li><a href="https://www.inserm.fr/actualite/ecrans-et-sante-mentale-des-jeunes/" target="_blank">Inserm, 2023 (screens)</a></li>
-      <li><a href="https://www.cnesco.fr/wp-content/uploads/2017/10/170929_performances.pdf" target="_blank">CNESCO, 2017</a></li>
-      <li><a href="https://www.education.gouv.fr/les-effets-du-soutien-parental-sur-la-reussite-scolaire-5890" target="_blank">French Ministry of Education, 2021</a></li>
-      <li><a href="https://www.cairn.info/revue-education-et-formations-2010-2-page-5.htm" target="_blank">Éducation & Formations, 2010</a></li>
-      <li><a href="https://www.inserm.fr/actualite/sante-mentale-adolescents/" target="_blank">Inserm, 2023</a></li>
-      <li><a href="https://www.oecd.org/fr/education/EDU_pisa2015_fiche_fr.pdf" target="_blank">OECD, PISA 2015</a></li>
-      <li><a href="https://www.inserm.fr/actualite/amis-adolescence/" target="_blank">Inserm, 2022</a></li>
-      <li><a href="https://www.insee.fr/fr/statistiques/2381474" target="_blank">INSEE, Diplomas and salaries 2023</a></li>
-    </ul>`
+      <li><a href="https://stewdy.com/vie-etudiante/alimentation-et-performance-scolaire/" target="_blank">Stewdy – How does nutrition impact school performance? (2024, FR)</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7002815/" target="_blank">NCBI – School food environment and academic performance (2020, EN)</a></li>
+      <li><a href="https://www.unesco.org/en/articles/education-unesco-calls-improve-quality-school-meals" target="_blank">UNESCO – UNESCO calls to improve the quality of school meals (2024, EN)</a></li>
+      <li><a href="https://schoolmealscoalition.org/sites/default/files/2024-06/Planet-Friendly-School-Meals-White-Paper-Executive-Summary_EN.pdf" target="_blank">School Meals Coalition – Rethinking school food systems (2024, PDF, EN)</a></li>
+      <li><a href="https://www.cerin.org/breves-scientifiques/insecurite-alimentaire-et-consequences-chez-l-enfant-resultats-d-une-synthese-d-etudes-qualitatives-europeennes/" target="_blank">Cerin – Food insecurity and consequences for children (2022, FR)</a></li>
+      <li><a href="https://www.tableedeschefs.fr/post/panorama-de-l-%C3%A9ducation-culinaire-dans-le-monde" target="_blank">Table des Chefs – Culinary education worldwide (2024, FR)</a></li>
+      <li><a href="https://www.alloprof.qc.ca/fr/parents/articles/saines-habitudes-de-vie-et-activites-pedagogiques/alimentation-reussite-scolaire" target="_blank">Alloprof – Benefits of healthy eating on school success (FR)</a></li>
+      <li><a href="https://www.mysherpa.be/fr/nos-conseils/lalimentation-un-pilier-de-la-reussite-academique/" target="_blank">My Sherpa – Nutrition, a pillar of academic success (FR)</a></li>
+      <li><a href="https://www.inserm.fr/en/dossier/sleep/" target="_blank">Inserm – Sleep and health (EN)</a></li>
+      <li><a href="https://www.inserm.fr/en/dossier/mental-health-of-young-people/" target="_blank">Inserm – Mental health of young people (EN)</a></li>
+      <li><a href="https://www.education.gouv.fr/en/effects-parental-support-school-success-5890" target="_blank">French Ministry of Education – Effects of parental support on school success (EN)</a></li>
+      <li><a href="https://www.hcsp.fr/explore.cgi/avisrapportsdomaine?clefr=1102" target="_blank">HCSP – Screen use among young people (2020, FR)</a></li>
+      <li><a href="https://www.insee.fr/en/statistiques/2381474" target="_blank">INSEE – Degrees and salaries (2023, EN)</a></li>
+    </ul>
+  `
 };
-
 // --- Suite : interactions, calculs, traduction, modales, etc. ---
 // --- Interactions tooltips, modales, boutons ---
 
