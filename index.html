@@ -5,6 +5,14 @@
   <title>Simulateur de Réussite Scolaire</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+    h1 {
+      text-align: center;
+      color: #04AA6D;
+      margin-top: 28px;
+      font-size: 2.5em;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
     #container {
       display: flex;
       justify-content: center;
@@ -173,9 +181,52 @@
       #lang-switch { position: static; margin-bottom: 12px; }
       #sources-btn { margin: 28px auto 0 auto; }
     }
+    /* Badge Albert Duplantin */
+    #albertduplantin-badge {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 5000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,0.95);
+      border-radius: 14px;
+      box-shadow: 0 2px 10px #bbb;
+      padding: 14px 18px 12px 18px;
+      transition: box-shadow 0.2s;
+    }
+    #albertduplantin-badge img {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      border: 2px solid #04AA6D;
+      background: #fff;
+    }
+    #albertduplantin-badge .albertduplantin-text {
+      text-align: center;
+      font-size: 1.08em;
+      color: #222;
+    }
+    #albertduplantin-badge a:hover {
+      color: #028a56;
+    }
+    @media (max-width: 600px) {
+      #albertduplantin-badge {
+        right: 8px;
+        bottom: 8px;
+        padding: 8px 10px 8px 10px;
+      }
+      #albertduplantin-badge img {
+        width: 40px;
+        height: 40px;
+      }
+    }
   </style>
 </head>
 <body>
+  <h1>Simulateur de Réussite Scolaire</h1>
   <div id="lang-switch">
     <button id="fr-btn" class="active" onclick="setLang('fr')">Français</button>
     <button id="en-btn" onclick="setLang('en')">English</button>
@@ -341,6 +392,14 @@
     <div id="sources-modal-content" style="background:#fff; border-radius:10px; max-width:520px; margin:auto; padding:32px 28px; position:relative; max-height:80vh; overflow-y:auto; box-sizing:border-box;">
       <button onclick="closeSourcesModal()" style="position:absolute; top:10px; right:14px; font-size:1.4em; background:none; border:none; color:#04AA6D; cursor:pointer;">✖</button>
       <div id="sources-modal-inner"></div>
+    </div>
+  </div>
+  <!-- Badge Albert Duplantin avec image locale -->
+  <div id="albertduplantin-badge">
+    <img src="albertduplantin.png" alt="Logo Albert Duplantin" />
+    <div class="albertduplantin-text">
+      <div style="font-weight:bold;">Albert Duplantin</div>
+      <a href="https://www.youtube.com/@albertduplantin" target="_blank" rel="noopener" style="color:#04AA6D;text-decoration:underline;font-size:1em;">Voir la chaîne YouTube</a>
     </div>
   </div>
   <script src="simulateur.js"></script>
