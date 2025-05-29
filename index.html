@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulateur de Réussite Scolaire</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 30px auto;
+      max-width: 1100px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #bbb;
+      padding: 0;
+    }
+    #sliders-column {
+      flex: 1 1 60%;
+      padding: 40px 30px 40px 40px;
+      min-width: 340px;
+    }
+    #results-column {
+      flex: 0 0 340px;
+      background: #eafaf1;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      padding: 60px 40px 60px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 300px;
+      position: relative;
+      box-sizing: border-box;
+    }
+    h2 {
+      color: #04AA6D;
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+    .slidecontainer {
+      margin-bottom: 18px;
+      position: relative;
+    }
+    label {
+      min-width: 210px;
+      display: inline-block;
+      font-weight: bold;
+    }
+    .slider {
+      width: 44%;
+      vertical-align: middle;
+    }
+    .info-btn, .results-info-btn {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #04AA6D;
+      color: #fff;
+      text-align: center;
+      line-height: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 8px;
+      position: relative;
+      border: none;
+      font-size: 1em;
+      vertical-align: middle;
+    }
+    .info-tooltip, .results-info-tooltip {
+      display: none;
+      position: absolute;
+      left: 30px;
+      top: -8px;
+      background: #f9f9f9;
+      color: #222;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 0.97em;
+      width: 340px;
+      z-index: 100;
+      box-shadow: 2px 2px 8px #aaa;
+    }
+    .slidecontainer .info-tooltip a, .results-info-tooltip a {
+      color: #04AA6D;
+      text-decoration: underline;
+    }
+    #results-column h3 {
+      font-size: 1.7em;
+      margin-bottom: 20px;
+      color: #04AA6D;
+    }
+    #notes, #salaire {
+      font-size: 2.2em;
+      color: #1c7c4f;
+      font-weight: bold;
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 10px;
+    }
+    #notes { font-size: 3.5em; }
+    .results-label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      margin-top: 18px;
+      font-size: 1.15em;
+    }
+    #menu-btn {
+      margin-bottom: 18px;
+      background: #04AA6D;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    #sources-btn {
+      margin: 34px auto 0 auto;
+      background: #04AA6D;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 22px;
+      font-size: 1em;
+      cursor: pointer;
+      display: block;
+      align-self: center;
+      box-shadow: 0 2px 6px #bbb;
+      transition: background 0.2s;
+    }
+    #sources-btn:hover { background: #028a56; }
+    #lang-switch {
+      position: absolute;
+      top: 15px;
+      left: 25px;
+      z-index: 10;
+    }
+    #lang-switch button {
+      background: #04AA6D;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 7px 14px;
+      font-size: 1em;
+      margin-right: 7px;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    #lang-switch button.active {
+      background: #028a56;
+      opacity: 1;
+      font-weight: bold;
+    }
+    @media (max-width: 900px) {
+      #container { flex-direction: column; }
+      #results-column, #sliders-column {
+        border-radius: 0;
+        min-width: 0;
+        padding: 30px 10px;
+      }
+      #results-column { align-items: flex-start; }
+      .results-info-tooltip, .info-tooltip {
+        left: 0;
+        top: 50px;
+        width: 95vw;
+        max-width: 400px;
+      }
+      #lang-switch { position: static; margin-bottom: 12px; }
+      #sources-btn { margin: 28px auto 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <div id="lang-switch">
+    <button id="fr-btn" class="active" onclick="setLang('fr')">Français</button>
+    <button id="en-btn" onclick="setLang('en')">English</button>
+  </div>
+  <div id="container">
+    <div id="sliders-column">
+      <h2 data-tr="Alimentation">Alimentation</h2>
+      <button id="menu-btn" onclick="showMenuExamples()" data-tr="Exemples de menus équilibrés 🍽️">Exemples de menus équilibrés 🍽️</button>
+      <div class="slidecontainer">
+        <label data-tr="Fruits & légumes/jour :">Fruits & légumes/jour :</label>
+        <input type="range" min="0" max="7" value="3" class="slider" id="fruits" />
+        <span id="fruits-val">3 portions</span>
+        <button class="info-btn" onclick="showInfo('fruits-info', event)">?</button>
+        <div class="info-tooltip" id="fruits-info" data-tr-tooltip="fruits"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Produits laitiers/jour :">Produits laitiers/jour :</label>
+        <input type="range" min="0" max="4" value="2" class="slider" id="laitiers" />
+        <span id="laitiers-val">2 produits</span>
+        <button class="info-btn" onclick="showInfo('laitiers-info', event)">?</button>
+        <div class="info-tooltip" id="laitiers-info" data-tr-tooltip="laitiers"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Féculents complets/jour :">Féculents complets/jour :</label>
+        <input type="range" min="0" max="5" value="1" class="slider" id="feculents" />
+        <span id="feculents-val">1 portion</span>
+        <button class="info-btn" onclick="showInfo('feculents-info', event)">?</button>
+        <div class="info-tooltip" id="feculents-info" data-tr-tooltip="feculents"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Sucres rapides/jour :">Sucres rapides/jour :</label>
+        <input type="range" min="0" max="5" value="2" class="slider" id="sucres" />
+        <span id="sucres-val">2 portions</span>
+        <button class="info-btn" onclick="showInfo('sucres-info', event)">?</button>
+        <div class="info-tooltip" id="sucres-info" data-tr-tooltip="sucres"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Graisses saturées/jour :">Graisses saturées/jour :</label>
+        <input type="range" min="0" max="5" value="2" class="slider" id="graisses" />
+        <span id="graisses-val">2 portions</span>
+        <button class="info-btn" onclick="showInfo('graisses-info', event)">?</button>
+        <div class="info-tooltip" id="graisses-info" data-tr-tooltip="graisses"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Petit-déjeuner équilibré/semaine :">Petit-déjeuner équilibré/semaine :</label>
+        <input type="range" min="0" max="7" value="4" class="slider" id="petitdej" />
+        <span id="petitdej-val">4 matins</span>
+        <button class="info-btn" onclick="showInfo('petitdej-info', event)">?</button>
+        <div class="info-tooltip" id="petitdej-info" data-tr-tooltip="petitdej"></div>
+      </div>
+      <h2 data-tr="Hygiène de vie">Hygiène de vie</h2>
+      <div class="slidecontainer">
+        <label data-tr="Activité sportive/semaine :">Activité sportive/semaine :</label>
+        <input type="range" min="0" max="5" value="2" class="slider" id="sport" />
+        <span id="sport-val">2 séances</span>
+        <button class="info-btn" onclick="showInfo('sport-info', event)">?</button>
+        <div class="info-tooltip" id="sport-info" data-tr-tooltip="sport"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Heures de sommeil/nuit :">Heures de sommeil/nuit :</label>
+        <input type="range" min="4" max="10" value="7" class="slider" id="sommeil" />
+        <span id="sommeil-val">7 h</span>
+        <button class="info-btn" onclick="showInfo('sommeil-info', event)">?</button>
+        <div class="info-tooltip" id="sommeil-info" data-tr-tooltip="sommeil"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Consommation de cannabis :">Consommation de cannabis :</label>
+        <input type="range" min="0" max="2" value="0" step="1" class="slider" id="drogues" />
+        <span id="drogues-val">0</span>
+        <span id="drogues-label" style="margin-left: 10px;">Jamais</span>
+        <button class="info-btn" onclick="showInfo('drogues-info', event)">?</button>
+        <div class="info-tooltip" id="drogues-info" data-tr-tooltip="drogues"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Temps sur écran/téléphone (hors devoirs) :">Temps sur écran/téléphone (hors devoirs) :</label>
+        <input type="range" min="0" max="10" value="4" class="slider" id="ecran" />
+        <span id="ecran-val">4 h</span>
+        <button class="info-btn" onclick="showInfo('ecran-info', event)">?</button>
+        <div class="info-tooltip" id="ecran-info" data-tr-tooltip="ecran"></div>
+      </div>
+      <h2 data-tr="Facteurs sociaux & psychologiques">Facteurs sociaux & psychologiques</h2>
+      <div class="slidecontainer">
+        <label data-tr="Climat de la classe :">Climat de la classe :</label>
+        <input type="range" min="0" max="10" value="6" class="slider" id="climat" />
+        <span id="climat-val">6/10</span>
+        <button class="info-btn" onclick="showInfo('climat-info', event)">?</button>
+        <div class="info-tooltip" id="climat-info" data-tr-tooltip="climat"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Soutien familial :">Soutien familial :</label>
+        <input type="range" min="0" max="10" value="6" class="slider" id="famille" />
+        <span id="famille-val">6/10</span>
+        <button class="info-btn" onclick="showInfo('famille-info', event)">?</button>
+        <div class="info-tooltip" id="famille-info" data-tr-tooltip="famille"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Estime de soi scolaire :">Estime de soi scolaire :</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="estime" />
+        <span id="estime-val">5/10</span>
+        <button class="info-btn" onclick="showInfo('estime-info', event)">?</button>
+        <div class="info-tooltip" id="estime-info" data-tr-tooltip="estime"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Santé mentale / bien-être :">Santé mentale / bien-être :</label>
+        <input type="range" min="0" max="10" value="6" class="slider" id="mental" />
+        <span id="mental-val">6/10</span>
+        <button class="info-btn" onclick="showInfo('mental-info', event)">?</button>
+        <div class="info-tooltip" id="mental-info" data-tr-tooltip="mental"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Participation en classe :">Participation en classe :</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="participation" />
+        <span id="participation-val">5/10</span>
+        <button class="info-btn" onclick="showInfo('participation-info', event)">?</button>
+        <div class="info-tooltip" id="participation-info" data-tr-tooltip="participation"></div>
+      </div>
+      <div class="slidecontainer">
+        <label data-tr="Fréquentations positives :">Fréquentations positives :</label>
+        <input type="range" min="0" max="10" value="6" class="slider" id="frequentations" />
+        <span id="frequentations-val">6/10</span>
+        <button class="info-btn" onclick="showInfo('frequentations-info', event)">?</button>
+        <div class="info-tooltip" id="frequentations-info" data-tr-tooltip="frequentations"></div>
+      </div>
+      <h2 data-tr="Poursuite d'études">Poursuite d'études</h2>
+      <div class="slidecontainer">
+        <label data-tr="Niveau d’études après le bac :">Niveau d’études après le bac :</label>
+        <input type="range" min="0" max="4" value="1" class="slider" id="etudes" />
+        <span id="etudes-val">Bac +2</span>
+        <button class="info-btn" onclick="showInfo('etudes-info', event)">?</button>
+        <div class="info-tooltip" id="etudes-info" data-tr-tooltip="etudes"></div>
+      </div>
+    </div>
+    <div id="results-column">
+      <h3 data-tr="Impact sur vos résultats">Impact sur vos résultats</h3>
+      <div class="results-label">
+        <span data-tr="Notes scolaires">Notes scolaires</span>
+        <button class="results-info-btn"
+          onmouseenter="showResultsInfo('note-info', event)"
+          onmouseleave="hideResultsInfo('note-info')"
+          onclick="showResultsInfo('note-info', event)">?</button>
+        <span class="results-info-tooltip" id="note-info"></span>
+      </div>
+      <div id="notes">12,5/20</div>
+      <div class="results-label">
+        <span data-tr="Salaire futur estimé">Salaire futur estimé</span>
+        <button class="results-info-btn"
+          onmouseenter="showResultsInfo('salaire-info', event)"
+          onmouseleave="hideResultsInfo('salaire-info')"
+          onclick="showResultsInfo('salaire-info', event)">?</button>
+        <span class="results-info-tooltip" id="salaire-info"></span>
+      </div>
+      <div id="salaire">2150€</div>
+      <button id="sources-btn" onclick="showSourcesModal()" data-tr="Sources scientifiques">Sources scientifiques</button>
+    </div>
+  </div>
+  <div id="menu-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div id="menu-modal-content" style="background:#fff; border-radius:10px; max-width:480px; margin:auto; padding:32px 28px; position:relative; max-height:80vh; overflow-y:auto; box-sizing:border-box;">
+      <button onclick="closeMenuExamples()" style="position:absolute; top:10px; right:14px; font-size:1.4em; background:none; border:none; color:#04AA6D; cursor:pointer;">✖</button>
+      <div id="menu-modal-inner"></div>
+    </div>
+  </div>
+  <div id="sources-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:2000; align-items:center; justify-content:center;">
+    <div id="sources-modal-content" style="background:#fff; border-radius:10px; max-width:520px; margin:auto; padding:32px 28px; position:relative; max-height:80vh; overflow-y:auto; box-sizing:border-box;">
+      <button onclick="closeSourcesModal()" style="position:absolute; top:10px; right:14px; font-size:1.4em; background:none; border:none; color:#04AA6D; cursor:pointer;">✖</button>
+      <div id="sources-modal-inner"></div>
+    </div>
+  </div>
+  <script src="simulateur.js"></script>
+</body>
+</html>
