@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulateur de Réussite Scolaire</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
@@ -301,7 +302,7 @@
         <div class="info-tooltip" id="drogues-info" data-tr-tooltip="drogues"></div>
       </div>
       <div class="slidecontainer">
-        <label data-tr="Temps sur écran/téléphone (hors devoirs) :">Temps sur écran/téléphone (hors devoirs) :</label>
+        <label data-tr="Temps sur écran/téléphone :">Temps sur écran/téléphone :</label>
         <input type="range" min="0" max="10" value="4" class="slider" id="ecran" />
         <span id="ecran-val">4 h</span>
         <button class="info-btn" onclick="showInfo('ecran-info', event)">?</button>
@@ -379,6 +380,17 @@
         <span class="results-info-tooltip" id="salaire-info"></span>
       </div>
       <div id="salaire">2150€</div>
+      
+      <div class="results-label">
+        <span data-tr="Position nationale">Position nationale</span>
+        <button class="results-info-btn"
+          onmouseenter="showResultsInfo('benchmark-info', event)"
+          onmouseleave="hideResultsInfo('benchmark-info')"
+          onclick="showResultsInfo('benchmark-info', event)">?</button>
+        <span class="results-info-tooltip" id="benchmark-info"> Tu fais mieux que X % des élèves : continue comme ça !</span>
+      </div>
+      <div id="benchmark">Calcul en cours...</div>
+
       <button id="sources-btn" onclick="showSourcesModal()" data-tr="Sources scientifiques">Sources scientifiques</button>
     </div>
   </div>
@@ -394,7 +406,6 @@
       <div id="sources-modal-inner"></div>
     </div>
   </div>
-  <!-- Badge Albert Duplantin avec image locale -->
   <div id="albertduplantin-badge">
     <img src="albertduplantin.png" alt="Logo Albert Duplantin" />
     <div class="albertduplantin-text">
