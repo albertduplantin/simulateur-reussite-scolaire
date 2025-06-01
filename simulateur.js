@@ -31,53 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Fonction pour changer de mode
-    window.switchMode = function(mode) {
-        const basicBtn = document.getElementById('basic-btn');
-        const advancedBtn = document.getElementById('advanced-btn');
-        const description = document.getElementById('mode-description');
-        const sliderGroups = document.querySelectorAll('.slider-group');
-
-        if (mode === 'basic') {
-            basicBtn.classList.add('active');
-            advancedBtn.classList.remove('active');
-            description.textContent = 'Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.';
-            
-            // Cacher les sliders non essentiels
-            sliderGroups.forEach(group => {
-                if (!group.classList.contains('important')) {
-                    group.classList.add('hidden');
-                } else {
-                    group.classList.remove('hidden');
-                }
-            });
-        } else {
-            advancedBtn.classList.add('active');
-            basicBtn.classList.remove('active');
-            description.textContent = 'Mode avancé : Accès à tous les facteurs influençant la réussite scolaire.';
-            
-            // Montrer tous les sliders
-            sliderGroups.forEach(group => {
-                group.classList.remove('hidden');
-            });
-        }
-        updateResults();
-    };
-
-    // Fonction pour réinitialiser les sliders
-    window.resetSliders = function() {
-        Object.entries(defaultValues).forEach(([id, value]) => {
-            const slider = document.getElementById(id);
-            if (slider) {
-                slider.value = value;
-                slider.dispatchEvent(new Event('input'));
-            }
-        });
-        updateResults();
-    };
-
     // Fonction pour mettre à jour les résultats
-    function updateResults() {
+    window.updateResults = function() {
         // Récupérer les valeurs des sliders
         const sleep = parseFloat(document.getElementById('sleep').value);
         const sport = parseFloat(document.getElementById('sport').value);
@@ -102,27 +57,33 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculer la note moyenne
         let grade = 10; // Note de base
 
-        // Facteurs positifs
-        grade += (sleep - 7) * 0.3; // Impact du sommeil
-        grade += sport * 0.2; // Impact du sport
+        // Facteurs mode de vie (coefficient total : 1.4)
+        grade += (sleep - 7) * 0.4; // Impact du sommeil
+        grade += sport * 0.3; // Impact du sport
         grade += breakfast * 0.3; // Impact du petit-déjeuner
-        grade -= cannabis * 0.6; // Impact négatif du cannabis
-        grade += (fruits - 5) * 0.2; // Impact des fruits et légumes
-        grade += (dairy - 2) * 0.1; // Impact des produits laitiers
-        grade += cereals * 0.1; // Impact des féculents complets
-        grade -= (sugar - 5) * 0.1; // Impact négatif des sucres
-        grade -= (fats - 5) * 0.1; // Impact négatif des graisses
+        grade -= cannabis * 0.4; // Impact négatif du cannabis
 
-        // Facteurs psychologiques et sociaux
-        grade += (selfEsteem - 5) * 0.3;
-        grade += (mindset - 5) * 0.2;
-        grade += (grit - 5) * 0.3;
-        grade += (mentalHealth - 5) * 0.3;
-        grade += (classClimate - 5) * 0.2;
-        grade += (familySupport - 5) * 0.3;
-        grade += (participation - 5) * 0.2;
-        grade += (studyEnvironment - 5) * 0.1;
-        grade += (resourcesAccess - 5) * 0.1;
+        // Facteurs alimentation (coefficient total : 1.0)
+        grade += (fruits - 3) * 0.25; // Impact des fruits et légumes
+        grade += (dairy - 2) * 0.15; // Impact des produits laitiers
+        grade += cereals * 0.2; // Impact des féculents complets
+        grade -= (sugar - 3) * 0.2; // Impact négatif des sucres
+        grade -= (fats - 3) * 0.2; // Impact négatif des graisses
+
+        // Facteurs psychologiques (coefficient total : 1.2)
+        grade += (selfEsteem - 5) * 0.4; // Impact fort de l'estime de soi
+        grade += (mindset - 5) * 0.3; // Impact de la mentalité de progrès
+        grade += (grit - 5) * 0.3; // Impact de la persévérance
+        grade += (mentalHealth - 5) * 0.2; // Impact de la santé mentale
+
+        // Facteurs sociaux (coefficient total : 0.8)
+        grade += (classClimate - 5) * 0.4; // Impact du climat de classe
+        grade += (familySupport - 5) * 0.4; // Impact du soutien familial
+
+        // Facteurs académiques (coefficient total : 0.6)
+        grade += (participation - 5) * 0.2; // Impact de la participation
+        grade += (studyEnvironment - 5) * 0.2; // Impact de l'environnement d'étude
+        grade += (resourcesAccess - 5) * 0.2; // Impact de l'accès aux ressources
 
         // Limiter la note entre 0 et 20
         grade = Math.max(0, Math.min(20, grade));
@@ -138,14 +99,86 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.benchmark-text').textContent = `Tu fais mieux que ${Math.round(percentile)}% des élèves`;
         document.querySelector('.benchmark-progress').style.width = `${percentile}%`;
 
-        // Calculer le salaire estimé en fonction du niveau d'études
+        // Calculer le salaire estimé
         let salary = 1500; // Salaire de base
         salary += (grade - 10) * 50; // Ajustement selon la note
-        salary += education * 300; // +300€ par niveau d'études
+        salary += education * 300; // Bonus par niveau d'études
 
         // Mettre à jour l'affichage du salaire
         document.querySelector('#salary-result span').textContent = `${Math.round(salary)} €/mois`;
-    }
+    };
+
+    // Fonction pour changer de mode
+    window.switchMode = function(mode) {
+        const basicBtn = document.getElementById('basic-btn');
+        const advancedBtn = document.getElementById('advanced-btn');
+        const description = document.getElementById('mode-description');
+        const sliderGroups = document.querySelectorAll('.slider-group');
+
+        if (mode === 'basic') {
+            basicBtn.classList.add('active');
+            advancedBtn.classList.remove('active');
+            description.textContent = 'Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.';
+            
+            sliderGroups.forEach(group => {
+                if (!group.classList.contains('important')) {
+                    group.classList.add('hidden');
+                } else {
+                    group.classList.remove('hidden');
+                }
+            });
+        } else {
+            advancedBtn.classList.add('active');
+            basicBtn.classList.remove('active');
+            description.textContent = 'Mode avancé : Accès à tous les facteurs influençant la réussite scolaire.';
+            
+            sliderGroups.forEach(group => {
+                group.classList.remove('hidden');
+            });
+        }
+        updateResults();
+    };
+
+    // Fonction pour réinitialiser les sliders
+    window.resetSliders = function() {
+        Object.entries(defaultValues).forEach(([id, value]) => {
+            const slider = document.getElementById(id);
+            if (slider) {
+                slider.value = value;
+                slider.dispatchEvent(new Event('input'));
+            }
+        });
+        updateResults();
+    };
+
+    // Fonction pour gérer les tooltips
+    window.toggleTooltip = function(button) {
+        // Fermer tous les tooltips ouverts
+        document.querySelectorAll('.tooltip.show').forEach(tooltip => {
+            if (tooltip !== button.nextElementSibling) {
+                tooltip.classList.remove('show');
+            }
+        });
+
+        // Basculer l'état du tooltip cliqué
+        const tooltip = button.nextElementSibling;
+        tooltip.classList.toggle('show');
+
+        // Gestionnaire de clic en dehors pour fermer le tooltip
+        const closeTooltip = (event) => {
+            if (!tooltip.contains(event.target) && event.target !== button) {
+                tooltip.classList.remove('show');
+                document.removeEventListener('click', closeTooltip);
+            }
+        };
+
+        // Ajouter le gestionnaire si le tooltip est affiché
+        if (tooltip.classList.contains('show')) {
+            setTimeout(() => {
+                document.addEventListener('click', closeTooltip);
+            }, 0);
+        }
+    };
 
     // Attacher la fonction updateResults à tous les sliders
     document.querySelectorAll('input[type="range"]').forEach(slider => {
