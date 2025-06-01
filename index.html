@@ -1,418 +1,1585 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulateur de Réussite Scolaire</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
-    h1 {
-      text-align: center;
-      color: #04AA6D;
-      margin-top: 28px;
-      font-size: 2.5em;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    #container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      margin: 30px auto;
-      max-width: 1100px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px #bbb;
-      padding: 0;
-    }
-    #sliders-column {
-      flex: 1 1 60%;
-      padding: 40px 30px 40px 40px;
-      min-width: 340px;
-    }
-    #results-column {
-      flex: 0 0 340px;
-      background: #eafaf1;
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-      padding: 60px 40px 60px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 300px;
-      position: relative;
-      box-sizing: border-box;
-    }
-    h2 {
-      color: #04AA6D;
-      margin-top: 28px;
-      margin-bottom: 10px;
-    }
-    .slidecontainer {
-      margin-bottom: 18px;
-      position: relative;
-    }
-    label {
-      min-width: 210px;
-      display: inline-block;
-      font-weight: bold;
-    }
-    .slider {
-      width: 44%;
-      vertical-align: middle;
-    }
-    .info-btn, .results-info-btn {
-      display: inline-block;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #04AA6D;
-      color: #fff;
-      text-align: center;
-      line-height: 22px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-left: 8px;
-      position: relative;
-      border: none;
-      font-size: 1em;
-      vertical-align: middle;
-    }
-    .info-tooltip, .results-info-tooltip {
-      display: none;
-      position: absolute;
-      left: 30px;
-      top: -8px;
-      background: #f9f9f9;
-      color: #222;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 10px 15px;
-      font-size: 0.97em;
-      width: 340px;
-      z-index: 100;
-      box-shadow: 2px 2px 8px #aaa;
-    }
-    .slidecontainer .info-tooltip a, .results-info-tooltip a {
-      color: #04AA6D;
-      text-decoration: underline;
-    }
-    #results-column h3 {
-      font-size: 1.7em;
-      margin-bottom: 20px;
-      color: #04AA6D;
-    }
-    #notes, #salaire {
-      font-size: 2.2em;
-      color: #1c7c4f;
-      font-weight: bold;
-      display: inline-block;
-      vertical-align: middle;
-      margin-bottom: 10px;
-    }
-    #notes { font-size: 3.5em; }
-    .results-label {
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-      margin-top: 18px;
-      font-size: 1.15em;
-    }
-    #menu-btn {
-      margin-bottom: 18px;
-      background: #04AA6D;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 15px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    #sources-btn {
-      margin: 34px auto 0 auto;
-      background: #04AA6D;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 22px;
-      font-size: 1em;
-      cursor: pointer;
-      display: block;
-      align-self: center;
-      box-shadow: 0 2px 6px #bbb;
-      transition: background 0.2s;
-    }
-    #sources-btn:hover { background: #028a56; }
-    #lang-switch {
-      position: absolute;
-      top: 15px;
-      left: 25px;
-      z-index: 10;
-    }
-    #lang-switch button {
-      background: #04AA6D;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 7px 14px;
-      font-size: 1em;
-      margin-right: 7px;
-      cursor: pointer;
-      opacity: 0.8;
-    }
-    #lang-switch button.active {
-      background: #028a56;
-      opacity: 1;
-      font-weight: bold;
-    }
-    @media (max-width: 900px) {
-      #container { flex-direction: column; }
-      #results-column, #sliders-column {
-        border-radius: 0;
-        min-width: 0;
-        padding: 30px 10px;
-      }
-      #results-column { align-items: flex-start; }
-      .results-info-tooltip, .info-tooltip {
-        left: 0;
-        top: 50px;
-        width: 95vw;
-        max-width: 400px;
-      }
-      #lang-switch { position: static; margin-bottom: 12px; }
-      #sources-btn { margin: 28px auto 0 auto; }
-    }
-    /* Badge Albert Duplantin */
-    #albertduplantin-badge {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 5000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,0.95);
-      border-radius: 14px;
-      box-shadow: 0 2px 10px #bbb;
-      padding: 14px 18px 12px 18px;
-      transition: box-shadow 0.2s;
-    }
-    #albertduplantin-badge img {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      margin-bottom: 8px;
-      border: 2px solid #04AA6D;
-      background: #fff;
-    }
-    #albertduplantin-badge .albertduplantin-text {
-      text-align: center;
-      font-size: 1.08em;
-      color: #222;
-    }
-    #albertduplantin-badge a:hover {
-      color: #028a56;
-    }
-    @media (max-width: 600px) {
-      #albertduplantin-badge {
-        right: 8px;
-        bottom: 8px;
-        padding: 8px 10px 8px 10px;
-      }
-      #albertduplantin-badge img {
-        width: 40px;
-        height: 40px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur de Réussite Scolaire</title>
+    <style>
+        :root {
+            --primary-color: #2563EB;    /* Bleu moderne */
+            --secondary-color: #10B981;  /* Vert émeraude */
+            --accent-color: #F59E0B;     /* Ambre */
+            --text-color: #1F2937;       /* Gris foncé */
+            --background-color: #F9FAFB;
+            --card-background: #FFFFFF;
+            --input-background: #F3F4F6;
+            --category-1: #2563EB;       /* Bleu pour l'alimentation */
+            --category-2: #10B981;       /* Vert pour le mode de vie */
+            --category-3: #8B5CF6;       /* Violet pour le social */
+            --category-4: #F59E0B;       /* Ambre pour l'académique */
+            --category-5: #EC4899;       /* Rose pour les facteurs psychologiques */
+            --category-6: #6366F1;       /* Indigo pour les facteurs environnementaux */
+            --border-radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            --transition-fast: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+            --transition-medium: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            --transition-slow: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            --hover-scale: 1.02;
+            --active-scale: 0.98;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: var(--text-color);
+            background: #F8F9FA;
+            min-height: 100vh;
+            padding: 15px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 878px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header h1 {
+            color: var(--text-color);
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .mode-switch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mode-description {
+            font-size: 0.9em;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            will-change: transform;
+        }
+
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .disclaimer-card {
+            text-align: center;
+            margin: 30px auto;
+            padding: 20px;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 878px;
+        }
+
+        .disclaimer {
+            color: #6B7280;
+            font-size: 0.95em;
+            line-height: 1.5;
+            max-width: 700px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            background: var(--card-background);
+            padding: 5px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .language-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9em;
+            will-change: transform;
+        }
+
+        .language-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 878px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            max-width: 558px;
+            min-width: 0; /* Permet au conteneur de rétrécir si nécessaire */
+            z-index: 1;
+        }
+
+        .category {
+            background: var(--card-background);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--category-1);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .category[data-category="alimentation"]::before {
+            background: var(--category-1);
+        }
+
+        .category[data-category="mode-de-vie"]::before {
+            background: var(--category-2);
+        }
+
+        .category[data-category="social"]::before {
+            background: var(--category-3);
+        }
+
+        .category[data-category="academique"]::before {
+            background: var(--category-4);
+        }
+
+        .category[data-category="psychologique"]::before {
+            background: var(--category-5);
+        }
+
+        .category[data-category="environnemental"]::before {
+            background: var(--category-6);
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .category-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+        }
+
+        .category[data-category="alimentation"] .category-icon {
+            background: var(--category-1);
+        }
+
+        .category[data-category="mode-de-vie"] .category-icon {
+            background: var(--category-2);
+        }
+
+        .category[data-category="social"] .category-icon {
+            background: var(--category-3);
+        }
+
+        .category[data-category="academique"] .category-icon {
+            background: var(--category-4);
+        }
+
+        .category[data-category="psychologique"] .category-icon {
+            background: var(--category-5);
+            color: white;
+            border-radius: 50%;
+            padding: 4px;
+        }
+
+        .category[data-category="environnemental"] .category-icon {
+            background: var(--category-6);
+            color: white;
+            border-radius: 50%;
+            padding: 4px;
+        }
+
+        .sliders-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Styles pour les sliders */
+        .slider-group {
+            background: var(--input-background);
+            padding: 6px 10px;
+            border-radius: 8px;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) 160px 35px 45px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+            will-change: transform, opacity;
+            z-index: 1;
+        }
+
+        .slider-group:hover {
+            background: var(--input-background);
+        }
+
+        .slider-group:focus-within {
+            background: white;
+            box-shadow: var(--focus-ring);
+            border-color: var(--primary-color);
+        }
+
+        .slider-group.hidden {
+            display: none;
+        }
+
+        .slider-group:active {
+            transform: scale(var(--active-scale));
+        }
+
+        .category[data-category="alimentation"] {
+            color: var(--category-1);
+        }
+
+        .category[data-category="mode-de-vie"] {
+            color: var(--category-2);
+        }
+
+        .category[data-category="social"] {
+            color: var(--category-3);
+        }
+
+        .category[data-category="academique"] {
+            color: var(--category-4);
+        }
+
+        .slider-label {
+            font-size: 0.9em;
+            color: var(--text-color);
+            font-weight: 600;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .info-button {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-left: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .info-button:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+        /* Styles pour les tooltips */
+        .tooltip {
+            display: none; /* Par défaut, le tooltip est caché */
+            position: fixed; /* Position fixe pour être toujours au-dessus */
+            background: #FFFFFF;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 300px;
+            font-size: 0.85em;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+            z-index: 999999;
+            pointer-events: auto;
+        }
+
+        .tooltip.show {
+            display: block; /* Afficher uniquement quand la classe show est présente */
+        }
+
+        /* Supprimer tous les styles de survol */
+        .slider-label:hover .tooltip,
+        .info-button:hover + .tooltip,
+        .tooltip:hover {
+            display: none;
+        }
+
+        /* Assurer que le tooltip est toujours au-dessus des autres éléments */
+        .tooltip,
+        .tooltip *,
+        .tooltip-content,
+        .tooltip-title,
+        .tooltip-description,
+        .tooltip-impact,
+        .tooltip-links,
+        .tooltip-source {
+            z-index: 999999 !important;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            width: 16px;
+            height: 16px;
+            background: #FFFFFF;
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+        .slider-label {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: var(--text-color);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .slider-label:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .tooltip-content,
+        .tooltip-title,
+        .tooltip-description,
+        .tooltip-impact,
+        .tooltip-links,
+        .tooltip a,
+        .tooltip button {
+            position: relative;
+            z-index: 999999;
+            pointer-events: auto;
+        }
+
+        .tooltip a,
+        .tooltip button {
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* Ajustement pour mobile */
+        @media (max-width: 768px) {
+            .tooltip {
+                width: 280px;
+                left: -140px; /* Centré par rapport au bouton */
+            }
+        }
+
+        /* Ajout d'une flèche au tooltip */
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            width: 16px;
+            height: 16px;
+            background: #FFFFFF;
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+        .tooltip .close-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .tooltip .close-button:hover {
+            opacity: 1;
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .tooltip-impact {
+            background: var(--input-background);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .tooltip-impact.positive {
+            color: #059669;
+            background: #ECFDF5;
+        }
+
+        .tooltip-impact.negative {
+            color: #DC2626;
+            background: #FEF2F2;
+        }
+
+        .tooltip-description {
+            margin: 8px 0;
+            color: var(--text-color);
+            opacity: 0.9;
+            font-size: 0.9em;
+            line-height: 1.5;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .tooltip-source {
+            font-size: 0.8em;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-style: italic;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        .tooltip-source a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            pointer-events: auto;
+            cursor: pointer;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .tooltip-source a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .tooltip {
+                width: 260px;
+                font-size: 0.8em;
+                left: -100px;
+            }
+
+            .tooltip::before {
+                left: 105px;
+            }
+
+            .tooltip-description {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tooltip {
+                width: 240px;
+                left: -80px;
+            }
+
+            .tooltip::before {
+                left: 85px;
+            }
+        }
+
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-left: auto;
+        }
+
+        .slider-container {
+            position: relative;
+            z-index: 1;
+            width: 160px;
+        }
+
+        .slider-value-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-color);
+            font-size: 0.9em;
+            white-space: nowrap;
+            width: 35px;
+            justify-content: flex-end;
+        }
+
+        .slider-value {
+            font-weight: 500;
+            text-align: right;
+            color: var(--category-color, var(--primary-color));
+            transition: var(--transition-fast);
+        }
+
+        .slider-unit {
+            color: #6B7280;
+            font-size: 0.9em;
+            text-align: left;
+            white-space: nowrap;
+            width: 45px;
+            padding-left: 2px;
+        }
+
+        /* Remplacer le contenu des unités via JavaScript plutôt que HTML */
+        .slider-group[data-unit="ans"] .slider-unit::before {
+            content: " ans";
+        }
+        .slider-group[data-unit="jour"] .slider-unit::before {
+            content: "/jour";
+        }
+        .slider-group[data-unit="sem"] .slider-unit::before {
+            content: "/sem.";
+        }
+        .slider-group[data-unit="mois"] .slider-unit::before {
+            content: "/mois";
+        }
+        .slider-group[data-unit="nuit"] .slider-unit::before {
+            content: "/nuit";
+        }
+        .slider-group[data-unit="score"] .slider-unit::before {
+            content: "/10";
+        }
+
+        input[type="range"] {
+            width: 160px;
+            height: 8px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            outline: none;
+            margin: 0;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, 
+                var(--category-color, var(--primary-color)) var(--value-percent, 50%), 
+                #E2E8F0 var(--value-percent, 50%)
+            );
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+            will-change: background;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 2px solid var(--category-color, var(--primary-color));
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            will-change: transform;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.1);
+            background: var(--category-color, var(--primary-color));
+            border-color: white;
+        }
+
+        .info-btn {
+            display: none;
+        }
+
+        .category[data-category="alimentation"] {
+            --category-color: var(--category-1);
+        }
+
+        .category[data-category="mode-de-vie"] {
+            --category-color: var(--category-2);
+        }
+
+        .category[data-category="social"] {
+            --category-color: var(--category-3);
+        }
+
+        .category[data-category="academique"] {
+            --category-color: var(--category-4);
+        }
+
+        .results {
+            flex-shrink: 0;
+            background: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 300px;
+            margin-top: 0;
+            z-index: 1;
+        }
+
+        .result-card {
+            background: var(--input-background);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-origin: center;
+            will-change: transform;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px) scale(var(--hover-scale));
+            box-shadow: var(--shadow-lg);
+        }
+
+        .result-card h3 {
+            color: var(--text-color);
+            margin: 0 0 8px;
+            font-size: 1em;
+        }
+
+        .result-card span {
+            color: var(--primary-color);
+            font-size: 1.6em;
+            font-weight: 600;
+            display: block;
+            text-align: center;
+            margin: 8px 0;
+        }
+
+        #grade-result span {
+            color: var(--primary-color);
+        }
+
+        #salary-result span {
+            color: var(--secondary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: var(--input-background);
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: var(--transition);
+        }
+
+        .action-button:hover {
+            background: white;
+            border-color: var(--primary-color);
+        }
+
+        .button-icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-background);
+            margin: 10% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-title {
+            font-size: 1.4em;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .modal-description {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .modal-source {
+            display: inline-block;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .modal-source:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: var(--card-background);
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .badge:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge img {
+            width: 45px;
+            height: 45px;
+            margin-right: 15px;
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .badge:hover img {
+            transform: rotate(360deg);
+        }
+
+        .badge span {
+            font-weight: 600;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .categories, .results {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .results {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .slider-group {
+                grid-template-columns: minmax(160px, 1fr) 160px 35px 45px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .slider-group {
+                grid-template-columns: 1fr 120px 35px 45px;
+            }
+
+            .slider-container {
+                width: 120px;
+            }
+
+            input[type="range"] {
+                width: 120px;
+            }
+
+            .category {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tooltip {
+                width: min(280px, calc(100vw - 40px));
+                font-size: 0.8em;
+                left: 50%;
+                transform: translateX(-50%) translateY(-5px);
+            }
+
+            .tooltip::before {
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+            }
+
+            .tooltip-description {
+                font-size: 0.9em;
+            }
+
+            .slider-label:hover .tooltip {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tooltip {
+                width: calc(100vw - 40px);
+                left: -10px;
+                transform: translateX(0) translateY(-5px);
+            }
+
+            .tooltip::before {
+                left: 15px;
+                transform: rotate(45deg);
+            }
+
+            .slider-label:hover .tooltip {
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        .slider-group.important::before {
+            content: "★";
+            position: absolute;
+            left: -25px;
+            color: var(--category-color);
+            font-size: 1.2em;
+        }
+
+        .slider-group.hidden {
+            opacity: 0;
+            transform: translateX(-20px);
+            height: 0;
+            margin: 0;
+            padding: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .important-tooltip {
+            display: none;
+        }
+
+        .tooltip-text {
+            display: none;
+        }
+
+        .source-section {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .source-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .modal-source {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: var(--transition);
+        }
+
+        .modal-source:hover {
+            text-decoration: underline;
+        }
+
+        .external-link {
+            margin-left: 4px;
+            font-size: 0.9em;
+        }
+
+        .modal-description {
+            line-height: 1.6;
+            margin: 15px 0;
+            color: var(--text-color);
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .tooltip-modal {
+            display: none;
+            position: absolute;
+            background: var(--card-background);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            max-width: 350px;
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .source-link {
+            display: none;
+        }
+
+        .enhanced-tooltip {
+            display: none;
+        }
+
+        .tooltip-links {
+            margin-top: 15px;
+            position: relative;
+            z-index: 9999;
+        }
+
+        .tooltip-links a {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .tooltip-links a:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .results {
+            z-index: 1;
+        }
+
+        .result-card.benchmark {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Styles pour les tooltips et les éléments liés */
+        .tooltip-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999999;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #FFFFFF;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 300px;
+            font-size: 0.85em;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+            z-index: 999999;
+            pointer-events: auto;
+        }
+
+        .tooltip.show {
+            display: block; /* Afficher uniquement quand la classe show est présente */
+        }
+
+        .results {
+            z-index: 1;
+        }
+
+        .result-card.benchmark {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Styles pour la carte benchmark */
+        .result-card.benchmark {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f3ff 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .benchmark-bar {
+            position: relative;
+            height: 8px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .benchmark-progress {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Supprimer les marqueurs de pourcentage */
+        .benchmark-marker {
+            display: none;
+        }
+
+        /* Uniformiser les couleurs des catégories */
+        .category[data-category="psychologique"] {
+            --category-color: var(--category-5);
+        }
+
+        .category[data-category="psychologique"] .slider-group input[type="range"] {
+            background: linear-gradient(to right, 
+                var(--category-5) var(--value-percent, 50%), 
+                #E2E8F0 var(--value-percent, 50%)
+            );
+        }
+
+        .category[data-category="psychologique"] .slider-group input[type="range"]::-webkit-slider-thumb {
+            border-color: var(--category-5);
+        }
+
+        .category[data-category="psychologique"] .slider-group input[type="range"]::-webkit-slider-thumb:active {
+            background: var(--category-5);
+        }
+
+        /* Styles des catégories */
+        .category[data-category="alimentation"] {
+            --category-color: var(--category-1);
+        }
+
+        .category[data-category="mode-de-vie"] {
+            --category-color: var(--category-2);
+        }
+
+        .category[data-category="social"] {
+            --category-color: var(--category-3);
+        }
+
+        .category[data-category="academique"] {
+            --category-color: var(--category-4);
+        }
+
+        /* Styles uniformes pour tous les sliders */
+        .slider-group input[type="range"] {
+            width: 160px;
+            height: 8px;
+            background: linear-gradient(to right, 
+                var(--category-color) var(--value-percent, 50%), 
+                #E2E8F0 var(--value-percent, 50%)
+            );
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 2px solid var(--category-color);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.1);
+            background: var(--category-color);
+            border-color: white;
+        }
+
+        /* Supprimer les marqueurs de pourcentage du benchmark */
+        .benchmark-marker {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>Simulateur de Réussite Scolaire</h1>
-  <div id="lang-switch">
-    <button id="fr-btn" class="active" onclick="setLang('fr')">Français</button>
-    <button id="en-btn" onclick="setLang('en')">English</button>
-  </div>
-  <div id="container">
-    <div id="sliders-column">
-      <h2 data-tr="Alimentation">Alimentation</h2>
-      <button id="menu-btn" onclick="showMenuExamples()" data-tr="Exemples de menus équilibrés 🍽️">Exemples de menus équilibrés 🍽️</button>
-      <div class="slidecontainer">
-        <label data-tr="Fruits & légumes/jour :">Fruits & légumes/jour :</label>
-        <input type="range" min="0" max="7" value="3" class="slider" id="fruits" />
-        <span id="fruits-val">3 portions</span>
-        <button class="info-btn" onclick="showInfo('fruits-info', event)">?</button>
-        <div class="info-tooltip" id="fruits-info" data-tr-tooltip="fruits"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Produits laitiers/jour :">Produits laitiers/jour :</label>
-        <input type="range" min="0" max="4" value="2" class="slider" id="laitiers" />
-        <span id="laitiers-val">2 produits</span>
-        <button class="info-btn" onclick="showInfo('laitiers-info', event)">?</button>
-        <div class="info-tooltip" id="laitiers-info" data-tr-tooltip="laitiers"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Féculents complets/jour :">Féculents complets/jour :</label>
-        <input type="range" min="0" max="5" value="1" class="slider" id="feculents" />
-        <span id="feculents-val">1 portion</span>
-        <button class="info-btn" onclick="showInfo('feculents-info', event)">?</button>
-        <div class="info-tooltip" id="feculents-info" data-tr-tooltip="feculents"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Sucres rapides/jour :">Sucres rapides/jour :</label>
-        <input type="range" min="0" max="5" value="2" class="slider" id="sucres" />
-        <span id="sucres-val">2 portions</span>
-        <button class="info-btn" onclick="showInfo('sucres-info', event)">?</button>
-        <div class="info-tooltip" id="sucres-info" data-tr-tooltip="sucres"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Graisses saturées/jour :">Graisses saturées/jour :</label>
-        <input type="range" min="0" max="5" value="2" class="slider" id="graisses" />
-        <span id="graisses-val">2 portions</span>
-        <button class="info-btn" onclick="showInfo('graisses-info', event)">?</button>
-        <div class="info-tooltip" id="graisses-info" data-tr-tooltip="graisses"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Petit-déjeuner équilibré/semaine :">Petit-déjeuner équilibré/semaine :</label>
-        <input type="range" min="0" max="7" value="4" class="slider" id="petitdej" />
-        <span id="petitdej-val">4 matins</span>
-        <button class="info-btn" onclick="showInfo('petitdej-info', event)">?</button>
-        <div class="info-tooltip" id="petitdej-info" data-tr-tooltip="petitdej"></div>
-      </div>
-      <h2 data-tr="Hygiène de vie">Hygiène de vie</h2>
-      <div class="slidecontainer">
-        <label data-tr="Activité sportive/semaine :">Activité sportive/semaine :</label>
-        <input type="range" min="0" max="5" value="2" class="slider" id="sport" />
-        <span id="sport-val">2 séances</span>
-        <button class="info-btn" onclick="showInfo('sport-info', event)">?</button>
-        <div class="info-tooltip" id="sport-info" data-tr-tooltip="sport"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Heures de sommeil/nuit :">Heures de sommeil/nuit :</label>
-        <input type="range" min="4" max="10" value="7" class="slider" id="sommeil" />
-        <span id="sommeil-val">7 h</span>
-        <button class="info-btn" onclick="showInfo('sommeil-info', event)">?</button>
-        <div class="info-tooltip" id="sommeil-info" data-tr-tooltip="sommeil"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Consommation de cannabis :">Consommation de cannabis :</label>
-        <input type="range" min="0" max="2" value="0" step="1" class="slider" id="drogues" />
-        <span id="drogues-val">0</span>
-        <span id="drogues-label" style="margin-left: 10px;">Jamais</span>
-        <button class="info-btn" onclick="showInfo('drogues-info', event)">?</button>
-        <div class="info-tooltip" id="drogues-info" data-tr-tooltip="drogues"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Temps sur écran/téléphone :">Temps sur écran/téléphone :</label>
-        <input type="range" min="0" max="10" value="4" class="slider" id="ecran" />
-        <span id="ecran-val">4 h</span>
-        <button class="info-btn" onclick="showInfo('ecran-info', event)">?</button>
-        <div class="info-tooltip" id="ecran-info" data-tr-tooltip="ecran"></div>
-      </div>
-      <h2 data-tr="Facteurs sociaux & psychologiques">Facteurs sociaux & psychologiques</h2>
-      <div class="slidecontainer">
-        <label data-tr="Climat de la classe :">Climat de la classe :</label>
-        <input type="range" min="0" max="10" value="6" class="slider" id="climat" />
-        <span id="climat-val">6/10</span>
-        <button class="info-btn" onclick="showInfo('climat-info', event)">?</button>
-        <div class="info-tooltip" id="climat-info" data-tr-tooltip="climat"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Soutien familial :">Soutien familial :</label>
-        <input type="range" min="0" max="10" value="6" class="slider" id="famille" />
-        <span id="famille-val">6/10</span>
-        <button class="info-btn" onclick="showInfo('famille-info', event)">?</button>
-        <div class="info-tooltip" id="famille-info" data-tr-tooltip="famille"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Estime de soi scolaire :">Estime de soi scolaire :</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="estime" />
-        <span id="estime-val">5/10</span>
-        <button class="info-btn" onclick="showInfo('estime-info', event)">?</button>
-        <div class="info-tooltip" id="estime-info" data-tr-tooltip="estime"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Santé mentale / bien-être :">Santé mentale / bien-être :</label>
-        <input type="range" min="0" max="10" value="6" class="slider" id="mental" />
-        <span id="mental-val">6/10</span>
-        <button class="info-btn" onclick="showInfo('mental-info', event)">?</button>
-        <div class="info-tooltip" id="mental-info" data-tr-tooltip="mental"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Participation en classe :">Participation en classe :</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="participation" />
-        <span id="participation-val">5/10</span>
-        <button class="info-btn" onclick="showInfo('participation-info', event)">?</button>
-        <div class="info-tooltip" id="participation-info" data-tr-tooltip="participation"></div>
-      </div>
-      <div class="slidecontainer">
-        <label data-tr="Fréquentations positives :">Fréquentations positives :</label>
-        <input type="range" min="0" max="10" value="6" class="slider" id="frequentations" />
-        <span id="frequentations-val">6/10</span>
-        <button class="info-btn" onclick="showInfo('frequentations-info', event)">?</button>
-        <div class="info-tooltip" id="frequentations-info" data-tr-tooltip="frequentations"></div>
-      </div>
-      <h2 data-tr="Poursuite d'études">Poursuite d'études</h2>
-      <div class="slidecontainer">
-        <label data-tr="Niveau d’études après le bac :">Niveau d’études après le bac :</label>
-        <input type="range" min="0" max="4" value="1" class="slider" id="etudes" />
-        <span id="etudes-val">Bac +2</span>
-        <button class="info-btn" onclick="showInfo('etudes-info', event)">?</button>
-        <div class="info-tooltip" id="etudes-info" data-tr-tooltip="etudes"></div>
-      </div>
+    <div class="language-switcher" role="group" aria-label="Sélection de la langue">
+        <button class="language-btn" onclick="changeLanguage('fr')" aria-pressed="true">FR</button>
+        <button class="language-btn" onclick="changeLanguage('en')" aria-pressed="false">EN</button>
     </div>
-    <div id="results-column">
-      <h3 data-tr="Impact sur vos résultats">Impact sur vos résultats</h3>
-      <div class="results-label">
-        <span data-tr="Notes scolaires">Notes scolaires</span>
-        <button class="results-info-btn"
-          onmouseenter="showResultsInfo('note-info', event)"
-          onmouseleave="hideResultsInfo('note-info')"
-          onclick="showResultsInfo('note-info', event)">?</button>
-        <span class="results-info-tooltip" id="note-info"></span>
-      </div>
-      <div id="notes">12,5/20</div>
-      <div class="results-label">
-        <span data-tr="Salaire futur estimé">Salaire futur estimé</span>
-        <button class="results-info-btn"
-          onmouseenter="showResultsInfo('salaire-info', event)"
-          onmouseleave="hideResultsInfo('salaire-info')"
-          onclick="showResultsInfo('salaire-info', event)">?</button>
-        <span class="results-info-tooltip" id="salaire-info"></span>
-      </div>
-      <div id="salaire">2150€</div>
-      
-      <div class="results-label">
-        <span data-tr="Position nationale">Position nationale</span>
-        <button class="results-info-btn"
-          onmouseenter="showResultsInfo('benchmark-info', event)"
-          onmouseleave="hideResultsInfo('benchmark-info')"
-          onclick="showResultsInfo('benchmark-info', event)">?</button>
-        <span class="results-info-tooltip" id="benchmark-info"> Tu fais mieux que X % des élèves : continue comme ça !</span>
-      </div>
-      <div id="benchmark">Calcul en cours...</div>
 
-      <button id="sources-btn" onclick="showSourcesModal()" data-tr="Sources scientifiques">Sources scientifiques</button>
+    <div class="container">
+        <div class="header" role="banner">
+            <h1 id="title">Simulateur de Réussite Scolaire</h1>
+            <div class="mode-switch" role="group" aria-label="Sélection du mode">
+                <div class="mode-buttons">
+                    <button class="mode-btn active" onclick="switchMode('basic')" id="basic-btn" aria-pressed="true">Mode basique</button>
+                    <button class="mode-btn" onclick="switchMode('advanced')" id="advanced-btn" aria-pressed="false">Mode avancé</button>
+                </div>
+                <p class="mode-description" id="mode-description" aria-live="polite">
+                    Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.
+                </p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="categories" role="main">
+                <div class="category" data-category="mode-de-vie">
+                    <h2 class="category-title">
+                        <span class="category-icon">&#127939;</span>
+                        Hygiène de vie
+                    </h2>
+                    <div class="sliders-grid">
+                        <div class="slider-group important">
+                            <div class="slider-label">Heures de sommeil</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="4" max="12" value="7" step="1" oninput="updateResults()" id="sleep">
+                            </div>
+                            <div class="slider-value">7</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group important">
+                            <div class="slider-label">Activité sportive</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="14" value="3" step="1" oninput="updateResults()" id="sport">
+                            </div>
+                            <div class="slider-value">3</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group important">
+                            <div class="slider-label">Petit-déjeuner équilibré</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="7" value="4" step="1" oninput="updateResults()" id="breakfast">
+                            </div>
+                            <div class="slider-value">4</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="sem">
+                            <div class="slider-label">Consommation de cannabis</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="7" value="0" step="1" oninput="updateResults()" id="cannabis">
+                            </div>
+                            <div class="slider-value">0</div>
+                            <div class="slider-unit"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category" data-category="alimentation">
+                    <h2 class="category-title">
+                        <span class="category-icon">&#127815;</span>
+                        Alimentation
+                    </h2>
+                    <div class="sliders-grid">
+                        <div class="slider-group important">
+                            <div class="slider-label">Fruits & légumes</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="10" value="4" step="1" oninput="updateResults()" id="fruits">
+                            </div>
+                            <div class="slider-value">4</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="jour">
+                            <div class="slider-label">Produits laitiers</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="5" value="3" step="1" oninput="updateResults()" id="dairy">
+                            </div>
+                            <div class="slider-value">3</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="jour">
+                            <div class="slider-label">Féculents complets</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="6" value="2" step="1" oninput="updateResults()" id="cereals">
+                            </div>
+                            <div class="slider-value">2</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="jour">
+                            <div class="slider-label">Sucres rapides</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="10" value="5" step="1" oninput="updateResults()" id="sugar">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="jour">
+                            <div class="slider-label">Graisses saturées</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="10" value="4" step="1" oninput="updateResults()" id="fats">
+                            </div>
+                            <div class="slider-value">4</div>
+                            <div class="slider-unit"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category" data-category="psychologique">
+                    <div class="category-title">
+                        <span class="category-icon">🧠</span>
+                        Facteurs personnels
+                    </div>
+                    <div class="sliders-grid">
+                        <div class="slider-group important">
+                            <div class="slider-label">Estime de soi scolaire</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="self-esteem">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="score">
+                            <div class="slider-label">Mentalité de progrès</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="mindset">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="score">
+                            <div class="slider-label">Persévérance</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="grit">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="score">
+                            <div class="slider-label">Santé mentale / bien-être</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="mental-health">
+                            </div>
+                            <div class="slider-value">6</div>
+                            <div class="slider-unit"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category" data-category="social">
+                    <h2 class="category-title">
+                        <span class="category-icon">&#128106;</span>
+                        Environnement social
+                    </h2>
+                    <div class="sliders-grid">
+                        <div class="slider-group important">
+                            <div class="slider-label">Climat de la classe</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="class-climate">
+                            </div>
+                            <div class="slider-value">6</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group important">
+                            <div class="slider-label">Soutien familial</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="family-support">
+                            </div>
+                            <div class="slider-value">6</div>
+                            <div class="slider-unit"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category" data-category="academique">
+                    <h2 class="category-title">
+                        <span class="category-icon">&#127891;</span>
+                        Engagement académique
+                    </h2>
+                    <div class="sliders-grid">
+                        <div class="slider-group important">
+                            <div class="slider-label">Participation en classe</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="participation">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">Niveau d'études</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="3" value="0" step="1" oninput="updateResults()" id="education">
+                            </div>
+                            <div class="slider-value">BAC</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="score">
+                            <div class="slider-label">Confort de l'espace de travail</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="study_environment">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+
+                        <div class="slider-group" data-unit="score">
+                            <div class="slider-label">Accès aux outils pour étudier</div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="resources_access">
+                            </div>
+                            <div class="slider-value">5</div>
+                            <div class="slider-unit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results">
+                <h2>Impact sur vos résultats</h2>
+                <div class="result-card">
+                    <div id="grade-result">
+                        <h3>Note moyenne estimée</h3>
+                        <span>12.2/20</span>
+                    </div>
+                </div>
+                <div class="result-card benchmark">
+                    <div id="benchmark-result">
+                        <div class="benchmark-title">
+                            <h3>Position nationale</h3>
+                            <button class="info-button">ℹ️</button>
+                            <div class="tooltip">
+                                <div class="tooltip-title">
+                                    <span>📊</span> Calcul de la position nationale
+                                </div>
+                                <div class="tooltip-description">
+                                    Cette position est calculée en comparant vos résultats à ceux des autres élèves français, en se basant sur des données statistiques nationales. Un score de 50% signifie que vous vous situez dans la moyenne nationale.
+                                    <br><br>
+                                    Le calcul prend en compte :
+                                    <br>• Vos notes moyennes
+                                    <br>• Vos habitudes de vie
+                                    <br>• Votre environnement d'étude
+                                    <br>• Votre engagement scolaire
+                                </div>
+                            </div>
+                        </div>
+                        <p class="benchmark-text">Tu fais mieux que 50% des élèves</p>
+                        <div class="benchmark-bar">
+                            <div class="benchmark-progress" style="width: 50%"></div>
+                            <span class="benchmark-marker" style="left: 25%">25%</span>
+                            <span class="benchmark-marker" style="left: 50%">50%</span>
+                            <span class="benchmark-marker" style="left: 75%">75%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <div id="salary-result">
+                        <h3>Salaire mensuel estimé</h3>
+                        <span>2 180 €/mois</span>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-button" onclick="resetSliders()">
+                        <span class="button-icon">🔄</span>
+                        Réinitialiser
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="menu-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
-    <div id="menu-modal-content" style="background:#fff; border-radius:10px; max-width:480px; margin:auto; padding:32px 28px; position:relative; max-height:80vh; overflow-y:auto; box-sizing:border-box;">
-      <button onclick="closeMenuExamples()" style="position:absolute; top:10px; right:14px; font-size:1.4em; background:none; border:none; color:#04AA6D; cursor:pointer;">✖</button>
-      <div id="menu-modal-inner"></div>
+
+    <div class="disclaimer-card">
+        <p class="disclaimer">Ce simulateur a une vocation pédagogique et illustrative. Il vise à sensibiliser aux facteurs influençant la réussite scolaire et ne constitue pas un outil de prédiction. Les résultats sont des estimations basées sur des moyennes statistiques et ne prédisent pas les situations individuelles.</p>
+        <p class="disclaimer" style="margin-top: 10px;">Aucune donnée n'est collectée ni sauvegardée : toutes les informations restent dans votre navigateur et sont effacées à la fermeture de la page.</p>
     </div>
-  </div>
-  <div id="sources-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:2000; align-items:center; justify-content:center;">
-    <div id="sources-modal-content" style="background:#fff; border-radius:10px; max-width:520px; margin:auto; padding:32px 28px; position:relative; max-height:80vh; overflow-y:auto; box-sizing:border-box;">
-      <button onclick="closeSourcesModal()" style="position:absolute; top:10px; right:14px; font-size:1.4em; background:none; border:none; color:#04AA6D; cursor:pointer;">✖</button>
-      <div id="sources-modal-inner"></div>
+
+    <a href="https://www.youtube.com/@albertduplantin" class="badge" target="_blank">
+        <img src="albertduplantin.png" alt="Albert Duplantin">
+        <span>Albert Duplantin</span>
+    </a>
+
+    <!-- Modales -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('info-modal')">&times;</span>
+            <div id="info-content"></div>
+        </div>
     </div>
-  </div>
-  <div id="albertduplantin-badge">
-    <img src="albertduplantin.png" alt="Logo Albert Duplantin" />
-    <div class="albertduplantin-text">
-      <div style="font-weight:bold;">Albert Duplantin</div>
-      <a href="https://www.youtube.com/@albertduplantin" target="_blank" rel="noopener" style="color:#04AA6D;text-decoration:underline;font-size:1em;">Voir la chaîne YouTube</a>
+
+    <div id="sources-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('sources-modal')">&times;</span>
+            <h2>Sources scientifiques</h2>
+            <div id="sources-content"></div>
+        </div>
     </div>
-  </div>
-  <script src="simulateur.js"></script>
+
+    <div id="menus-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('menus-modal')">&times;</span>
+            <h2>Exemples de menus équilibrés</h2>
+            <div id="menus-content"></div>
+        </div>
+    </div>
+
+    <script src="simulateur.js"></script>
 </body>
-</html>
+</html> 
