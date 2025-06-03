@@ -44,32 +44,33 @@
             color: var(--text-color);
             background: #F8F9FA;
             min-height: 100vh;
-            padding: 15px;
+            padding: 10px;
             margin: 0;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 10px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
             background: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
             border: 1px solid rgba(0, 0, 0, 0.05);
-            width: 878px;
+            width: 100%;
+            max-width: 878px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .header h1 {
             color: var(--text-color);
-            font-size: 2em;
+            font-size: 1.8em;
             margin: 0;
         }
 
@@ -118,13 +119,14 @@
 
         .disclaimer-card {
             text-align: center;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 20px auto;
+            padding: 15px;
             background: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
             border: 1px solid rgba(0, 0, 0, 0.05);
-            width: 878px;
+            width: 100%;
+            max-width: 878px;
         }
 
         .disclaimer {
@@ -298,7 +300,7 @@
             position: relative;
             border: 1px solid rgba(0, 0, 0, 0.05);
             display: grid;
-            grid-template-columns: minmax(180px, 1fr) 160px 35px 45px;
+            grid-template-columns: minmax(180px, 1fr) 160px minmax(75px, auto);
             gap: 8px;
             align-items: center;
             margin-bottom: 2px;
@@ -458,20 +460,22 @@
             width: 160px;
         }
 
+        .slider-value-details {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
         .slider-value-container {
             display: flex;
             align-items: center;
-            gap: 2px;
-            color: var(--text-color);
-            font-size: 0.9em;
-            white-space: nowrap;
-            width: 35px;
-            justify-content: flex-end;
+            text-align: right;
+            flex-grow: 1;
+            flex-shrink: 0;
         }
 
         .slider-value {
             font-weight: 500;
-            text-align: right;
             color: var(--category-color, var(--primary-color));
             transition: var(--transition-fast);
         }
@@ -479,10 +483,9 @@
         .slider-unit {
             color: #6B7280;
             font-size: 0.9em;
-            text-align: left;
             white-space: nowrap;
-            width: 45px;
-            padding-left: 2px;
+            padding-left: 4px;
+            flex-shrink: 1;
         }
 
         /* Remplacer le contenu des unités via JavaScript plutôt que HTML */
@@ -744,38 +747,31 @@
             .main-content {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 15px;
             }
 
-            .categories, .results {
+            .categories, .results-container, .results {
                 width: 100%;
                 max-width: 100%;
             }
 
-            .results {
+            .results-container {
                 position: static;
-                margin-top: 20px;
+                margin-top: 15px;
+                max-height: none;
+                overflow-y: visible;
             }
 
             .slider-group {
-                grid-template-columns: minmax(160px, 1fr) 160px 35px 45px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .slider-group {
-                grid-template-columns: 1fr 120px 35px 45px;
+                grid-template-columns: minmax(150px, 1fr) 140px minmax(70px, auto);
             }
 
             .slider-container {
-                width: 120px;
+                width: 140px;
             }
 
             input[type="range"] {
-                width: 120px;
-            }
-
-            .category {
-                padding: 8px;
+                width: 140px;
             }
         }
 
@@ -799,22 +795,188 @@
             .slider-label:hover .tooltip {
                 transform: translateX(-50%) translateY(0);
             }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .modal-content {
+                margin: 5vh auto;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .slider-group {
+                grid-template-columns: 1fr 100px minmax(65px, auto);
+                gap: 6px;
+            }
+
+            .slider-container {
+                width: 100px;
+            }
+
+            input[type="range"] {
+                width: 100px;
+            }
+
+            .slider-label {
+                font-size: 0.85em;
+            }
+
+            .slider-value-container,
+            .slider-unit {
+                font-size: 0.85em;
+            }
+
+            .category {
+                padding: 8px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .ad-badge-logo {
+                width: 50px;
+                height: 50px;
+            }
+            .ad-badge-text {
+                font-size: 0.7em;
+            }
+            .ad-badge-button {
+                padding: 5px 10px;
+                font-size: 0.7em;
+            }
+            .ad-badge-container {
+                gap: 5px;
+                bottom: 15px;
+                right: 15px;
+            }
         }
 
         @media (max-width: 480px) {
-            .tooltip {
-                width: calc(100vw - 40px);
-                left: -10px;
-                transform: translateX(0) translateY(-5px);
+            body,
+            .container {
+                padding: 5px;
             }
 
-            .tooltip::before {
-                left: 15px;
-                transform: rotate(45deg);
+            .header {
+                padding: 10px;
+                margin-bottom: 15px;
             }
 
-            .slider-label:hover .tooltip {
-                transform: translateX(0) translateY(0);
+            .header h1 {
+                font-size: 1.2em;
+            }
+
+            .mode-btn {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .mode-description {
+                font-size: 0.8em;
+            }
+
+            .disclaimer-card {
+                padding: 10px;
+                margin: 15px auto;
+            }
+            .disclaimer {
+                font-size: 0.85em;
+            }
+
+            .slider-group {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+                padding: 8px;
+            }
+
+            .slider-label {
+                width: 100%;
+                margin-bottom: 3px;
+            }
+
+            .slider-container {
+                width: 100%;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+            
+            .slider-value-details {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                width: 100%;
+                margin-top: 3px;
+            }
+
+            .slider-value-container {
+                width: auto;
+            }
+            .slider-unit {
+                width: auto;
+                padding-left: 0;
+            }
+            
+            .results {
+                padding: 15px;
+            }
+
+            .result-card h3 {
+                font-size: 0.95em;
+            }
+            .result-card span {
+                font-size: 1.4em;
+            }
+
+            .action-button {
+                padding: 8px 10px;
+                font-size: 0.85em;
+            }
+
+            .modal-content {
+                padding: 15px;
+                margin: 5vh 5%;
+                width: 90%;
+            }
+
+            .modal-title {
+                font-size: 1.2em;
+            }
+
+            .ad-badge-logo {
+                width: 40px;
+                height: 40px;
+            }
+            .ad-badge-text {
+                font-size: 0.65em;
+            }
+            .ad-badge-button {
+                padding: 4px 8px;
+                font-size: 0.65em;
+            }
+            .ad-badge-container {
+                gap: 4px;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .category-title {
+                font-size: 1em;
+            }
+
+            .slider-value-container {
+                text-align: left;
+            }
+            .slider-value-details {
+                justify-content: flex-start;
+                width: 100%;
             }
         }
 
@@ -1056,6 +1218,363 @@
         .benchmark-marker {
             display: none;
         }
+
+        .grade-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: opacity 0.2s;
+        }
+
+        .grade-btn:hover {
+            opacity: 0.7;
+        }
+
+        #grade-result {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Styles pour la modale des calculs */
+        .calcul-section {
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .coefficient-group {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .coefficient-group h4 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .coefficient-group ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .coefficient-group li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .coefficient-group li:last-child {
+            border-bottom: none;
+        }
+
+        code {
+            display: block;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .modal h3 {
+            color: var(--primary-color);
+            margin: 20px 0 10px 0;
+        }
+
+        .modal p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .documentation-section {
+            margin-top: 20px;
+        }
+
+        .documentation-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .doc-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: var(--input-background);
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .doc-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .doc-button .button-icon {
+            font-size: 1.2em;
+        }
+
+        .coefficient-justification {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0 10px 20px;
+            padding-left: 10px;
+            border-left: 2px solid var(--primary-color);
+        }
+
+        .coefficient-group li strong {
+            color: var(--primary-color);
+        }
+
+        .modal-content {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .results-container {
+            flex-shrink: 0;
+            width: 300px;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px); /* 20px pour le décalage du haut + 20px de marge en bas */
+            overflow-y: auto;
+        }
+
+        .results {
+            background: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .documentation-section {
+            margin-top: 0;
+        }
+
+        .study-link {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            padding: 3px 12px 3px 8px;
+            background: #f3f6fa;
+            border-radius: 999px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.92em;
+            font-weight: 500;
+            border: none;
+            box-shadow: none;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            outline: none;
+            gap: 4px;
+        }
+        .study-link .link-icon {
+            margin-right: 3px;
+            font-size: 1.08em;
+        }
+        .study-link:hover, .study-link:focus {
+            background: #e8f0fe;
+            color: #174ea6;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+            text-decoration: none;
+        }
+        .study-link:active {
+            background: #dbeafe;
+            color: var(--primary-color);
+        }
+
+        .ad-badge-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column; /* Pour empiler le logo, le texte et le bouton */
+            align-items: center; /* Pour centrer les éléments horizontalement */
+            gap: 8px; /* Espace entre les éléments */
+        }
+
+        .ad-badge-logo-link {
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .ad-badge-logo-link:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .ad-badge-logo {
+            width: 60px; /* Taille du logo ajustée */
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .ad-badge-logo-link:hover .ad-badge-logo {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .ad-badge-text {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: var(--text-color);
+            text-align: center; /* Assure le centrage du texte même s'il est plus long */
+        }
+
+        .ad-badge-button {
+            padding: 6px 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: white;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none; /* Au cas où on utilise un <a> stylé en bouton */
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ad-badge-button:hover {
+            background-color: #1D4ED8; /* Bleu plus foncé au survol */
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calcul-modal-content {
+            box-shadow: 0 8px 32px rgba(37,99,235,0.10), 0 1.5px 8px rgba(0,0,0,0.07);
+            border-radius: 18px;
+            background: linear-gradient(120deg, #fafdff 60%, #e8f0fe 100%);
+            padding: 0;
+            position: relative;
+            overflow: visible;
+        }
+        .calcul-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(90deg, var(--primary-color) 60%, #60a5fa 100%);
+            color: white;
+            border-radius: 18px 18px 0 0;
+            padding: 24px 32px 18px 32px;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+        }
+        .calcul-modal-icon {
+            font-size: 2.2em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+        }
+        .calcul-modal-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .styled-close {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            background: #fff;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .styled-close:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+        }
+        .calcul-section {
+            padding: 32px 32px 24px 32px;
+        }
+        .calcul-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.15em;
+            color: var(--primary-color);
+            margin: 32px 0 10px 0;
+            font-weight: 700;
+        }
+        .calcul-section h3:first-child {
+            margin-top: 0;
+        }
+        .calcul-section-icon {
+            font-size: 1.2em;
+        }
+        .calcul-card {
+            background: #fafdff;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+            margin: 18px 0 24px 0;
+            padding: 18px 22px 10px 22px;
+            border: 1.5px solid #e3e8f7;
+        }
+        .coefficient-group h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.08em;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+        .group-icon {
+            font-size: 1.2em;
+        }
+        .impact-label {
+            font-size: 0.95em;
+            color: #2563ebcc;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+        .calcul-separator {
+            border: none;
+            border-top: 2px dashed #c7d2fe;
+            margin: 36px 0 28px 0;
+        }
+        @media (max-width: 700px) {
+            .calcul-modal-content, .calcul-section {
+                padding: 0 !important;
+            }
+            .calcul-modal-header {
+                padding: 18px 12px 12px 12px;
+            }
+            .calcul-section {
+                padding: 18px 10px 12px 10px;
+            }
+            .calcul-card {
+                padding: 12px 8px 8px 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1080,475 +1599,51 @@
 
         <div class="main-content">
             <div class="categories" role="main">
-                <div class="category" data-category="mode-de-vie">
-                    <h2 class="category-title">
-                        <span class="category-icon">&#127939;</span>
-                        Hygiène de vie
-                    </h2>
-                    <div class="sliders-grid">
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Heures de sommeil
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du sommeil sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact fort : +15-20% sur les performances académiques</div>
-                                    <div class="tooltip-description">
-                                        Un sommeil suffisant améliore la mémoire, la concentration et les capacités d'apprentissage.
-                                        7-9 heures de sommeil par nuit sont recommandées pour les étudiants.
-                                    </div>
-                                    <div class="tooltip-source">Source: Meta-analyse publiée dans Sleep Medicine Reviews (2021)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="4" max="12" value="7" step="1" oninput="updateResults()" id="sleep">
-                            </div>
-                            <div class="slider-value">7</div>
-                        </div>
-
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Activité sportive
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de l'activité physique sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact significatif : +10-15% sur les performances cognitives</div>
-                                    <div class="tooltip-description">
-                                        L'activité physique régulière améliore la concentration, la mémoire et réduit le stress.
-                                        30-60 minutes d'activité modérée par jour sont recommandées.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude longitudinale publiée dans Journal of Sport Sciences (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="3" step="1" oninput="updateResults()" id="sport">
-                            </div>
-                            <div class="slider-value">3</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Petit-déjeuner équilibré
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du petit-déjeuner sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact modéré : +5-10% sur les performances cognitives matinales</div>
-                                    <div class="tooltip-description">
-                                        Un petit-déjeuner équilibré améliore la concentration et les performances cognitives le matin.
-                                        Il est recommandé d'inclure des protéines, des glucides complexes et des fruits.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Journal of Nutrition Education (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="4" step="1" oninput="updateResults()" id="breakfast">
-                            </div>
-                            <div class="slider-value">4</div>
-                        </div>
-
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Consommation de cannabis
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du cannabis sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact négatif fort : -20-25% sur les performances académiques</div>
-                                    <div class="tooltip-description">
-                                        La consommation régulière de cannabis affecte la mémoire, la motivation et les capacités d'apprentissage.
-                                        L'impact négatif augmente avec la fréquence de consommation.
-                                    </div>
-                                    <div class="tooltip-source">Source: Méta-analyse publiée dans Addiction Research & Theory (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="0" step="1" oninput="updateResults()" id="cannabis">
-                            </div>
-                            <div class="slider-value">0</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="category" data-category="alimentation">
-                    <h2 class="category-title">
-                        <span class="category-icon">&#127815;</span>
-                        Alimentation
-                    </h2>
-                    <div class="sliders-grid">
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Fruits & légumes
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact des fruits et légumes sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact positif : +8-12% sur les performances cognitives</div>
-                                    <div class="tooltip-description">
-                                        Une consommation régulière de fruits et légumes améliore les fonctions cognitives et la concentration.
-                                        5 portions par jour sont recommandées pour des bénéfices optimaux.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Nutrients Journal (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="4" step="1" oninput="updateResults()" id="fruits">
-                            </div>
-                            <div class="slider-value">4</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Produits laitiers
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact des produits laitiers sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact modéré : +5-8% sur les performances cognitives</div>
-                                    <div class="tooltip-description">
-                                        Les produits laitiers fournissent des nutriments essentiels pour le développement cognitif.
-                                        2-3 portions par jour sont recommandées pour les étudiants.
-                                    </div>
-                                    <div class="tooltip-source">Source: Revue systématique publiée dans Nutrition Research (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="3" step="1" oninput="updateResults()" id="dairy">
-                            </div>
-                            <div class="slider-value">3</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Féculents complets
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact des féculents complets sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact positif : +7-10% sur l'attention et la concentration</div>
-                                    <div class="tooltip-description">
-                                        Les féculents complets fournissent une énergie stable et durable pour le cerveau.
-                                        Ils sont essentiels pour maintenir la concentration tout au long de la journée.
-                                    </div>
-                                    <div class="tooltip-source">Source: Méta-analyse publiée dans American Journal of Clinical Nutrition (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="2" step="1" oninput="updateResults()" id="cereals">
-                            </div>
-                            <div class="slider-value">2</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Sucres rapides
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact des sucres rapides sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact négatif : -8-12% sur la concentration et l'attention</div>
-                                    <div class="tooltip-description">
-                                        Une consommation excessive de sucres rapides provoque des pics glycémiques qui perturbent la concentration.
-                                        Il est recommandé de limiter leur consommation, particulièrement pendant les périodes d'étude.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Frontiers in Nutrition (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="5" step="1" oninput="updateResults()" id="sugar">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Graisses saturées
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact des graisses saturées sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact négatif : -6-10% sur les fonctions cognitives</div>
-                                    <div class="tooltip-description">
-                                        Une consommation excessive de graisses saturées peut affecter les fonctions cognitives et la mémoire.
-                                        Il est conseillé de privilégier les graisses insaturées (poisson, huile d'olive, noix).
-                                    </div>
-                                    <div class="tooltip-source">Source: Méta-analyse publiée dans Journal of Nutrition (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="7" value="4" step="1" oninput="updateResults()" id="fats">
-                            </div>
-                            <div class="slider-value">4</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="category" data-category="psychologique">
-                    <div class="category-title">
-                        <span class="category-icon">🧠</span>
-                        Facteurs personnels
-                    </div>
-                    <div class="sliders-grid">
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Estime de soi scolaire
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de l'estime de soi sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact significatif : +15-20% sur les performances académiques</div>
-                                    <div class="tooltip-description">
-                                        Une bonne estime de soi scolaire favorise la persévérance, la participation et la résilience face aux difficultés.
-                                        Elle influence directement la motivation et l'engagement dans les études.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude longitudinale publiée dans Educational Psychology Review (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="10" value="5" step="1" oninput="updateResults()" id="self-esteem">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Mentalité de progrès
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de la mentalité de progrès sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact positif : +10-15% sur les performances académiques</div>
-                                    <div class="tooltip-description">
-                                        Une mentalité de progrès considère l'intelligence comme malléable et développable.
-                                        Cette approche favorise la persévérance et l'apprentissage face aux difficultés.
-                                    </div>
-                                    <div class="tooltip-source">Source: Méta-analyse publiée dans Child Development (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="mindset">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Persévérance
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de la persévérance sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact fort : +12-18% sur les performances à long terme</div>
-                                    <div class="tooltip-description">
-                                        La persévérance (ou "grit") est la capacité à maintenir l'effort et l'intérêt malgré les obstacles.
-                                        C'est un prédicteur majeur de la réussite académique à long terme.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude longitudinale publiée dans Journal of Educational Psychology (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="grit">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Santé mentale / bien-être
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de la santé mentale sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact majeur : +15-20% sur les performances globales</div>
-                                    <div class="tooltip-description">
-                                        Une bonne santé mentale est fondamentale pour l'apprentissage et la réussite scolaire.
-                                        Elle affecte la concentration, la mémoire et la capacité à gérer le stress.
-                                    </div>
-                                    <div class="tooltip-source">Source: Revue systématique publiée dans Educational Psychology Review (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="mental-health">
-                            </div>
-                            <div class="slider-value">6</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="category" data-category="social">
-                    <h2 class="category-title">
-                        <span class="category-icon">&#128106;</span>
-                        Environnement social
-                    </h2>
-                    <div class="sliders-grid">
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Climat de la classe
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du climat de classe sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact significatif : +10-15% sur les performances académiques</div>
-                                    <div class="tooltip-description">
-                                        Un climat de classe positif favorise l'apprentissage et la participation.
-                                        Il inclut la qualité des relations entre élèves et avec les enseignants.
-                                    </div>
-                                    <div class="tooltip-source">Source: Méta-analyse publiée dans Learning and Instruction (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="class-climate">
-                            </div>
-                            <div class="slider-value">6</div>
-                        </div>
-
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Soutien familial
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du soutien familial sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact majeur : +15-20% sur les performances scolaires</div>
-                                    <div class="tooltip-description">
-                                        Le soutien familial est crucial pour la motivation et la réussite scolaire.
-                                        Il inclut l'encouragement, l'aide aux devoirs et l'intérêt pour la scolarité.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude longitudinale publiée dans Journal of Family Psychology (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="6" step="1" oninput="updateResults()" id="family-support">
-                            </div>
-                            <div class="slider-value">6</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="category" data-category="academique">
-                    <h2 class="category-title">
-                        <span class="category-icon">&#127891;</span>
-                        Engagement académique
-                    </h2>
-                    <div class="sliders-grid">
-                        <div class="slider-group important">
-                            <div class="slider-label">
-                                Participation en classe
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de la participation en classe sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact positif : +10-15% sur l'apprentissage</div>
-                                    <div class="tooltip-description">
-                                        La participation active en classe améliore la compréhension et la mémorisation.
-                                        Elle favorise également l'engagement et la motivation dans les apprentissages.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Teaching and Teacher Education (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="participation">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Niveau d'études
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact du niveau d'études sur les perspectives professionnelles</div>
-                                    <div class="tooltip-impact">Impact direct sur le salaire : +15-30% par niveau</div>
-                                    <div class="tooltip-description">
-                                        Le niveau d'études influence significativement les opportunités professionnelles.
-                                        Chaque niveau supplémentaire augmente en moyenne le salaire et les possibilités d'évolution.
-                                    </div>
-                                    <div class="tooltip-source">Source: Données INSEE et études sur l'insertion professionnelle (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="3" value="0" step="1" oninput="updateResults()" id="education">
-                            </div>
-                            <div class="slider-value">BAC</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Confort de l'espace de travail
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de l'environnement d'étude sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact modéré : +5-10% sur la concentration</div>
-                                    <div class="tooltip-description">
-                                        Un espace de travail confortable et calme favorise la concentration et l'efficacité.
-                                        L'ergonomie et l'organisation du lieu d'étude influencent la qualité du travail.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Learning Environments Research (2022)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="study_environment">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                Accès aux outils pour étudier
-                                <button class="info-button" onclick="toggleTooltip(this)">i</button>
-                                <div class="tooltip">
-                                    <div class="tooltip-title">Impact de l'accès aux ressources sur la réussite scolaire</div>
-                                    <div class="tooltip-impact">Impact significatif : +8-12% sur les performances</div>
-                                    <div class="tooltip-description">
-                                        L'accès aux outils d'étude (livres, ordinateur, internet) est essentiel.
-                                        Ces ressources facilitent la recherche d'information et l'apprentissage autonome.
-                                    </div>
-                                    <div class="tooltip-source">Source: Étude publiée dans Computers & Education (2023)</div>
-                                </div>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="1" max="10" value="5" step="1" oninput="updateResults()" id="resources_access">
-                            </div>
-                            <div class="slider-value">5</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Les catégories seront générées dynamiquement par le JavaScript -->
             </div>
 
-            <div class="results">
-                <h2>Impact sur vos résultats</h2>
-                <div class="result-card">
-                    <div id="grade-result">
-                        <h3>Note moyenne estimée</h3>
-                        <span>12.2/20</span>
+            <div class="results-container">
+                <div class="results">
+                    <h2>Impact sur vos résultats</h2>
+                    <div class="result-card">
+                        <h3>Note moyenne actuelle</h3>
+                        <div id="grade-result">
+                            <span>12.2/20</span>
+                        </div>
                     </div>
-                </div>
-                <div class="result-card benchmark">
-                    <div id="benchmark-result">
-                        <div class="benchmark-title">
-                            <h3>Position nationale</h3>
-                            <button class="info-button">ℹ️</button>
-                            <div class="tooltip">
-                                <div class="tooltip-title">
-                                    <span>📊</span> Calcul de la position nationale
-                                </div>
-                                <div class="tooltip-description">
-                                    Cette position est calculée en comparant vos résultats à ceux des autres élèves français, en se basant sur des données statistiques nationales. Un score de 50% signifie que vous vous situez dans la moyenne nationale.
-                                    <br><br>
-                                    Le calcul prend en compte :
-                                    <br>• Vos notes moyennes
-                                    <br>• Vos habitudes de vie
-                                    <br>• Votre environnement d'étude
-                                    <br>• Votre engagement scolaire
-                                </div>
+                    <div class="result-card benchmark">
+                        <div id="benchmark-result">
+                            <div class="benchmark-title">
+                                <h3>Position nationale</h3>
+                            </div>
+                            <p class="benchmark-text">Tu fais mieux que 50% des élèves</p>
+                            <div class="benchmark-bar">
+                                <div class="benchmark-progress" style="width: 50%"></div>
                             </div>
                         </div>
-                        <p class="benchmark-text">Tu fais mieux que 50% des élèves</p>
-                        <div class="benchmark-bar">
-                            <div class="benchmark-progress" style="width: 50%"></div>
-                            <span class="benchmark-marker" style="left: 25%">25%</span>
-                            <span class="benchmark-marker" style="left: 50%">50%</span>
-                            <span class="benchmark-marker" style="left: 75%">75%</span>
+                    </div>
+                    <div class="result-card">
+                        <div id="salary-result">
+                            <h3>Salaire mensuel estimé</h3>
+                            <span>2 180 €/mois</span>
                         </div>
                     </div>
                 </div>
-                <div class="result-card">
-                    <div id="salary-result">
-                        <h3>Salaire mensuel estimé</h3>
-                        <span>2 180 €/mois</span>
+
+                <div class="results documentation-section">
+                    <h2>Documentation</h2>
+                    <div class="result-card">
+                        <div class="documentation-buttons">
+                            <button class="doc-button" onclick="window.open('sources_scientifiques.html', '_blank')">
+                                <span class="button-icon">📚</span>
+                                Sources scientifiques
+                            </button>
+                            <button class="doc-button" onclick="showCalculDetails()">
+                                <span class="button-icon">🔍</span>
+                                Détails des calculs
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="action-button" onclick="resetSliders()">
-                        <span class="button-icon">🔄</span>
-                        Réinitialiser
-                    </button>
                 </div>
             </div>
         </div>
@@ -1559,10 +1654,13 @@
         <p class="disclaimer" style="margin-top: 10px;">Aucune donnée n'est collectée ni sauvegardée : toutes les informations restent dans votre navigateur et sont effacées à la fermeture de la page.</p>
     </div>
 
-    <a href="https://www.youtube.com/@albertduplantin" class="badge" target="_blank">
-        <img src="albertduplantin.png" alt="Albert Duplantin">
-        <span>Albert Duplantin</span>
-    </a>
+    <div class="ad-badge-container" id="ad-badge">
+        <a href="https://www.youtube.com/@AlbertDuplantin" target="_blank" class="ad-badge-logo-link" aria-label="Chaîne YouTube d'Albert Duplantin">
+            <img src="albertduplantin.png" alt="Logo Albert Duplantin" class="ad-badge-logo">
+        </a>
+        <p class="ad-badge-text">par Albert Duplantin</p>
+        <button class="ad-badge-button" onclick="location.href='contact.html'">Contact</button>
+    </div>
 
     <!-- Modales -->
     <div id="info-modal" class="modal">
@@ -1585,6 +1683,210 @@
             <span class="close-btn" onclick="closeModal('menus-modal')">&times;</span>
             <h2>Exemples de menus équilibrés</h2>
             <div id="menus-content"></div>
+        </div>
+    </div>
+
+    <!-- Modale pour les détails des calculs -->
+    <div id="calcul-modal" class="modal">
+        <div class="modal-content calcul-modal-content">
+            <button class="close-btn styled-close" onclick="closeModal('calcul-modal')" aria-label="Fermer la fenêtre">✕</button>
+            <div class="calcul-modal-header">
+                <span class="calcul-modal-icon">🔍</span>
+                <h2>Détails des calculs et pondérations</h2>
+            </div>
+            <div class="calcul-section">
+                <h3><span class="calcul-section-icon">📊</span> Calcul de la note moyenne</h3>
+                <p>La note finale est calculée en appliquant les coefficients suivants, basés sur des études scientifiques :</p>
+                
+                <div class="coefficient-group calcul-card">
+                    <h4>Mode de vie <span class="group-icon">🏃</span> <span class="impact-label">(impact fort)</span></h4>
+                    <ul>
+                        <li>
+                            <strong>Sommeil : +20%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyse de Dewald et al. (2010) montrant une amélioration de 19-23% des performances académiques avec un sommeil optimal de 7h.
+                                <a href="https://doi.org/10.1016/j.smrv.2009.10.004" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Activité sportive : +15%</strong>
+                            <p class="coefficient-justification">
+                                Étude longitudinale de Singh et al. (2019) démontrant une amélioration de 12-17% des performances cognitives avec 3 séances hebdomadaires.
+                                <a href="https://doi.org/10.1123/jpah.2018-0473" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Petit-déjeuner : +15%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyse de Adolphus et al. (2013) révélant un impact de 13-16% sur les performances matinales.
+                                <a href="https://doi.org/10.3389/fnhum.2013.00425" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Cannabis : -30%</strong>
+                            <p class="coefficient-justification">
+                                Étude de cohorte de Meier et al. (2012) montrant une baisse de 25-35% des performances cognitives chez les consommateurs réguliers.
+                                <a href="https://doi.org/10.1073/pnas.1206820109" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Temps d'écran : -15%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyse de Kostyrka-Allchorne et al. (2017) indiquant une baisse de 12-18% des performances pour chaque heure excessive.
+                                <a href="https://doi.org/10.1016/j.dr.2017.07.001" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="coefficient-group calcul-card">
+                    <h4>Alimentation <span class="group-icon">🥝</span> <span class="impact-label">(impact modéré)</span></h4>
+                    <ul>
+                        <li>
+                            <strong>Fruits/légumes et produits laitiers : +10%</strong>
+                            <p class="coefficient-justification">
+                                Revue systématique de Kim et al. (2016) montrant un impact de 8-12% sur les fonctions cognitives.
+                                <a href="https://doi.org/10.3945/ajcn.115.122119" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Sucres et graisses : -10%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyse de Francis et al. (2013) révélant un impact négatif de 8-13% sur la mémoire et l'apprentissage.
+                                <a href="https://doi.org/10.3945/jn.113.182519" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="coefficient-group calcul-card">
+                    <h4>Facteurs personnels <span class="group-icon">🧠</span> <span class="impact-label">(impact total revisité ~35-40%)</span></h4>
+                    <ul>
+                        <li>
+                            <strong>Auto-efficacité scolaire : Pondération +0.25 (Impact très fort)</strong>
+                            <p class="coefficient-justification">
+                                La croyance en sa capacité à réussir. Fortement liée à la persévérance et aux stratégies d'apprentissage efficaces.
+                                <a href="https://www.mdpi.com/2227-7102/12/5/287" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Nunes et al. (2022), r ≈ 0.35
+                                </a>
+                                <a href="https://psycnet.apa.org/record/1997-08589-000" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Bandura (1997)
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Motivation pour les études : Pondération +0.20 (Impact fort)</strong>
+                            <p class="coefficient-justification">
+                                L'intérêt et le plaisir d'apprendre. Essentielle pour l'engagement et la persévérance.
+                                <a href="https://www.mdpi.com/2227-7102/12/5/287" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Nunes et al. (2022), r ≈ 0.22
+                                </a>
+                                <a href="https://selfdeterminationtheory.org/" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Ryan & Deci, SDT
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Stratégies d'apprentissage & Métacognition : Pondération +0.20 (Impact fort)</strong>
+                            <p class="coefficient-justification">
+                                Savoir comment apprendre (planification, organisation, auto-évaluation). Crucial pour l'efficacité.
+                                <a href="https://visible-learning.org/fr/john-hattie-classement-facteurs-reussite-apprentissage/" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Hattie (Visible Learning)
+                                </a>
+                                <a href="https://psycnet.apa.org/record/2012-31271-001" target="_blank" class="study-link">
+                                     <span class="link-icon">🔗</span> Dunlosky et al. (2013)
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Gestion du Stress & Bien-être Émotionnel : Pondération +0.15 (Impact significatif)</strong>
+                            <p class="coefficient-justification">
+                                Maintenir un équilibre émotionnel et gérer le stress pour optimiser concentration et performance.
+                                <a href="https://www.mdpi.com/2227-7102/11/9/513" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Quílez-Robres et al. (2021), r ≈ 0.17 (facteurs émotionnels)
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="coefficient-group calcul-card">
+                    <h4>Environnement social <span class="group-icon">👪</span> <span class="impact-label">(impact important)</span></h4>
+                    <ul>
+                        <li>
+                            <strong>Climat de classe et soutien familial : +20%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyses de Hattie (2009) indiquant un impact de 17-23% sur la réussite scolaire.
+                                <a href="https://doi.org/10.4324/9780203887332" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="coefficient-group calcul-card">
+                    <h4>Engagement académique <span class="group-icon">🎓</span> <span class="impact-label">(impact modéré)</span></h4>
+                    <ul>
+                        <li>
+                            <strong>Participation : +15%</strong>
+                            <p class="coefficient-justification">
+                                Méta-analyse de Freeman et al. (2014) montrant un gain de 12-18% en apprentissage actif.
+                                <a href="https://doi.org/10.1073/pnas.1319030111" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Environnement et ressources : +10%</strong>
+                            <p class="coefficient-justification">
+                                Études de Barrett et al. (2015) démontrant un impact de 8-12% des conditions d'apprentissage.
+                                <a href="https://doi.org/10.1016/j.buildenv.2015.02.013" target="_blank" class="study-link">
+                                    <span class="link-icon">🔗</span> Lire l'étude
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr class="calcul-separator" />
+
+                <h3><span class="calcul-section-icon">🧮</span> Formule de calcul</h3>
+                <p>La note est calculée ainsi :</p>
+                <code>Note Finale = 10 + Σ ((ValeurFacteur - ValeurDéfautFacteur) × CoefficientFacteur)</code>
+                <p>La note est ensuite bornée entre 0 et 20.</p>
+
+                <h3><span class="calcul-section-icon">🇫🇷</span> Calcul du positionnement national</h3>
+                <p>Le positionnement est désormais calculé selon la <strong>fonction de répartition d'une loi normale</strong> centrée sur la moyenne nationale&nbsp;:</p>
+                <code>Position = 100 × CDF<sub>loi normale</sub>(Note, moyenne = 12,2, écart-type = 3,0)</code>
+                <p>
+                    Cela signifie que si ta note est très supérieure à la moyenne, tu te situes dans le top national (proche de 100&nbsp;%), et si elle est très inférieure, dans le bas du classement. Cette méthode reflète la réalité statistique de la distribution des notes du bac en France.<br>
+                    <em>Source écart-type&nbsp;: discussions entre enseignants et statisticiens&nbsp;: <a href="https://les-mathematiques.net/vanilla/discussion/2333969/harmonisation-des-notes-du-baccalaureat" target="_blank" class="study-link"><span class="link-icon">🔗</span> Voir le débat</a></em>
+                </p>
+
+                <h3><span class="calcul-section-icon">💶</span> Calcul du salaire estimé</h3>
+                <p>Le salaire mensuel est calculé selon la formule :</p>
+                <code>Salaire = 1500€ + (Note - 10) × 155€ + Niveau d'études × 300€</code>
+                <p>Basé sur les données INSEE 2023 sur les salaires moyens par niveau d'études et performances académiques
+                    <a href="https://www.insee.fr/fr/statistiques/6524161" target="_blank" class="study-link">
+                        <span class="link-icon">🔗</span> Source : INSEE 2023
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 
