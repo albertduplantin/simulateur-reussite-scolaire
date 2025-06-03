@@ -1575,6 +1575,131 @@
                 padding: 12px 8px 8px 8px;
             }
         }
+        .instructions-modal-content {
+            box-shadow: 0 12px 40px 0 rgba(37,99,235,0.18), 0 2px 12px rgba(0,0,0,0.10);
+            border-radius: 22px;
+            background: rgba(255,255,255,0.97);
+            padding: 0;
+            position: relative;
+            overflow: visible;
+            max-width: 520px;
+            animation: modal-pop 0.35s cubic-bezier(.4,1.6,.6,1) both;
+        }
+        @keyframes modal-pop {
+            0% { opacity: 0; transform: scale(0.85) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .instructions-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: linear-gradient(90deg, var(--primary-color) 60%, #60a5fa 100%);
+            color: white;
+            border-radius: 22px 22px 0 0;
+            padding: 28px 36px 20px 36px;
+            box-shadow: 0 2px 12px rgba(37,99,235,0.10);
+        }
+        .instructions-modal-icon {
+            font-size: 2.8em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+            margin-right: 6px;
+        }
+        .instructions-modal-header h2 {
+            margin: 0;
+            font-size: 1.35em;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .instructions-list {
+            padding: 36px 36px 28px 36px;
+            font-size: 1.13em;
+            color: var(--text-color);
+            margin: 0;
+            list-style: none;
+            counter-reset: instr;
+        }
+        .instructions-list li {
+            margin-bottom: 22px;
+            line-height: 1.7;
+            background: linear-gradient(90deg, #f3f6fa 80%, #e8f0fe 100%);
+            border-radius: 12px;
+            padding: 16px 18px 16px 54px;
+            position: relative;
+            font-size: 1.08em;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+            transition: background 0.2s;
+        }
+        .instructions-list li:last-child { margin-bottom: 0; }
+        .instructions-step {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+            border: 2px solid #fff;
+        }
+        .styled-close {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            background: #fff;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .styled-close:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+        }
+        @media (max-width: 600px) {
+            .instructions-modal-content, .instructions-list {
+                padding: 10px !important;
+            }
+            .instructions-modal-header {
+                padding: 14px 10px 10px 10px;
+            }
+            .instructions-list {
+                font-size: 1em;
+            }
+            .instructions-list li {
+                padding: 12px 10px 12px 44px;
+                font-size: 1em;
+            }
+            .instructions-step {
+                width: 26px;
+                height: 26px;
+                font-size: 1em;
+                left: 8px;
+            }
+            .styled-close {
+                top: 8px;
+                right: 10px;
+                width: 32px;
+                height: 32px;
+                font-size: 1.1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1590,6 +1715,7 @@
                 <div class="mode-buttons">
                     <button class="mode-btn active" onclick="switchMode('basic')" id="basic-btn" aria-pressed="true">Mode basique</button>
                     <button class="mode-btn" onclick="switchMode('advanced')" id="advanced-btn" aria-pressed="false">Mode avancé</button>
+                    <button class="mode-btn" onclick="showInstructions()" id="instructions-btn" aria-pressed="false">Instructions</button>
                 </div>
                 <p class="mode-description" id="mode-description" aria-live="polite">
                     Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.
@@ -1887,6 +2013,22 @@
                     </a>
                 </p>
             </div>
+        </div>
+    </div>
+
+    <!-- Ajout de la modale Instructions juste après les autres modales -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content instructions-modal-content">
+            <button class="close-btn styled-close" onclick="closeModal('instructions-modal')" aria-label="Fermer la fenêtre">✕</button>
+            <div class="instructions-modal-header">
+                <span class="instructions-modal-icon" style="font-size:2.8em;">💡</span>
+                <h2>Instructions d'utilisation</h2>
+            </div>
+            <ol class="instructions-list">
+                <li><span class="instructions-step">1</span> Ajuste les curseurs en fonction de ta situation actuelle.</li>
+                <li><span class="instructions-step">2</span> Ajuste ta note moyenne actuelle avec les boutons <b>+</b> et <b>-</b> situés à côté de la note moyenne estimée.</li>
+                <li><span class="instructions-step">3</span> Agis sur les curseurs pour voir l'impact de ce que tu peux améliorer.</li>
+            </ol>
         </div>
     </div>
 

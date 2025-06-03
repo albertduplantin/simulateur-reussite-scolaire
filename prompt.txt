@@ -1,0 +1,274 @@
+SIMULATEUR DE RÉUSSITE SCOLAIRE
+Spécifications techniques détaillées
+
+1. STRUCTURE DES FICHIERS
+-------------------------
+index.html        : Interface utilisateur et styles CSS
+simulateur.js     : Logique de calcul et interactions
+albertduplantin.png : Logo pour le badge
+prompt.txt        : Ce document de spécifications
+
+2. INTERFACE UTILISATEUR
+-------------------------
+
+A. En-tête
+----------
+- Titre principal : "Simulateur de Réussite Scolaire"
+- Sélecteur de langue (FR/EN) en haut à gauche
+- Sélecteur de mode (Basique/Avancé) avec description
+- Description du mode basique : "Focus sur les 6 facteurs les plus impactants"
+- Description du mode avancé : "Accès à tous les facteurs influençant la réussite"
+
+B. Disposition principale
+------------------------
+- Layout en deux colonnes flexibles
+  • Colonne gauche (70%) : catégories de facteurs
+  • Colonne droite (30%) : résultats en temps réel
+- Largeur maximale : 1400px
+- Marges automatiques
+- Espacement : 20px entre les éléments
+
+C. Catégories de facteurs
+-------------------------
+
+1) HYGIÈNE DE VIE (🏃)
+Facteur              | Min-Max | Défaut | Impact     | Important
+---------------------|---------|---------|------------|----------
+Heures de sommeil    | 4-12h   | 7h     | +15-20%    | Oui
+Activité sportive    | 0-7/sem | 3/sem  | +10-15%    | Oui
+Petit-déjeuner       | 0-7j    | 4j     | +5-10%     | Non
+Cannabis             | 0-7j    | 0j     | -20-25%    | Oui
+
+2) ALIMENTATION (🥬)
+Facteur          | Min-Max | Défaut | Impact     | Important
+-----------------|---------|---------|------------|----------
+Fruits/légumes   | 0-7/j   | 4/j    | +8-12%     | Non
+Produits laitiers| 0-7/j   | 3/j    | +5-8%      | Non
+Féculents        | 0-7/j   | 2/j    | +7-10%     | Non
+Sucres rapides   | 0-7/j   | 5/j    | -8-12%     | Non
+Graisses saturées| 0-7/j   | 4/j    | -6-10%     | Non
+
+3) FACTEURS PERSONNELS (🧠)
+Facteur          | Échelle | Défaut | Impact     | Important
+-----------------|---------|---------|------------|----------
+Estime de soi    | 0-10    | 5      | +15-20%    | Oui
+Mentalité        | 1-10    | 5      | +10-15%    | Non
+Persévérance     | 1-10    | 5      | +12-18%    | Non
+Santé mentale    | 1-10    | 6      | +15-20%    | Non
+
+4) ENVIRONNEMENT SOCIAL (👪)
+Facteur          | Échelle | Défaut | Impact     | Important
+-----------------|---------|---------|------------|----------
+Climat classe    | 1-10    | 6      | +10-15%    | Oui
+Soutien familial | 1-10    | 6      | +15-20%    | Oui
+
+5) ENGAGEMENT ACADÉMIQUE (🎓)
+Facteur          | Échelle | Défaut | Impact     | Important
+-----------------|---------|---------|------------|----------
+Participation    | 1-10    | 5      | +10-15%    | Non
+Niveau études    | 0-3     | 0      | +300€/niv  | Non
+Espace travail   | 1-10    | 5      | +5-10%     | Non
+Accès ressources | 1-10    | 5      | +8-12%     | Non
+
+3. STYLES ET COMPOSANTS
+-----------------------
+
+A. Variables CSS
+---------------
+```css
+:root {
+    --primary-color: #2563EB;    /* Bleu moderne */
+    --secondary-color: #10B981;  /* Vert émeraude */
+    --accent-color: #F59E0B;     /* Ambre */
+    --text-color: #1F2937;       /* Gris foncé */
+    --background-color: #F9FAFB;
+    --card-background: #FFFFFF;
+    --input-background: #F3F4F6;
+    
+    /* Couleurs des catégories */
+    --category-1: #2563EB;  /* Bleu - Mode de vie */
+    --category-2: #10B981;  /* Vert - Alimentation */
+    --category-3: #EC4899;  /* Rose - Facteurs personnels */
+    --category-4: #8B5CF6;  /* Violet - Social */
+    --category-5: #F59E0B;  /* Ambre - Académique */
+    
+    /* Effets */
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --transition: 0.3s ease;
+}
+```
+
+B. Composants spécifiques
+------------------------
+
+1) Sliders
+```css
+.slider {
+    height: 8px;
+    border-radius: 4px;
+    background: #E2E8F0;
+    appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 2px solid var(--category-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+```
+
+2) Tooltips
+```css
+.tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 300px;
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    display: none;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    transform: rotate(45deg);
+}
+```
+
+3) Cartes de résultats
+```css
+.result-card {
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 15px;
+    transition: var(--transition);
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+```
+
+4. LOGIQUE DE CALCUL
+--------------------
+
+A. Calcul de la note moyenne
+```javascript
+// Note de base : 10/20
+let grade = 10;
+
+// Pour chaque facteur
+Object.entries(COEFFICIENTS).forEach(([category, coeffs]) => {
+    Object.entries(coeffs).forEach(([factor, coeff]) => {
+        const value = values[factor];
+        const baseValue = factor === 'sleep' ? 7 : 
+                         ['sugar', 'fats'].includes(factor) ? 3 : 
+                         5;
+        grade += (value - baseValue) * coeff;
+    });
+});
+
+// Limiter entre 0 et 20
+grade = Math.max(0, Math.min(20, grade));
+```
+
+B. Calcul du percentile
+```javascript
+percentile = 50 + (grade - 12.2) * 5;
+percentile = Math.max(0, Math.min(100, percentile));
+```
+
+C. Calcul du salaire
+```javascript
+const baseSalary = 1500;
+const gradeBonus = (grade - 10) * 155;
+const educationBonus = education * 300;
+salary = Math.round(baseSalary + gradeBonus + educationBonus);
+```
+
+5. CLASSES JAVASCRIPT
+--------------------
+
+A. Classe Simulateur
+```javascript
+class Simulateur {
+    constructor()
+    initializeSliders()
+    updateSliderDisplay(slider)
+    attachEventListeners()
+    calculateResults()
+    calculatePercentile(grade)
+    calculateSalary(grade, education)
+    updateResults()
+    switchMode(mode)
+    resetSliders()
+}
+```
+
+B. Classe TooltipManager
+```javascript
+class TooltipManager {
+    static toggleTooltip(button)
+    static closeTooltip(event)
+}
+```
+
+6. ACCESSIBILITÉ
+---------------
+- Support ARIA complet
+- Navigation au clavier
+- Messages d'erreur clairs
+- Contraste suffisant
+- Support lecteur d'écran
+
+7. RESPONSIVE DESIGN
+-------------------
+Breakpoints :
+- Mobile : < 600px
+- Tablette : < 900px
+- Desktop : > 900px
+
+Adaptations :
+- Réorganisation en colonne sur mobile
+- Ajustement taille des sliders
+- Repositionnement des tooltips
+- Texte et composants redimensionnés
+
+8. MENTIONS LÉGALES
+------------------
+- Disclaimer sur la nature pédagogique
+- Non-collecte des données
+- Sources scientifiques citées
+- Attribution Albert Duplantin
+
+9. PERFORMANCES
+--------------
+- Pas de dépendances externes
+- Optimisation des calculs
+- Mise en cache des résultats
+- Debounce sur les mises à jour
+- Chargement différé des ressources non critiques 

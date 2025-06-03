@@ -799,4 +799,8 @@ window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
     }
+}
+
+function showInstructions() {
+    document.getElementById('instructions-modal').style.display = 'block';
 } 
