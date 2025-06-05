@@ -110,7 +110,7 @@ const SLIDERS_CONFIG = {
         tooltip: {
             title: "Impact du petit-déjeuner sur la réussite scolaire",
             impact: "Impact modéré : +5-10% sur les performances cognitives matinales",
-            description: "Un petit-déjeuner équilibré améliore la concentration et les performances cognitives le matin.",
+            description: "Un petit-déjeuner équilibré améliore la concentration et les performances cognitives le matin. Exemples de petit-déjeuner équilibré :\n• 1 bol de céréales complètes + lait + 1 fruit + 1 yaourt\n• 2 tranches de pain complet + beurre + confiture + 1 œuf + 1 verre de jus d'orange\n• 1 bol de flocons d'avoine + fruits rouges + amandes + yaourt grec",
             source: "Étude publiée dans Journal of Nutrition Education (2023)"
         }
     },
