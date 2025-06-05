@@ -1,34 +1,77 @@
-# simulateur-reussite-scolaire
-Simulateur interactif pour explorer l’impact de l’alimentation, du mode de vie et des facteurs sociaux sur la réussite scolaire et le salaire futur. Multilingue (FR/EN), 100% web, sans inscription
-# Simulateur de Réussite Scolaire
+# 📚 Simulateur de Réussite Scolaire
 
-Ce projet propose un simulateur interactif permettant d’explorer l’impact de l’alimentation, de l’hygiène de vie, du temps d’écran et des facteurs sociaux sur la réussite scolaire et le salaire futur.
+Un outil interactif basé sur des données scientifiques pour simuler l'impact de différents facteurs sur la réussite scolaire.
 
-- **100% web** : aucune inscription, aucune donnée collectée.
-- **Multilingue** : interface en français et en anglais.
-- **Sources scientifiques** : chaque facteur est documenté par des études et rapports publics.
-- **Fonctionnalités** :
-  - Sliders interactifs pour ajuster ses habitudes et voir l’impact immédiat sur les résultats scolaires et le salaire estimé.
-  - Bouton “Sources scientifiques” listant toutes les références utilisées.
-  - Exemples de menus équilibrés, bulles d’info détaillées, responsive mobile/desktop.
+## 🎯 Objectif
 
-## Démo
+Ce simulateur a pour but d'aider les étudiants à comprendre l'influence de différents facteurs sur leur réussite scolaire. Il se base sur des études scientifiques récentes pour fournir des estimations réalistes de l'impact de divers aspects de la vie quotidienne sur les performances académiques.
 
-[À compléter avec l’URL GitHub Pages de votre dépôt, une fois activé]
+## ✨ Fonctionnalités
 
-## Utilisation
+- **Interface intuitive** avec des curseurs interactifs
+- **5 catégories de facteurs** :
+  - 🏃 Mode de vie (sommeil, sport, écrans...)
+  - 🥝 Alimentation (petit-déjeuner, fruits et légumes...)
+  - 🧠 Facteurs psychologiques (motivation, auto-efficacité...)
+  - 👪 Environnement social
+  - 🎓 Engagement académique
+- **Calcul en temps réel** des impacts sur la réussite
+- **Support multilingue** (Français/Anglais)
+- **Tooltips informatifs** avec sources scientifiques
+- **Formulaire de contact** intégré
 
-1. Ouvrez `index.html` dans votre navigateur.
-2. Ou rendez-vous sur la page GitHub Pages du dépôt.
+## 🔧 Technologies utilisées
 
-## Technologies
+- HTML5
+- CSS3 (Variables CSS pour la personnalisation)
+- JavaScript vanilla
+- FormSubmit.co pour le formulaire de contact
 
-- HTML, CSS, JavaScript (aucune dépendance externe)
+## 📱 Compatibilité
 
-## Licence
+Le simulateur est responsive et fonctionne sur :
+- Ordinateurs de bureau
+- Tablettes
+- Smartphones
 
-Ce projet est open source sous licence MIT.
+## 📊 Sources des données
 
-## Auteur
+Toutes les données et coefficients utilisés sont basés sur des études scientifiques récentes. Les sources complètes sont disponibles dans la page `sources_scientifiques.html`.
 
-[albert duplantin] https://www.youtube.com/@albertduplantin
+## 🚀 Installation locale
+
+1. Clonez le dépôt :
+```bash
+git clone https://github.com/votre-username/simulateur-reussite.git
+```
+
+2. Ouvrez `index.html` dans votre navigateur
+
+Aucune dépendance ou installation supplémentaire n'est nécessaire.
+
+## 📝 Structure du projet
+
+```
+simulateur-reussite/
+│
+├── index.html          # Page principale du simulateur
+├── simulateur.js       # Logique du simulateur
+├── contact.html        # Formulaire de contact
+├── merci.html         # Page de confirmation
+└── sources_scientifiques.html  # Documentation des sources
+```
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+- Signaler des bugs
+- Proposer des améliorations
+- Ajouter de nouvelles fonctionnalités
+
+## 📫 Contact
+
+Pour toute question ou suggestion, utilisez le formulaire de contact intégré dans l'application.
+
+## 📜 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails. 
