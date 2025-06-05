@@ -394,128 +394,117 @@ const DEFAULT_VALUES = {
     education: 0
 };
 
+// Fonction utilitaire pour générer le HTML d'un tooltip
+function creerTooltip(tooltip) {
+    return `
+        <div class="tooltip">
+            <div class="tooltip-title">${tooltip.title}</div>
+            <div class="tooltip-impact">${tooltip.impact}</div>
+            <div class="tooltip-description">${tooltip.description}</div>
+            <div class="tooltip-source">${tooltip.source}</div>
+        </div>
+    `;
+}
+
+// Fonction utilitaire pour générer un slider (DOM)
+function creerSlider(id, config, onInput) {
+    const sliderGroup = document.createElement('div');
+    sliderGroup.className = `slider-group${config.important ? ' important' : ''}`;
+    sliderGroup.id = `slider-group-${id}`;
+
+    // Label + tooltip
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'slider-label';
+    labelDiv.innerHTML = `
+        <span>${config.label}</span>
+        <button class="info-button" onclick="toggleTooltip(this)"></button>
+        ${creerTooltip(config.tooltip)}
+    `;
+
+    // Slider input
+    const sliderContainer = document.createElement('div');
+    sliderContainer.className = 'slider-container';
+    const input = document.createElement('input');
+    input.type = 'range';
+    input.className = 'slider';
+    input.min = config.min;
+    input.max = config.max;
+    input.value = config.default;
+    input.step = config.step;
+    input.id = id;
+    input.oninput = onInput;
+    sliderContainer.appendChild(input);
+
+    // Valeur + unité
+    const valueDetailsDiv = document.createElement('div');
+    valueDetailsDiv.className = 'slider-value-details';
+    const valueDiv = document.createElement('div');
+    valueDiv.className = 'slider-value-container';
+    valueDiv.innerHTML = `<span class="slider-value">${config.default}</span>`;
+    const unitDiv = document.createElement('div');
+    unitDiv.className = 'slider-unit';
+    unitDiv.textContent = config.unit;
+    valueDetailsDiv.appendChild(valueDiv);
+    valueDetailsDiv.appendChild(unitDiv);
+
+    // Assemblage
+    sliderGroup.appendChild(labelDiv);
+    sliderGroup.appendChild(sliderContainer);
+    sliderGroup.appendChild(valueDetailsDiv);
+    return sliderGroup;
+}
+
+// Fonction utilitaire pour générer une catégorie (DOM)
+function creerCategorie(categoryId, config) {
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'category';
+    categoryDiv.setAttribute('data-category', categoryId);
+    const titleDiv = document.createElement('h2');
+    titleDiv.className = 'category-title';
+    titleDiv.innerHTML = `<span class="category-icon">${config.icon}</span>${config.title}`;
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'sliders-grid';
+    categoryDiv.appendChild(titleDiv);
+    categoryDiv.appendChild(gridDiv);
+    return { categoryDiv, gridDiv };
+}
+
 // Classe principale du simulateur
 class Simulateur {
     constructor() {
-        this.manualGrade = 12.2; // Note de départ par défaut
-        this.baseGrade = this.manualGrade; // Note de base pour les calculs
-        this.slidersModified = false; // Pour suivre si les sliders ont été modifiés
+        this.manualGrade = 12.2;
+        this.baseGrade = this.manualGrade;
+        this.slidersModified = false;
         this.initializeCategories();
         this.initializeSliders();
         this.attachEventListeners();
         this.switchMode('basic');
     }
 
-    // Initialisation des catégories
     initializeCategories() {
         const categoriesContainer = document.querySelector('.categories');
-        
-        // Vider le conteneur
         categoriesContainer.innerHTML = '';
-        
-        // Créer chaque catégorie
+        this.categoryGrids = {};
         Object.entries(CATEGORIES).forEach(([categoryId, config]) => {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'category';
-            categoryDiv.setAttribute('data-category', categoryId);
-            
-            // Créer le titre de la catégorie
-            const titleDiv = document.createElement('h2');
-            titleDiv.className = 'category-title';
-            titleDiv.innerHTML = `
-                <span class="category-icon">${config.icon}</span>
-                ${config.title}
-            `;
-            
-            // Créer la grille pour les sliders
-            const gridDiv = document.createElement('div');
-            gridDiv.className = 'sliders-grid';
-            
-            // Assembler la catégorie
-            categoryDiv.appendChild(titleDiv);
-            categoryDiv.appendChild(gridDiv);
+            const { categoryDiv, gridDiv } = creerCategorie(categoryId, config);
             categoriesContainer.appendChild(categoryDiv);
+            this.categoryGrids[categoryId] = gridDiv;
         });
     }
 
-    // Initialisation des sliders
     initializeSliders() {
-        for (const [id, config] of Object.entries(SLIDERS_CONFIG)) {
-            const category = document.querySelector(`.category[data-category="${config.category}"] .sliders-grid`);
-            if (category) {
-                category.appendChild(this.createSlider(id, config));
+        Object.entries(SLIDERS_CONFIG).forEach(([id, config]) => {
+            const grid = this.categoryGrids[config.category];
+            if (grid) {
+                const sliderElem = creerSlider(id, config, () => {
+                    this.updateSliderDisplay(document.getElementById(id));
+                    this.updateResults();
+                });
+                grid.appendChild(sliderElem);
             }
-        }
+        });
     }
 
-    // Création d'un nouveau slider
-    createSlider(id, config) {
-        const sliderGroup = document.createElement('div');
-        sliderGroup.className = `slider-group${config.important ? ' important' : ''}`;
-        sliderGroup.id = `slider-group-${id}`; // Ajout d'un ID au groupe pour référence si besoin
-        
-        // Création du label et du tooltip
-        const labelDiv = document.createElement('div');
-        labelDiv.className = 'slider-label';
-        labelDiv.innerHTML = `
-            ${config.label}
-            <button class="info-button" onclick="toggleTooltip(this)">i</button>
-            <div class="tooltip">
-                <div class="tooltip-title">${config.tooltip.title}</div>
-                <div class="tooltip-impact">${config.tooltip.impact}</div>
-                <div class="tooltip-description">${config.tooltip.description}</div>
-                <div class="tooltip-source">${config.tooltip.source}</div>
-            </div>
-        `;
-
-        // Création du conteneur du slider
-        const sliderContainer = document.createElement('div');
-        sliderContainer.className = 'slider-container';
-        
-        // Création de l'input range
-        const input = document.createElement('input');
-        input.type = 'range';
-        input.className = 'slider';
-        input.min = config.min;
-        input.max = config.max;
-        input.value = config.default;
-        input.step = config.step;
-        input.id = id;
-        input.oninput = () => {
-            this.updateSliderDisplay(input);
-            this.updateResults();
-        };
-
-        // Création du wrapper pour la valeur et l'unité
-        const valueDetailsDiv = document.createElement('div');
-        valueDetailsDiv.className = 'slider-value-details';
-
-        // Création de l'affichage de la valeur
-        const valueDiv = document.createElement('div');
-        valueDiv.className = 'slider-value-container';
-        valueDiv.innerHTML = `
-            <span class="slider-value">${config.default}</span>
-        `;
-
-        // Création de l'unité
-        const unitDiv = document.createElement('div');
-        unitDiv.className = 'slider-unit';
-        unitDiv.textContent = config.unit;
-
-        // Assemblage des éléments
-        sliderContainer.appendChild(input);
-        
-        valueDetailsDiv.appendChild(valueDiv);
-        valueDetailsDiv.appendChild(unitDiv);
-
-        sliderGroup.appendChild(labelDiv);
-        sliderGroup.appendChild(sliderContainer);
-        sliderGroup.appendChild(valueDetailsDiv); // Ajout du wrapper au lieu de valueDiv et unitDiv séparément
-
-        return sliderGroup;
-    }
-
-    // Mise à jour de l'affichage d'un slider
     updateSliderDisplay(slider) {
         const valueDisplay = slider.parentElement.parentElement.querySelector('.slider-value');
         if (valueDisplay) {
@@ -526,13 +515,10 @@ class Simulateur {
                 valueDisplay.textContent = slider.value;
             }
         }
-
-        // Mise à jour du gradient
         const percent = (slider.value - slider.min) / (slider.max - slider.min) * 100;
         slider.style.background = `linear-gradient(to right, var(--category-color) ${percent}%, #E2E8F0 ${percent}%)`;
     }
 
-    // Attachement des écouteurs d'événements
     attachEventListeners() {
         document.querySelectorAll('input[type="range"]').forEach(slider => {
             slider.addEventListener('input', () => {
@@ -543,122 +529,72 @@ class Simulateur {
         });
     }
 
-    // Calcul des résultats
     calculateResults() {
         const values = this.getSliderValues();
         return this.calculateResultsWithValues(values);
     }
-
-    // Calcul des résultats avec des valeurs spécifiques
     calculateResultsWithValues(values) {
-        let grade = 10; // Note de base
-
-        // Calcul par slider en utilisant SLIDERS_CONFIG
+        let grade = 10;
         Object.entries(SLIDERS_CONFIG).forEach(([sliderId, config]) => {
-            if (config.coefficient) { // Vérifie si le slider a un coefficient
+            if (config.coefficient) {
                 const value = values[sliderId];
                 if (typeof value !== 'undefined') {
-                    // La valeur par défaut du slider (config.default) est la référence pour le calcul du delta.
-                    // Ainsi, si value === config.default, l'impact sur la note est de 0.
                     grade += (value - config.default) * config.coefficient;
                 }
             }
         });
-
-        return {
-            grade: Math.max(0, Math.min(20, grade))
-        };
+        return { grade: Math.max(0, Math.min(20, grade)) };
     }
-
-    // Calcul de la note finale en tenant compte de la note de base
     calculateFinalGrade(sliderResults) {
-        if (!this.slidersModified) {
-            return this.manualGrade;
-        }
-        
-        // Calculer la différence par rapport aux valeurs par défaut
+        if (!this.slidersModified) return this.manualGrade;
         const defaultResults = this.calculateResultsWithDefaultValues();
         const gradeDifference = sliderResults.grade - defaultResults.grade;
-        
-        // Appliquer cette différence à la note de base
         return Math.max(0, Math.min(20, this.baseGrade + gradeDifference));
     }
-
-    // Calcul des résultats avec les valeurs par défaut
     calculateResultsWithDefaultValues() {
         const defaultValues = {};
-        // Utilise les valeurs par défaut de SLIDERS_CONFIG directement
         Object.entries(SLIDERS_CONFIG).forEach(([id, config]) => {
             defaultValues[id] = config.default;
         });
         return this.calculateResultsWithValues(defaultValues);
     }
-
-    // Récupération des valeurs des sliders
     getSliderValues() {
         const values = {};
-        // Itère sur SLIDERS_CONFIG pour obtenir les IDs des sliders
         Object.keys(SLIDERS_CONFIG).forEach(id => {
             const slider = document.getElementById(id);
-            if (slider) {
-                values[id] = parseFloat(slider.value);
-            }
+            if (slider) values[id] = parseFloat(slider.value);
         });
         return values;
     }
-
-    // Mise à jour des résultats affichés
     updateResults() {
         const sliderResults = this.calculateResults();
         const displayGrade = this.calculateFinalGrade(sliderResults);
-        
-        // Mise à jour du titre et de la note
         const gradeContainer = document.querySelector('#grade-result');
         const gradeTitle = document.querySelector('.result-card h3');
-        
-        if (this.slidersModified) {
-            gradeTitle.textContent = 'Note moyenne estimée';
-        } else {
-            gradeTitle.textContent = 'Note moyenne actuelle';
-        }
-
+        gradeTitle.textContent = this.slidersModified ? 'Note moyenne estimée' : 'Note moyenne actuelle';
         if (!gradeContainer.querySelector('.grade-controls')) {
             gradeContainer.innerHTML = `
                 <button class="grade-btn minus">-</button>
                 <span>${displayGrade.toFixed(1)}/20</span>
                 <button class="grade-btn plus">+</button>
             `;
-
-            // Ajout des écouteurs d'événements pour les boutons
             gradeContainer.querySelector('.minus').addEventListener('click', () => this.adjustGrade(-0.1));
             gradeContainer.querySelector('.plus').addEventListener('click', () => this.adjustGrade(0.1));
         } else {
             gradeContainer.querySelector('span').textContent = `${displayGrade.toFixed(1)}/20`;
         }
-        
-        // Mise à jour du benchmark
         const percentile = this.calculatePercentile(displayGrade);
-        document.querySelector('.benchmark-text').textContent = 
-            `Tu fais mieux que ${Math.round(percentile)}% des élèves`;
+        document.querySelector('.benchmark-text').textContent = `Tu fais mieux que ${Math.round(percentile)}% des élèves`;
         document.querySelector('.benchmark-progress').style.width = `${percentile}%`;
-        
-        // Mise à jour du salaire
-        document.querySelector('#salary-result span').textContent = 
-            `${this.calculateSalary(displayGrade, this.getSliderValues().education)} €/mois`;
+        document.querySelector('#salary-result span').textContent = `${this.calculateSalary(displayGrade, this.getSliderValues().education)} €/mois`;
     }
-
-    // Calcul du percentile (position nationale) selon une loi normale
-    // Source écart-type : discussions enseignants/statisticiens (voir https://les-mathematiques.net/vanilla/discussion/2333969/harmonisation-des-notes-du-baccalaureat)
     calculatePercentile(grade) {
         const mean = 12.2;
         const std = 3.0;
-        // Fonction de répartition de la loi normale (approximation de erf)
         function norm_cdf(x, mean, std) {
             return 0.5 * (1 + erf((x - mean) / (std * Math.sqrt(2))));
         }
-        // Approximation de la fonction d'erreur (erf)
         function erf(x) {
-            // Abramowitz & Stegun formula 7.1.26
             const sign = (x >= 0) ? 1 : -1;
             x = Math.abs(x);
             const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
@@ -670,35 +606,27 @@ class Simulateur {
         let percentile = 100 * norm_cdf(grade, mean, std);
         return Math.max(0, Math.min(100, percentile));
     }
-
-    // Calcul du salaire
     calculateSalary(grade, education) {
         const baseSalary = 1500;
-        const gradeBonus = (grade - 10) * 155; // Ajusté pour obtenir 1810€ avec une note de 12.2
+        const gradeBonus = (grade - 10) * 155;
         const educationBonus = education * 300;
         return Math.round(baseSalary + gradeBonus + educationBonus);
     }
-
-    // Ajustement de la note manuelle
     adjustGrade(delta) {
         this.manualGrade = Math.max(0, Math.min(20, this.manualGrade + delta));
         this.baseGrade = this.manualGrade;
         this.slidersModified = false;
         this.updateResults();
     }
-
-    // Gestion des modes (basique/avancé)
     switchMode(mode) {
         const basicBtn = document.getElementById('basic-btn');
         const advancedBtn = document.getElementById('advanced-btn');
         const description = document.getElementById('mode-description');
         const sliderGroups = document.querySelectorAll('.slider-group');
-
         if (mode === 'basic') {
             basicBtn.classList.add('active');
             advancedBtn.classList.remove('active');
             description.textContent = 'Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.';
-            
             sliderGroups.forEach(group => {
                 if (!group.classList.contains('important')) {
                     group.classList.add('hidden');
@@ -710,22 +638,18 @@ class Simulateur {
             advancedBtn.classList.add('active');
             basicBtn.classList.remove('active');
             description.textContent = 'Mode avancé : Accès à tous les facteurs influençant la réussite scolaire.';
-            
             sliderGroups.forEach(group => {
                 group.classList.remove('hidden');
             });
         }
         this.updateResults();
     }
-
-    // Réinitialisation des sliders
     resetSliders() {
         this.slidersModified = false;
-        // Utilise SLIDERS_CONFIG pour réinitialiser
         Object.entries(SLIDERS_CONFIG).forEach(([id, config]) => {
             const slider = document.getElementById(id);
             if (slider) {
-                slider.value = config.default; // Utilise la valeur par défaut de SLIDERS_CONFIG
+                slider.value = config.default;
                 this.updateSliderDisplay(slider);
             }
         });
@@ -771,8 +695,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.switchMode = (mode) => window.simulateur.switchMode(mode);
     window.resetSliders = () => window.simulateur.resetSliders();
     window.updateResults = () => window.simulateur.updateResults();
-    
-    // Réinitialisation au démarrage
     window.simulateur.resetSliders();
 });
 
