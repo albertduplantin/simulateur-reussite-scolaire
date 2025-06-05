@@ -151,6 +151,30 @@
             box-shadow: var(--shadow-md);
         }
 
+        .about-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--card-background);
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .about-button:hover {
+            transform: translateY(-2px);
+            background: var(--primary-color);
+            color: white;
+        }
+
         .language-btn {
             padding: 8px 16px;
             border: none;
@@ -1744,10 +1768,14 @@
     </style>
 </head>
 <body>
-    <div class="language-switcher" role="group" aria-label="Sélection de la langue">
-        <button class="language-btn" onclick="changeLanguage('fr')" aria-pressed="true">FR</button>
-        <button class="language-btn" onclick="changeLanguage('en')" aria-pressed="false">EN</button>
+    <div class="language-switcher">
+        <button class="language-btn" onclick="switchLanguage('fr')">FR</button>
+        <button class="language-btn" onclick="switchLanguage('en')">EN</button>
     </div>
+    <a href="about.html" class="about-button">
+        <span>ℹ️</span>
+        <span>À propos</span>
+    </a>
 
     <div class="container">
         <div class="header" role="banner">
