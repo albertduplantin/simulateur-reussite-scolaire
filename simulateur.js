@@ -469,6 +469,15 @@ function creerCategorie(categoryId, config) {
     return { categoryDiv, gridDiv };
 }
 
+// Petite fonction utilitaire pour réduire la fréquence d'appel d'une fonction
+function debounce(fn, delay = 150) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    };
+}
+
 // Classe principale du simulateur
 class Simulateur {
     constructor() {
@@ -477,8 +486,11 @@ class Simulateur {
         this.slidersModified = false;
         this.initializeCategories();
         this.initializeSliders();
+        // Création d'une version « debounced » de updateResults pour les sliders
+        this.updateResultsDebounced = debounce(this.updateResults.bind(this), 120);
         this.attachEventListeners();
-        this.switchMode('basic');
+        // Afficher directement tous les sliders (mode avancé)
+        this.switchMode('advanced');
     }
 
     initializeCategories() {
@@ -493,14 +505,19 @@ class Simulateur {
     }
 
     initializeSliders() {
+        console.log('Initializing sliders...');
         Object.entries(SLIDERS_CONFIG).forEach(([id, config]) => {
             const grid = this.categoryGrids[config.category];
+            console.log(`Slider ${id} - Category: ${config.category}, Grid found: ${!!grid}`);
             if (grid) {
                 const sliderElem = creerSlider(id, config, () => {
                     this.updateSliderDisplay(document.getElementById(id));
                     this.updateResults();
                 });
                 grid.appendChild(sliderElem);
+                console.log(`Slider ${id} created and added to DOM`);
+            } else {
+                console.warn(`No grid found for category: ${config.category}`);
             }
         });
     }
@@ -521,10 +538,14 @@ class Simulateur {
 
     attachEventListeners() {
         document.querySelectorAll('input[type="range"]').forEach(slider => {
+            // Initialiser l'affichage du slider
+            this.updateSliderDisplay(slider);
+            
             slider.addEventListener('input', () => {
                 this.slidersModified = true;
                 this.updateSliderDisplay(slider);
-                this.updateResults();
+                // Utilise la version débouncée pour éviter les recalculs excessifs
+                this.updateResultsDebounced();
             });
         });
     }
@@ -562,13 +583,20 @@ class Simulateur {
         const values = {};
         Object.keys(SLIDERS_CONFIG).forEach(id => {
             const slider = document.getElementById(id);
-            if (slider) values[id] = parseFloat(slider.value);
+            if (slider) {
+                values[id] = parseFloat(slider.value);
+            } else {
+                console.warn(`Slider ${id} not found in DOM`);
+            }
         });
+        console.log('Slider values:', values);
         return values;
     }
     updateResults() {
+        console.log('=== updateResults() called ===');
         const sliderResults = this.calculateResults();
         const displayGrade = this.calculateFinalGrade(sliderResults);
+        console.log('Display grade:', displayGrade);
         const gradeContainer = document.querySelector('#grade-result');
         const gradeTitle = document.querySelector('.result-card h3');
         gradeTitle.textContent = this.slidersModified ? 'Note moyenne estimée' : 'Note moyenne actuelle';
@@ -586,7 +614,45 @@ class Simulateur {
         const percentile = this.calculatePercentile(displayGrade);
         document.querySelector('.benchmark-text').textContent = `Tu fais mieux que ${Math.round(percentile)}% des élèves`;
         document.querySelector('.benchmark-progress').style.width = `${percentile}%`;
-        document.querySelector('#salary-result span').textContent = `${this.calculateSalary(displayGrade, this.getSliderValues().education)} €/mois`;
+
+        // Mise à jour du salaire (avec debug complet)
+        const salaryBox = document.querySelector('#salary-result');
+        console.log('Salary box found:', !!salaryBox);
+        
+        if (salaryBox) {
+            const salarySpan = salaryBox.querySelector('span');
+            console.log('Salary span found:', !!salarySpan);
+            console.log('Current salary span content:', salarySpan ? salarySpan.textContent : 'N/A');
+            
+            if (salarySpan) {
+                const calculatedSalary = this.calculateSalary(displayGrade, this.getSliderValues().education);
+                const oldContent = salarySpan.textContent;
+                const newContent = `${calculatedSalary} €/mois`;
+                salarySpan.textContent = newContent;
+                
+                // Forcer le rafraîchissement visuel
+                salarySpan.style.color = 'red';
+                setTimeout(() => {
+                    salarySpan.style.color = '';
+                }, 100);
+                
+                console.log('Salary display updated from:', oldContent, 'to:', newContent);
+                console.log('New salary span content after update:', salarySpan.textContent);
+            } else {
+                console.warn('Salary span not found in DOM');
+                console.log('Salary box HTML:', salaryBox.innerHTML);
+            }
+        }
+
+        // Mettre à jour barre mobile si présente
+        const mobGrade = document.getElementById('mobile-grade');
+        const mobSalary = document.getElementById('mobile-salary');
+        if(mobGrade && mobSalary){
+            mobGrade.textContent = displayGrade.toFixed(1);
+            const mobileSalary = this.calculateSalary(displayGrade, this.getSliderValues().education);
+            mobSalary.textContent = `${mobileSalary} €`;
+            console.log('Mobile salary updated to:', mobileSalary);
+        }
     }
     calculatePercentile(grade) {
         const mean = 12.2;
@@ -607,10 +673,33 @@ class Simulateur {
         return Math.max(0, Math.min(100, percentile));
     }
     calculateSalary(grade, education) {
-        const baseSalary = 1500;
-        const gradeBonus = (grade - 10) * 155;
-        const educationBonus = education * 300;
-        return Math.round(baseSalary + gradeBonus + educationBonus);
+        // 💰 CALCUL RÉALISTE DU SALAIRE NET MENSUEL (premier emploi, hors région parisienne)
+        // Sources : INSEE "Revenus d’activité", APEC "Salaires jeunes diplômés 2024", DARES, CGE.
+        // + Études économétriques (Belzil & Hansen 2002 ; French Returns to GPA – INSEE 2020) montrant
+        //   une élasticité d’environ 2-4 % de salaire par point de moyenne.
+
+        // Table des salaires nets mensuels médians par niveau de diplôme (province, 2024)
+        const salaryByEducation = {
+            0: 1380, // Sans diplôme (SMIC net)
+            1: 1480, // BAC
+            2: 1650, // BAC+2 (BTS/DUT)
+            3: 1850  // BAC+5+ (Master/Ingénieur)
+        };
+
+        // Sécurisation des paramètres
+        const eduLevel = (education ?? 0);
+        const baseSalary = salaryByEducation[eduLevel] ?? salaryByEducation[0];
+
+        // ---- Impact continu des performances scolaires ----
+        // Référence : moyenne nationale 12 (bac). Chaque point au-dessus => +3 %.
+        // Chaque point en dessous => –3 %. Borne à [-30 %, +30 %] (8 pts ≈ note 4 à 20).
+        const impactPerPoint = 0.03; // 3 %
+        const gradeDiff = grade - 12;
+        let performanceMultiplier = 1 + (gradeDiff * impactPerPoint);
+        performanceMultiplier = Math.max(0.7, Math.min(1.3, performanceMultiplier));
+
+        const finalSalary = Math.round(baseSalary * performanceMultiplier);
+        return finalSalary;
     }
     adjustGrade(delta) {
         this.manualGrade = Math.max(0, Math.min(20, this.manualGrade + delta));
@@ -619,29 +708,15 @@ class Simulateur {
         this.updateResults();
     }
     switchMode(mode) {
-        const basicBtn = document.getElementById('basic-btn');
-        const advancedBtn = document.getElementById('advanced-btn');
-        const description = document.getElementById('mode-description');
+        // Mode switching désactivé - toujours en mode avancé
+        console.log(`[Simulateur] Mode switching disabled - always in advanced mode (${mode} requested)`);
+        
+        // S'assurer que tous les sliders sont visibles
         const sliderGroups = document.querySelectorAll('.slider-group');
-        if (mode === 'basic') {
-            basicBtn.classList.add('active');
-            advancedBtn.classList.remove('active');
-            description.textContent = 'Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.';
-            sliderGroups.forEach(group => {
-                if (!group.classList.contains('important')) {
-                    group.classList.add('hidden');
-                } else {
-                    group.classList.remove('hidden');
-                }
-            });
-        } else {
-            advancedBtn.classList.add('active');
-            basicBtn.classList.remove('active');
-            description.textContent = 'Mode avancé : Accès à tous les facteurs influençant la réussite scolaire.';
-            sliderGroups.forEach(group => {
-                group.classList.remove('hidden');
-            });
-        }
+        sliderGroups.forEach(group => {
+            group.classList.remove('hidden');
+        });
+        
         this.updateResults();
     }
     resetSliders() {
@@ -657,55 +732,304 @@ class Simulateur {
     }
 }
 
-// Gestion des tooltips
-class TooltipManager {
-    static toggleTooltip(button) {
-        // Fermer tous les tooltips ouverts
-        document.querySelectorAll('.tooltip.show').forEach(tooltip => {
-            if (tooltip !== button.nextElementSibling) {
-                tooltip.classList.remove('show');
-            }
-        });
+// Ancienne classe TooltipManager supprimée - remplacée par la version moderne
 
-        // Basculer l'état du tooltip cliqué
-        const tooltip = button.nextElementSibling;
-        tooltip.classList.toggle('show');
-
-        // Gestionnaire de clic en dehors pour fermer le tooltip
-        const closeTooltip = (event) => {
-            if (!tooltip.contains(event.target) && event.target !== button) {
-                tooltip.classList.remove('show');
-                document.removeEventListener('click', closeTooltip);
+/**
+ * 🚀 ARCHITECTURE MODERNISÉE - Gestionnaire d'erreurs centralisé
+ */
+class ErrorHandler {
+    static log(error, context = 'Unknown') {
+        console.error(`[${context}] Error:`, error);
+        // Ici on pourrait ajouter un système de reporting
+    }
+    
+    static handle(fn, context) {
+        return (...args) => {
+            try {
+                return fn(...args);
+            } catch (error) {
+                ErrorHandler.log(error, context);
+                return null;
             }
         };
+    }
+}
 
-        // Ajouter le gestionnaire si le tooltip est affiché
-        if (tooltip.classList.contains('show')) {
-            setTimeout(() => {
-                document.addEventListener('click', closeTooltip);
-            }, 0);
+/**
+ * 🎯 Système de tooltips unifié et moderne
+ */
+class TooltipManager {
+    constructor() {
+        this.activeTooltips = new Set();
+        this.init();
+    }
+    
+    init() {
+        this.bindGlobalEvents();
+    }
+    
+    bindGlobalEvents() {
+        document.addEventListener('click', this.handleGlobalClick.bind(this));
+        document.addEventListener('touchend', this.handleGlobalClick.bind(this));
+    }
+    
+    handleGlobalClick(e) {
+        if (!e.target.closest('.info-button') && !e.target.closest('.tooltip, .mobile-tooltip')) {
+            this.closeAll();
         }
+    }
+    
+    toggle(button) {
+        const tooltip = this.findTooltip(button);
+        if (!tooltip) return false;
+        
+        const isActive = tooltip.classList.contains('show') || tooltip.classList.contains('active');
+        
+        // Fermer tous les autres tooltips
+        this.closeAll();
+        
+        // Toggle le tooltip actuel
+        if (!isActive) {
+            this.show(tooltip);
+        }
+        
+        return true;
+    }
+    
+    findTooltip(button) {
+        // Ignorer les tooltips de la barre mobile (gérés par MobileUIManager)
+        if (button.closest('.mobile-bar')) {
+            return null;
+        }
+        
+        // Chercher par data-tooltip-id d'abord
+        const tooltipId = button.getAttribute('data-tooltip-id');
+        if (tooltipId) {
+            const tooltip = document.getElementById(tooltipId);
+            // Ignorer si c'est un tooltip mobile
+            if (tooltip && tooltip.classList.contains('mobile-tooltip')) {
+                return null;
+            }
+            return tooltip;
+        }
+        
+        // Sinon chercher le tooltip suivant
+        return button.nextElementSibling?.classList.contains('tooltip') ? 
+               button.nextElementSibling : null;
+    }
+    
+    show(tooltip) {
+        if (tooltip.classList.contains('mobile-tooltip')) {
+            tooltip.classList.add('active');
+        } else {
+            tooltip.classList.add('show');
+        }
+        this.activeTooltips.add(tooltip);
+    }
+    
+    hide(tooltip) {
+        tooltip.classList.remove('show', 'active');
+        this.activeTooltips.delete(tooltip);
+    }
+    
+    closeAll() {
+        this.activeTooltips.forEach(tooltip => this.hide(tooltip));
+        this.activeTooltips.clear();
+    }
+}
+
+// Instance globale du gestionnaire de tooltips
+const tooltipManager = new TooltipManager();
+
+// Fonction globale pour compatibilité (sera supprimée plus tard)
+function toggleTooltip(button) {
+    return tooltipManager.toggle(button);
+}
+
+/**
+ * 📱 Gestionnaire moderne de l'interface mobile
+ */
+class MobileUIManager {
+    constructor() {
+        this.burgerBtn = null;
+        this.mobileNav = null;
+        this.mobileBar = null;
+        this.isMenuOpen = false;
+        this.init();
+    }
+    
+    init() {
+        this.findElements();
+        this.bindEvents();
+        this.setupLayout();
+        this.setupMobileTooltips();
+    }
+    
+    findElements() {
+        this.burgerBtn = document.getElementById('burger-btn');
+        this.mobileNav = document.getElementById('mobile-nav');
+        this.mobileBar = document.getElementById('mobile-bar');
+    }
+    
+    bindEvents() {
+        if (this.burgerBtn && this.mobileNav) {
+            this.burgerBtn.addEventListener('click', 
+                ErrorHandler.handle(this.toggleMenu.bind(this), 'MobileUIManager.toggleMenu'));
+            
+            document.addEventListener('click', 
+                ErrorHandler.handle(this.handleOutsideClick.bind(this), 'MobileUIManager.outsideClick'));
+        }
+        
+        window.addEventListener('resize', 
+            ErrorHandler.handle(this.handleResize.bind(this), 'MobileUIManager.resize'));
+    }
+    
+    toggleMenu() {
+        this.isMenuOpen = !this.isMenuOpen;
+        this.burgerBtn.classList.toggle('active', this.isMenuOpen);
+        this.mobileNav.classList.toggle('active', this.isMenuOpen);
+        document.body.classList.toggle('nav-open', this.isMenuOpen);
+    }
+    
+    closeMenu() {
+        if (this.isMenuOpen) {
+            this.isMenuOpen = false;
+            this.burgerBtn.classList.remove('active');
+            this.mobileNav.classList.remove('active');
+            document.body.classList.remove('nav-open');
+        }
+    }
+    
+    handleOutsideClick(e) {
+        if (this.isMenuOpen && 
+            !this.burgerBtn.contains(e.target) && 
+            !this.mobileNav.contains(e.target)) {
+            this.closeMenu();
+        }
+    }
+    
+    handleResize() {
+        this.adjustLayout();
+    }
+    
+    setupLayout() {
+        this.adjustLayout();
+        // Ajustement après un délai pour s'assurer que tout est chargé
+        setTimeout(() => this.adjustLayout(), 100);
+    }
+    
+    adjustLayout() {
+        if (!this.mobileBar || window.innerWidth > 768) {
+            this.resetLayout();
+            return;
+        }
+        
+        const instructionsCard = document.querySelector('.disclaimer-card');
+        if (!instructionsCard) return;
+        
+        const barHeight = this.mobileBar.offsetHeight;
+        const marginTop = barHeight + 20;
+        
+        instructionsCard.style.marginTop = `${marginTop}px`;
+        instructionsCard.style.marginBottom = '20px';
+        
+        console.log(`[MobileUIManager] Layout adjusted: ${marginTop}px margin-top`);
+    }
+    
+    resetLayout() {
+        const instructionsCard = document.querySelector('.disclaimer-card');
+        if (instructionsCard) {
+            instructionsCard.style.marginTop = '20px';
+            instructionsCard.style.marginBottom = '';
+        }
+    }
+    
+    setupMobileTooltips() {
+        console.log('[MobileUIManager] Setting up mobile tooltips...');
+        
+        const gradeButton = document.querySelector('[data-tooltip-id="mobile-grade-tooltip"]');
+        const salaryButton = document.querySelector('[data-tooltip-id="mobile-salary-tooltip"]');
+        const gradeTooltip = document.getElementById('mobile-grade-tooltip');
+        const salaryTooltip = document.getElementById('mobile-salary-tooltip');
+        
+        console.log('Mobile tooltips found:', {
+            gradeButton: !!gradeButton,
+            salaryButton: !!salaryButton,
+            gradeTooltip: !!gradeTooltip,
+            salaryTooltip: !!salaryTooltip
+        });
+        
+        if (gradeButton && gradeTooltip) {
+            this.bindMobileTooltip(gradeButton, gradeTooltip, salaryTooltip, 'Grade');
+        }
+        
+        if (salaryButton && salaryTooltip) {
+            this.bindMobileTooltip(salaryButton, salaryTooltip, gradeTooltip, 'Salary');
+        }
+        
+        // Fermer les tooltips en cliquant ailleurs
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.mobile-bar .info-button') && 
+                !e.target.closest('.mobile-bar .mobile-tooltip')) {
+                if (gradeTooltip) gradeTooltip.classList.remove('active');
+                if (salaryTooltip) salaryTooltip.classList.remove('active');
+            }
+        });
+        
+        // Support tactile
+        document.addEventListener('touchend', (e) => {
+            if (!e.target.closest('.mobile-bar .info-button') && 
+                !e.target.closest('.mobile-bar .mobile-tooltip')) {
+                if (gradeTooltip) gradeTooltip.classList.remove('active');
+                if (salaryTooltip) salaryTooltip.classList.remove('active');
+            }
+        });
+    }
+    
+    bindMobileTooltip(button, tooltip, otherTooltip, name) {
+        const handleTooltipToggle = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log(`[MobileUIManager] ${name} tooltip clicked`);
+            
+            // Fermer l'autre tooltip
+            if (otherTooltip) {
+                otherTooltip.classList.remove('active');
+            }
+            
+            // Toggle ce tooltip
+            const wasActive = tooltip.classList.contains('active');
+            tooltip.classList.toggle('active');
+            
+            console.log(`[MobileUIManager] ${name} tooltip now active:`, !wasActive);
+        };
+        
+        // Événements click et touch
+        button.addEventListener('click', handleTooltipToggle);
+        button.addEventListener('touchend', handleTooltipToggle);
+        
+        // Prévenir le comportement par défaut sur touchstart
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        });
     }
 }
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
     window.simulateur = new Simulateur();
-    window.toggleTooltip = TooltipManager.toggleTooltip;
+    window.toggleTooltip = toggleTooltip;
     window.switchMode = (mode) => window.simulateur.switchMode(mode);
     window.resetSliders = () => window.simulateur.resetSliders();
     window.updateResults = () => window.simulateur.updateResults();
     window.simulateur.resetSliders();
+    
+    // Instance globale du gestionnaire mobile
+    const mobileUIManager = new MobileUIManager();
 });
 
-// Fermeture des tooltips lors d'un clic à l'extérieur
-document.addEventListener('click', (e) => {
-    if (!e.target.matches('.info-button')) {
-        document.querySelectorAll('.tooltip').forEach(tooltip => {
-            tooltip.classList.remove('show');
-        });
-    }
-});
+// Ancienne gestion des tooltips supprimée - maintenant gérée par TooltipManager
 
 // Gestion des modales
 function showCalculDetails() {

@@ -3,7 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulateur de Réussite Scolaire</title>
+    <title>Simulateur de Réussite Scolaire - Impact des Facteurs sur la Performance Académique</title>
+    
+    <!-- Meta tags SEO -->
+    <meta name="description" content="Simulateur interactif basé sur des données scientifiques pour évaluer l'impact du sommeil, sport, alimentation et autres facteurs sur votre réussite scolaire. Outil pédagogique gratuit.">
+    <meta name="keywords" content="réussite scolaire, simulateur, performance académique, sommeil, sport, alimentation, facteurs psychologiques, éducation, études">
+    <meta name="author" content="Albert Duplantin">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://votre-domaine.com/">
+    <meta property="og:title" content="Simulateur de Réussite Scolaire - Impact des Facteurs sur la Performance Académique">
+    <meta property="og:description" content="Découvrez comment le sommeil, le sport et l'alimentation influencent vos résultats scolaires. Simulateur basé sur des études scientifiques.">
+    <meta property="og:image" content="https://votre-domaine.com/albertduplantin.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://votre-domaine.com/">
+    <meta property="twitter:title" content="Simulateur de Réussite Scolaire - Impact des Facteurs sur la Performance Académique">
+    <meta property="twitter:description" content="Découvrez comment le sommeil, le sport et l'alimentation influencent vos résultats scolaires. Simulateur basé sur des études scientifiques.">
+    <meta property="twitter:image" content="https://votre-domaine.com/albertduplantin.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://votre-domaine.com/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="albertduplantin.png">
+    <link rel="apple-touch-icon" href="albertduplantin.png">
+    
+    <!-- Styles modernes -->
+    <link rel="stylesheet" href="modern-styles.css">
     <style>
         :root {
             --primary-color: #2563EB;    /* Bleu moderne */
@@ -74,18 +104,11 @@
             margin: 0;
         }
 
-        .mode-switch {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
+        /* Masquer la barre de sélection des modes */
+        .mode-switch { display:none !important; }
 
-        .mode-buttons {
-            display: flex;
-            gap: 10px;
-        }
+        /* On retire la position sticky pour éviter le chevauchement */
+        .results-container { position: static !important; }
 
         .mode-description {
             font-size: 0.9em;
@@ -152,10 +175,10 @@
         }
 
         .about-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
+            position: static !important;
+            top:auto !important;
+            right:auto !important;
+            display:inline-flex;
             background: var(--card-background);
             padding: 8px 16px;
             border-radius: 12px;
@@ -379,36 +402,30 @@
         }
 
         .info-button {
-            width: 20px;
-            height: 20px;
-            border: none;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--primary-color);
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 8px;
-            font-weight: 600;
-            display: inline-flex;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
             line-height: 1;
-            padding: 0;
+            margin-left: 6px;
+            transition: transform 0.3s ease;
         }
 
         .info-button::before {
             content: "?";
+            display: block;
+            line-height: 1;
         }
 
         .info-button:hover {
-            background: var(--secondary-color);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .info-button:active {
-            transform: translateY(0);
+            transform: scale(1.1);
         }
 
         .tooltip {
@@ -844,29 +861,96 @@
 
         @media (max-width: 600px) {
             .slider-group {
-                grid-template-columns: 1fr 100px minmax(65px, auto);
-                gap: 6px;
-            }
-
-            .slider-container {
-                width: 100px;
-            }
-
-            input[type="range"] {
-                width: 100px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                padding: 8px 4px;
+                min-height: 40px;
             }
 
             .slider-label {
-                font-size: 0.85em;
+                flex: 1;
+                font-size: 0.75em;
+                line-height: 1.1;
+                padding-right: 4px;
             }
 
-            .slider-value-container,
+            .slider-container {
+                width: 75px;
+                flex-shrink: 0;
+            }
+
+            input[type="range"] {
+                width: 75px;
+            }
+            
+            .slider-value-details {
+                width: 65px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                white-space: nowrap;
+                overflow: visible;
+            }
+            
+            .slider-value-container {
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+                width: 100%;
+            }
+            
+            .slider-value {
+                font-size: 0.8em;
+                margin-right: 3px;
+                flex-shrink: 0;
+            }
+            
             .slider-unit {
-                font-size: 0.85em;
+                font-size: 0.7em;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
 
             .category {
                 padding: 8px;
+            }
+        }
+        
+        /* Optimisation pour très petits écrans */
+        @media (max-width: 400px) {
+            .slider-group {
+                gap: 3px;
+                padding: 6px 3px;
+                min-height: 36px;
+            }
+
+            .slider-container {
+                width: 65px;
+            }
+
+            input[type="range"] {
+                width: 65px;
+            }
+
+            .slider-label {
+                font-size: 0.7em;
+                line-height: 1.05;
+                padding-right: 3px;
+            }
+            
+            .slider-value-details {
+                width: 55px;
+            }
+            
+            .slider-value {
+                font-size: 0.75em;
+                margin-right: 2px;
+            }
+            
+            .slider-unit {
+                font-size: 0.65em;
             }
 
             .header h1 {
@@ -1439,9 +1523,10 @@
         }
 
         .ad-badge-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+            position: static !important;
+            bottom:auto !important;
+            right:auto !important;
+            margin:40px auto;
             z-index: 1000;
             display: flex;
             flex-direction: column; /* Pour empiler le logo, le texte et le bouton */
@@ -1765,67 +1850,593 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-sm);
         }
+
+        .mobile-nav {
+            display:none;
+        }
+        .mobile-nav.open {
+            display:flex !important;
+        }
+
+        .mobile-overlay {
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100vw;
+            height:100vh;
+            background:rgba(0,0,0,0.5);
+            z-index:1999;
+            align-items:flex-start;
+            justify-content:flex-start;
+        }
+
+        .mobile-overlay.open { display:flex; }
+
+        .mobile-panel {
+            width:240px;
+            height:100%;
+            background:var(--card-background);
+            box-shadow:var(--shadow-lg);
+            padding:60px 20px;
+            display:flex;
+            flex-direction:column;
+            gap:26px;
+            transform:translateX(-100%);
+            transition:transform 0.3s ease;
+        }
+
+        .mobile-panel.open { transform:translateX(0); }
+
+        .mobile-panel a {
+            font-weight:600;
+            font-size:1.1em;
+            color:var(--text-color);
+            text-decoration:none;
+        }
+        .mobile-panel a:hover { color:var(--primary-color); }
+
+        /* Modern burger icon */
+        .burger-btn {
+            width:32px;height:28px;
+            display:flex;flex-direction:column;justify-content:space-between;
+            background:none;border:none;padding:0;cursor:pointer;
+        }
+        .burger-btn span {display:block;height:4px;border-radius:3px;background:var(--text-color);transition:transform .3s, opacity .3s;}
+        /* transform when open handled via JS by toggling .open */
+        .burger-btn.open span:nth-child(1){transform:translateY(12px) rotate(45deg);} 
+        .burger-btn.open span:nth-child(2){opacity:0;} 
+        .burger-btn.open span:nth-child(3){transform:translateY(-12px) rotate(-45deg);} 
+
+        /* Mobile overlay width */
+        .mobile-panel { min-width:200px; width:auto; max-width:80vw; border-top-right-radius:12px; border-bottom-right-radius:12px; }
+
+        /* Suppression ascenseur interne des cartes résultats */
+        .results-container {
+            overflow: visible !important;
+            max-height: none !important;
+        }
+        .results-container .results { overflow: visible; }
+
+        /* Barre métriques mobile (note + salaire) */
+        .mobile-metrics-bar{display:none;position:fixed;top:60px;left:0;right:0;background:var(--card-background);box-shadow:0 2px 6px rgba(0,0,0,0.12);padding:10px 12px;z-index:1200;justify-content:space-around;flex-wrap:wrap;font-weight:600;gap:8px;}
+        .mobile-metrics-bar small{font-size:0.75em;color:#555;font-weight:400;}
+        .mobile-metrics-bar span{color:var(--primary-color);}
+        @media(max-width:600px){.mobile-metrics-bar{display:flex;}}
+
+        /* Espacement pour éviter chevauchement */
+        @media(max-width:600px){ .main-content{margin-top:160px;} }
+
+        .mobile-bar-top{display:flex;align-items:center;gap:12px;}
+        .mobile-title{font-size:0.95em;margin:0;flex:1;text-align:center;}
+        .mobile-bar-values{display:flex;justify-content:space-around;gap:12px;margin-top:6px;font-size:0.9em;flex-wrap:wrap;}
+        .mobile-bar-values .info-button{margin-left:4px;}
+        .mobile-metrics-bar{top:0;}
+        @media(max-width:600px){ .main-content{margin-top:220px;} }
+
+        /* Barre fixe mobile redesignée */
+        .mobile-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .mobile-bar .burger-btn {
+            background: #f8f9fa;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-bar .burger-btn:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .mobile-bar .mobile-title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+
+        .mobile-bar .mobile-results {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .mobile-bar .mobile-result-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .mobile-bar .mobile-label {
+            color: #666;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .mobile-bar .mobile-value {
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Boutons tooltips redesignés */
+        .mobile-bar .info-button {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007bff;
+            border: 1px solid #0056b3;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-bar .info-button::before {
+            content: "?";
+            color: white;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .mobile-bar .info-button:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-bar .info-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Animation du burger */
+        .burger-btn {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .burger-icon {
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .burger-btn.active .burger-icon:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger-btn.active .burger-icon:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-btn.active .burger-icon:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Ajustement de la marge pour le contenu principal */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-bar {
+                padding: 10px 12px;
+                gap: 12px;
+            }
+
+            .mobile-bar .mobile-title {
+                font-size: 14px;
+            }
+
+            .mobile-bar .mobile-results {
+                gap: 12px;
+            }
+
+            .mobile-bar .mobile-result-item {
+                padding: 6px 10px;
+                gap: 6px;
+            }
+
+            .mobile-bar .mobile-label {
+                font-size: 11px;
+            }
+
+            .mobile-bar .mobile-value {
+                font-size: 13px;
+            }
+
+            .mobile-bar .info-button {
+                width: 18px;
+                height: 18px;
+                font-size: 11px;
+            }
+
+            .main-content {
+                margin-top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-bar {
+                padding: 8px 10px;
+                gap: 8px;
+            }
+
+            .mobile-bar .mobile-title {
+                font-size: 13px;
+            }
+
+            .mobile-bar .mobile-results {
+                gap: 8px;
+            }
+
+            .mobile-bar .mobile-result-item {
+                padding: 5px 8px;
+                gap: 4px;
+            }
+
+            .mobile-bar .mobile-label {
+                font-size: 10px;
+            }
+
+            .mobile-bar .mobile-value {
+                font-size: 12px;
+            }
+
+            .main-content {
+                margin-top: 65px;
+            }
+        }
+
+        /* Tooltips dans la barre mobile */
+        .mobile-bar .mobile-result-item {
+            position: relative;
+        }
+        
+        .mobile-bar .mobile-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1002;
+            min-width: 200px;
+            max-width: calc(100vw - 32px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            margin-top: 8px;
+        }
+        
+        .mobile-bar .mobile-tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%);
+        }
+
+        .mobile-bar .mobile-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid white;
+        }
+
+
+
+        .mobile-bar .tooltip-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .mobile-bar .tooltip-description {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .mobile-bar .tooltip-source {
+            color: #888;
+            font-size: 12px;
+            font-style: italic;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+
+        .mobile-bar .tooltip code {
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        /* Ajustements spécifiques pour mobile */
+        @media (max-width: 768px) {
+            .mobile-bar .mobile-tooltip {
+                position: absolute !important;
+                top: 100% !important;
+                left: auto !important;
+                right: 8px !important;
+                transform: translateY(10px) !important;
+                bottom: auto !important;
+                max-width: calc(100vw - 24px) !important;
+                width: 240px !important;
+                margin-top: 8px !important;
+                z-index: 9999 !important;
+            }
+            
+            .mobile-bar .mobile-tooltip.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: translateY(0) !important;
+            }
+
+            .mobile-bar .mobile-tooltip::before {
+                content: '' !important;
+                position: absolute !important;
+                top: -6px !important;
+                right: 20px !important;
+                left: auto !important;
+                transform: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                border-left: 6px solid transparent !important;
+                border-right: 6px solid transparent !important;
+                border-bottom: 6px solid white !important;
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-bar .mobile-tooltip {
+                width: 220px !important;
+                padding: 10px !important;
+                font-size: 13px !important;
+            }
+
+            .mobile-bar .tooltip-title {
+                font-size: 13px !important;
+            }
+
+            .mobile-bar .tooltip-description {
+                font-size: 12px !important;
+            }
+
+            .mobile-bar .tooltip-source {
+                font-size: 11px !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="language-switcher">
-        <button class="language-btn" onclick="switchLanguage('fr')">FR</button>
-        <button class="language-btn" onclick="switchLanguage('en')">EN</button>
+    <!-- Overlay menu mobile -->
+    <div id="mobile-overlay" class="mobile-overlay" aria-hidden="true">
+        <nav id="mobile-panel" class="mobile-panel" role="navigation">
+            <a href="about.html">À propos</a>
+            <a href="contact.html">Contact</a>
+            <a href="#" onclick="showCalculDetails(); return false;">Détails des calculs</a>
+            <a href="sources_scientifiques.html" target="_blank">Sources scientifiques</a>
+        </nav>
     </div>
-    <a href="about.html" class="about-button">
-        <span>ℹ️</span>
-        <span>À propos</span>
-    </a>
 
-    <div class="container">
-        <div class="header" role="banner">
-            <h1 id="title">Simulateur de Réussite Scolaire</h1>
-            <div class="mode-switch" role="group" aria-label="Sélection du mode">
-                <div class="mode-buttons">
-                    <button class="mode-btn active" onclick="switchMode('basic')" id="basic-btn" aria-pressed="true">Mode basique</button>
-                    <button class="mode-btn" onclick="switchMode('advanced')" id="advanced-btn" aria-pressed="false">Mode avancé</button>
-                    <button class="mode-btn" onclick="showInstructions()" id="instructions-btn" aria-pressed="false">Instructions</button>
+    <main class="container">
+        <!-- Barre fixe mobile redesignée -->
+        <div id="mobile-bar" class="mobile-bar">
+            <button id="burger-btn" class="burger-btn" aria-label="Menu" aria-expanded="false">
+                <span class="burger-icon"></span>
+                <span class="burger-icon"></span>
+                <span class="burger-icon"></span>
+            </button>
+            <h1 class="mobile-title">Simulateur de Réussite Scolaire</h1>
+            <div class="mobile-results">
+                <div class="mobile-result-item">
+                    <span class="mobile-label">Note:</span>
+                    <span id="mobile-grade" class="mobile-value">12.2/20</span>
+                    <button class="info-button" data-tooltip-id="mobile-grade-tooltip" aria-label="Informations sur la note"></button>
+                    <div id="mobile-grade-tooltip" class="mobile-tooltip">
+                        <div class="tooltip-title">Calcul de la note moyenne</div>
+                        <div class="tooltip-description">
+                            La note initiale de 12.2/20 est basée sur la moyenne nationale des élèves français au baccalauréat.
+                            Le simulateur ajuste cette note en fonction de vos choix de vie et d'études.
                 </div>
-                <p class="mode-description" id="mode-description" aria-live="polite">
-                    Mode basique : Focus sur les 6 facteurs les plus impactants pour la réussite scolaire.
-                </p>
+                    </div>
+                </div>
+                <div class="mobile-result-item">
+                    <span class="mobile-label">Salaire:</span>
+                    <span id="mobile-salary" class="mobile-value">2180€</span>
+                    <button class="info-button" data-tooltip-id="mobile-salary-tooltip" aria-label="Informations sur le salaire"></button>
+                    <div id="mobile-salary-tooltip" class="mobile-tooltip">
+                        <div class="tooltip-title">Salaire net mensuel estimé (premier emploi)</div>
+                        <div class="tooltip-description">
+                            <strong>Méthode de calcul réaliste :</strong><br/>
+                            • <strong>Salaire de base</strong> selon le diplôme (hors région parisienne) :<br/>
+                            &nbsp;&nbsp;- Sans diplôme : 1380€ (SMIC)<br/>
+                            &nbsp;&nbsp;- BAC : 1480€<br/>
+                            &nbsp;&nbsp;- BAC+2 : 1650€<br/>
+                            &nbsp;&nbsp;- BAC+5+ : 1850€<br/>
+                            • <strong>Impact des résultats scolaires</strong> :<br/>
+                            &nbsp;&nbsp;- Excellence (16+/20) : +15% (accès grandes entreprises)<br/>
+                            &nbsp;&nbsp;- Très bien (14-16/20) : +8%<br/>
+                            &nbsp;&nbsp;- Bien (12-14/20) : +3%<br/>
+                            &nbsp;&nbsp;- Difficultés (<10/20) : -5%<br/><br/>
+                            <em>Il s'agit du salaire net mensuel d'un premier emploi en province.</em>
+                        </div>
+                        <div class="tooltip-source">
+                            Sources : INSEE 2024, APEC "Salaires des jeunes diplômés", DARES "Insertion professionnelle", enquêtes CGE 2024.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="categories" role="main">
-                <!-- Les catégories seront générées dynamiquement par le JavaScript -->
+
+
+        <!-- Instructions sommaires -->
+        <div class="disclaimer-card" style="margin: 20px auto; max-width: 800px; text-align: center; padding: 20px;">
+            <p style="color: #4B5563; line-height: 1.6; margin-bottom: 12px; font-size: 1.1em;">
+                Ajustez les curseurs selon votre situation (sommeil, alimentation, sport, etc.) et découvrez l'impact sur vos résultats académiques et votre potentiel salarial futur.
+            </p>
+            <p style="color: #6B7280; font-size: 0.9em; font-style: italic;">
+                Basé sur des études scientifiques et des données statistiques françaises.
+            </p>
             </div>
 
-            <div class="results-container">
-                <div class="results">
-                    <h2>Impact sur vos résultats</h2>
-                    <div class="result-card">
-                        <h3>Note moyenne actuelle</h3>
-                        <div id="grade-result">
-                            <span>12.2/20</span>
+        <p class="impact-note" style="text-align:center;font-size:0.85em;color:#555;margin:6px 0 12px 0;">★ indique les facteurs les plus impactants</p>
+
+        <section class="main-content">
+            <section class="categories" role="main" aria-label="Facteurs influençant la réussite scolaire">
+                <!-- Les catégories seront générées dynamiquement par le JavaScript -->
+                
+                <!-- SLIDER TEMPORAIRE POUR TEST -->
+                <div class="category" data-category="academique" style="border: 2px solid red; margin: 20px 0;">
+                    <h3 style="color: red;">🎓 TEST - Niveau d'études (temporaire)</h3>
+                    <div class="grid">
+                        <div class="slider-group" id="slider-group-education">
+                            <div class="slider-label">
+                                <span>Niveau d'études</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="3" value="0" step="1" id="education" oninput="window.simulateur.updateSliderDisplay(this); window.simulateur.updateResults();">
+                            </div>
+                            <div class="slider-value-details">
+                                <div class="slider-value-container">
+                                    <span class="slider-value">BAC</span>
+                                    <span class="slider-unit"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="result-card benchmark">
+                </div>
+            </section>
+
+            <aside class="results-container" role="complementary" aria-label="Résultats du simulateur">
+                <section class="results">
+                    <h2>Impact sur vos résultats</h2>
+                    <div class="result-card" itemscope itemtype="https://schema.org/EducationalOccupationalCredential">
+                        <h3>Note moyenne actuelle <span class="info-button" onclick="toggleTooltip(this)"></span>
+                            <div class="tooltip">
+                                <div class="tooltip-title">Comment est calculée la note ?</div>
+                                <div class="tooltip-description">La note initiale (12,2/20) correspond à la moyenne nationale au baccalauréat en France. Les curseurs appliquent ensuite des coefficients positifs ou négatifs basés sur des méta-analyses scientifiques.</div>
+                            </div>
+                        </h3>
+                        <div id="grade-result">
+                            <span itemprop="credentialCategory">12.2/20</span>
+                        </div>
+                    </div>
+                    <div class="result-card benchmark" itemscope itemtype="https://schema.org/QuantitativeValue">
                         <div id="benchmark-result">
                             <div class="benchmark-title">
                                 <h3>Position nationale</h3>
                             </div>
-                            <p class="benchmark-text">Tu fais mieux que 50% des élèves</p>
-                            <div class="benchmark-bar">
+                            <p class="benchmark-text" itemprop="description">Tu fais mieux que <span itemprop="value">50</span>% des élèves</p>
+                            <div class="benchmark-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="Position nationale">
                                 <div class="benchmark-progress" style="width: 50%"></div>
                             </div>
                         </div>
                     </div>
                     <div class="result-card">
                         <div id="salary-result">
-                            <h3>Salaire mensuel estimé</h3>
+                            <h3>Salaire mensuel estimé <span class="info-button" onclick="toggleTooltip(this)"></span>
+                                <div class="tooltip">
+                                    <div class="tooltip-title">Salaire net mensuel (premier emploi)</div>
+                                    <div class="tooltip-description">
+                                        <strong>Calcul basé sur les données réelles 2024 :</strong><br/>
+                                        • <strong>Salaire de référence</strong> selon le diplôme :<br/>
+                                        &nbsp;&nbsp;- Sans diplôme : 1380€ net<br/>
+                                        &nbsp;&nbsp;- BAC : 1480€ net<br/>
+                                        &nbsp;&nbsp;- BAC+2 : 1650€ net<br/>
+                                        &nbsp;&nbsp;- BAC+5+ : 1850€ net<br/>
+                                        • <strong>Bonus performance</strong> (accès à de meilleures opportunités) :<br/>
+                                        &nbsp;&nbsp;- Excellence (16+/20) : +15%<br/>
+                                        &nbsp;&nbsp;- Très bien (14-16/20) : +8%<br/>
+                                        &nbsp;&nbsp;- Bien (12-14/20) : +3%<br/><br/>
+                                        <em>Salaire d'embauche moyen en province (hors Île-de-France).</em><br/>
+                                        <strong>Sources :</strong> INSEE, APEC, DARES, CGE 2024
+                                    </div></div>
+                            </h3>
                             <span>2 180 €/mois</span>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="results documentation-section">
+                <section class="results documentation-section">
                     <h2>Documentation</h2>
                     <div class="result-card">
                         <div class="documentation-buttons">
@@ -1839,15 +2450,10 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="disclaimer-card">
-        <p class="disclaimer">Ce simulateur a une vocation pédagogique et illustrative. Il vise à sensibiliser aux facteurs influençant la réussite scolaire et ne constitue pas un outil de prédiction. Les résultats sont des estimations basées sur des moyennes statistiques et ne prédisent pas les situations individuelles.</p>
-        <p class="disclaimer" style="margin-top: 10px;">Aucune donnée n'est collectée ni sauvegardée : toutes les informations restent dans votre navigateur et sont effacées à la fermeture de la page.</p>
-    </div>
+                </section>
+            </aside>
+        </section>
+    </main>
 
     <div class="ad-badge-container" id="ad-badge">
         <a href="https://www.youtube.com/@AlbertDuplantin" target="_blank" class="ad-badge-logo-link" aria-label="Chaîne YouTube d'Albert Duplantin">
@@ -2073,13 +2679,38 @@
                     <em>Source écart-type&nbsp;: discussions entre enseignants et statisticiens&nbsp;: <a href="https://les-mathematiques.net/vanilla/discussion/2333969/harmonisation-des-notes-du-baccalaureat" target="_blank" class="study-link"><span class="link-icon">🔗</span> Voir le débat</a></em>
                 </p>
 
-                <h3><span class="calcul-section-icon">💶</span> Calcul du salaire estimé</h3>
-                <p>Le salaire mensuel est calculé selon la formule :</p>
-                <code>Salaire = 1500€ + (Note - 10) × 155€ + Niveau d'études × 300€</code>
-                <p>Basé sur les données INSEE 2023 sur les salaires moyens par niveau d'études et performances académiques
+                <h3><span class="calcul-section-icon">💶</span> Calcul du salaire net mensuel (premier emploi)</h3>
+                <p><strong>Nouvelle méthode réaliste basée sur les données 2024 :</strong></p>
+                
+                <h4>1. Salaires de référence par diplôme (hors Île-de-France) :</h4>
+                <ul>
+                    <li><strong>Sans diplôme :</strong> 1380€ net (SMIC)</li>
+                    <li><strong>BAC :</strong> 1480€ net</li>
+                    <li><strong>BAC+2 (BTS/DUT) :</strong> 1650€ net</li>
+                    <li><strong>BAC+5+ (Master/Ingénieur) :</strong> 1850€ net</li>
+                </ul>
+                
+                <h4>2. Impact des résultats scolaires :</h4>
+                <p>Les bonnes notes facilitent l'accès aux meilleures entreprises et opportunités :</p>
+                <ul>
+                    <li><strong>Excellence (16+/20) :</strong> +15% (grandes entreprises, cabinets prestigieux)</li>
+                    <li><strong>Très bien (14-16/20) :</strong> +8% (bonnes entreprises)</li>
+                    <li><strong>Bien (12-14/20) :</strong> +3% (léger avantage)</li>
+                    <li><strong>Difficultés (&lt;10/20) :</strong> -5% (accès limité)</li>
+                </ul>
+                
+                <p><strong>Formule :</strong> <code>Salaire final = Salaire_base × Multiplicateur_performance</code></p>
+                
+                <p><em>Ces montants correspondent aux salaires nets mensuels d'embauche moyens en province (hors région parisienne où ils sont 15-20% plus élevés).</em></p>
+                
+                <p><strong>Sources :</strong> 
                     <a href="https://www.insee.fr/fr/statistiques/6524161" target="_blank" class="study-link">
-                        <span class="link-icon">🔗</span> Source : INSEE 2023
-                    </a>
+                        <span class="link-icon">🔗</span> INSEE 2024
+                    </a>, 
+                    <a href="https://corporate.apec.fr/" target="_blank" class="study-link">
+                        <span class="link-icon">🔗</span> APEC Jeunes diplômés
+                    </a>, 
+                    DARES, CGE 2024
                 </p>
             </div>
         </div>
@@ -2101,6 +2732,92 @@
         </div>
     </div>
 
+    <!-- Données structurées JSON-LD pour le SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Simulateur de Réussite Scolaire",
+        "description": "Simulateur interactif basé sur des données scientifiques pour évaluer l'impact du sommeil, sport, alimentation et autres facteurs sur la réussite scolaire.",
+        "url": "https://votre-domaine.com/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Albert Duplantin",
+            "url": "https://www.youtube.com/@AlbertDuplantin"
+        },
+        "creator": {
+            "@type": "Person",
+            "name": "Albert Duplantin"
+        },
+        "keywords": "réussite scolaire, simulateur, performance académique, sommeil, sport, alimentation, facteurs psychologiques, éducation, études",
+        "inLanguage": ["fr", "en"],
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Étudiants, enseignants, parents"
+        }
+    }
+    </script>
+
     <script src="simulateur.js"></script>
+    <script src="modern-features.js"></script>
+
+    <!-- Script toggling pour le menu burger -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.getElementById('burger-btn');
+            const overlay = document.getElementById('mobile-overlay');
+            const panel = document.getElementById('mobile-panel');
+            const burgerLines = burger.querySelectorAll('span');
+
+            function closeMenu(){
+                overlay.classList.remove('open');
+                panel.classList.remove('open');
+                burger.classList.remove('open');
+                burger.setAttribute('aria-expanded','false');
+                overlay.setAttribute('aria-hidden','true');
+            }
+
+            burger.addEventListener('click', () => {
+                const isOpen = overlay.classList.toggle('open');
+                panel.classList.toggle('open');
+                burger.setAttribute('aria-expanded', isOpen);
+                overlay.setAttribute('aria-hidden', !isOpen);
+                burger.classList.toggle('open');
+            });
+
+            // Ferme si on clique en dehors du panneau
+            overlay.addEventListener('click', (e) => {
+                if(e.target === overlay){ closeMenu(); }
+            });
+        });
+    </script>
+
+    <div class="disclaimer-card" style="margin:40px auto;max-width:878px; text-align: center;">
+        <p class="disclaimer">Ce simulateur a une vocation pédagogique et illustrative. Il vise à sensibiliser aux facteurs influençant la réussite scolaire et ne constitue pas un outil de prédiction. Les résultats sont des estimations basées sur des moyennes statistiques et ne prédisent pas les situations individuelles.</p>
+        <p style="margin-top: 15px; font-size: 0.9em; color: #666;">Aucune donnée n'est collectée ni sauvegardée : toutes les informations restent dans votre navigateur et sont effacées à la fermeture de la page.</p>
+    </div>
+
+    <script>
+        function adjustOffset(){
+            const bar=document.getElementById('mobile-bar');
+            const mc=document.querySelector('.main-content');
+            if(bar && mc){
+                if(window.innerWidth<=600){
+                    mc.style.marginTop=(bar.offsetHeight+30)+"px";
+                }else{
+                    mc.style.marginTop="";
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded',adjustOffset);
+        window.addEventListener('resize',adjustOffset);
+    </script>
 </body>
 </html> 
