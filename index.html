@@ -2283,6 +2283,33 @@
                 font-size: 11px !important;
             }
         }
+
+        /* Suppression bloc doc latéral */
+        .results-container .documentation-section{display:none!important;}
+
+        .sector-select select{
+            font-size:0.9em;
+            max-width:100%;
+        }
+
+        @media(max-width:600px){
+            /* ... autres règles ... */
+            .slider-value-details{flex-direction:row;align-items:center;width:auto;gap:2px;}
+            .slider-value-container{white-space:nowrap;}
+            .slider-unit{font-size:0.7em;padding-left:2px;white-space:nowrap;}
+            .slider-label{flex:0 0 45%;}
+            .slider-container{flex:0 0 75px;}
+            .slider-value-details{flex:0 0 55px;justify-content:flex-start;}
+        }
+
+        @media (max-width: 480px) {
+            /* ... existant ... */
+            .slider-group{flex-direction:row;align-items:center;gap:6px;padding:8px 4px;}
+            .slider-label{flex:1 1 45%;font-size:0.75em;}
+            .slider-container{flex:0 0 90px;}
+            input[type="range"]{width:90px;}
+            .slider-value-details{flex:0 0 auto;white-space:nowrap;}
+         }
     </style>
 </head>
 <body>
@@ -2364,26 +2391,7 @@
             <section class="categories" role="main" aria-label="Facteurs influençant la réussite scolaire">
                 <!-- Les catégories seront générées dynamiquement par le JavaScript -->
                 
-                <!-- SLIDER TEMPORAIRE POUR TEST -->
-                <div class="category" data-category="academique" style="border: 2px solid red; margin: 20px 0;">
-                    <h3 style="color: red;">🎓 TEST - Niveau d'études (temporaire)</h3>
-                    <div class="grid">
-                        <div class="slider-group" id="slider-group-education">
-                            <div class="slider-label">
-                                <span>Niveau d'études</span>
-                            </div>
-                            <div class="slider-container">
-                                <input type="range" class="slider" min="0" max="3" value="0" step="1" id="education" oninput="window.simulateur.updateSliderDisplay(this); window.simulateur.updateResults();">
-                            </div>
-                            <div class="slider-value-details">
-                                <div class="slider-value-container">
-                                    <span class="slider-value">BAC</span>
-                                    <span class="slider-unit"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Fin suppression slider de test -->
             </section>
 
             <aside class="results-container" role="complementary" aria-label="Résultats du simulateur">
@@ -2431,23 +2439,23 @@
                                         <strong>Sources :</strong> INSEE, APEC, DARES, CGE 2024
                                     </div></div>
                             </h3>
-                            <span>2 180 €/mois</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="results documentation-section">
-                    <h2>Documentation</h2>
-                    <div class="result-card">
-                        <div class="documentation-buttons">
-                            <button class="doc-button" onclick="window.open('sources_scientifiques.html', '_blank')">
-                                <span class="button-icon">📚</span>
-                                Sources scientifiques
-                            </button>
-                            <button class="doc-button" onclick="showCalculDetails()">
-                                <span class="button-icon">🔍</span>
-                                Détails des calculs
-                            </button>
+                            <div class="sector-select" style="margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                                <label for="sector-select" style="font-size:0.9em;">Secteur&nbsp;:</label>
+                                <select id="sector-select" style="flex:1; padding:4px 6px; border-radius:6px; border:1px solid #d1d5db;">
+                                    <option value="general" selected>Général</option>
+                                </select>
+                            </div>
+                            <div class="horizon-select" style="margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                                <label for="horizon-select" style="font-size:0.9em;">Horizon&nbsp;:</label>
+                                <select id="horizon-select" style="flex:1; padding:4px 6px; border-radius:6px; border:1px solid #d1d5db;">
+                                    <option value="0" selected>0 an</option>
+                                    <option value="3">3 ans</option>
+                                    <option value="10">10 ans</option>
+                                    <option value="30">30 ans</option>
+                                </select>
+                            </div>
+                            <span id="salary-display">2 180 €/mois</span>
+                            <canvas id="salary-chart" style="width:100%;max-width:260px;margin-top:12px;"></canvas>
                         </div>
                     </div>
                 </section>
@@ -2767,6 +2775,7 @@
 
     <script src="simulateur.js"></script>
     <script src="modern-features.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 
     <!-- Script toggling pour le menu burger -->
     <script>
@@ -2819,5 +2828,24 @@
         window.addEventListener('DOMContentLoaded',adjustOffset);
         window.addEventListener('resize',adjustOffset);
     </script>
+
+    <!-- Après la div ad-badge, ajouter footer centré -->
+    <footer id="doc-footer" style="padding:40px 0;text-align:center;max-width:878px;margin:0 auto;">
+        <h2 style="margin-bottom:20px;">Documentation</h2>
+        <div class="documentation-buttons" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+            <a href="about.html" class="doc-button" style="text-decoration:none;">
+                <span class="button-icon">ℹ️</span>
+                À propos
+            </a>
+            <button class="doc-button" onclick="window.open('sources_scientifiques.html', '_blank')">
+                <span class="button-icon">📚</span>
+                Sources scientifiques
+            </button>
+            <button class="doc-button" onclick="showCalculDetails()">
+                <span class="button-icon">🔍</span>
+                Détails des calculs
+            </button>
+        </div>
+    </footer>
 </body>
 </html> 

@@ -478,12 +478,49 @@ function debounce(fn, delay = 150) {
     };
 }
 
+/**
+ * 📊 Gestion des données salariales par secteur (chargées depuis JSON)
+ */
+class SectorManager {
+    constructor(data){
+        this.sectors = new Map();
+        data.sectors.forEach(sec=>this.sectors.set(sec.id, sec));
+        this.currentId = 'general';
+        this.populateSelector();
+    }
+    populateSelector(){
+        const select = document.getElementById('sector-select');
+        if(!select) return;
+        // Inject options dynamiques si non déjà faits
+        if(select.options.length<=1){
+            this.sectors.forEach(sec=>{
+                if(sec.id!== 'general'){ // general déjà présent
+                    const opt=document.createElement('option');
+                    opt.value = sec.id; opt.textContent = sec.label;
+                    select.appendChild(opt);
+                }
+            });
+        }
+        select.addEventListener('change', e=>{
+            this.currentId = e.target.value;
+            if(window.simulateur){
+                window.simulateur.updateResults();
+            }
+        });
+    }
+    current(){
+        return this.sectors.get(this.currentId) || this.sectors.get('general');
+    }
+}
+
 // Classe principale du simulateur
 class Simulateur {
     constructor() {
         this.manualGrade = 12.2;
         this.baseGrade = this.manualGrade;
         this.slidersModified = false;
+        // Horizon par défaut (0 an)
+        this.horizonYears = 0;
         this.initializeCategories();
         this.initializeSliders();
         // Création d'une version « debounced » de updateResults pour les sliders
@@ -548,6 +585,15 @@ class Simulateur {
                 this.updateResultsDebounced();
             });
         });
+
+        // Listener horizon
+        const horizonSel = document.getElementById('horizon-select');
+        if(horizonSel){
+            horizonSel.addEventListener('change', () => {
+                this.horizonYears = parseInt(horizonSel.value, 10);
+                this.updateResults();
+            });
+        }
     }
 
     calculateResults() {
@@ -615,43 +661,23 @@ class Simulateur {
         document.querySelector('.benchmark-text').textContent = `Tu fais mieux que ${Math.round(percentile)}% des élèves`;
         document.querySelector('.benchmark-progress').style.width = `${percentile}%`;
 
-        // Mise à jour du salaire (avec debug complet)
+        // Mise à jour du salaire
         const salaryBox = document.querySelector('#salary-result');
-        console.log('Salary box found:', !!salaryBox);
-        
         if (salaryBox) {
-            const salarySpan = salaryBox.querySelector('span');
-            console.log('Salary span found:', !!salarySpan);
-            console.log('Current salary span content:', salarySpan ? salarySpan.textContent : 'N/A');
-            
+            const salarySpan = document.getElementById('salary-display');
             if (salarySpan) {
-                const calculatedSalary = this.calculateSalary(displayGrade, this.getSliderValues().education);
-                const oldContent = salarySpan.textContent;
-                const newContent = `${calculatedSalary} €/mois`;
-                salarySpan.textContent = newContent;
-                
-                // Forcer le rafraîchissement visuel
-                salarySpan.style.color = 'red';
-                setTimeout(() => {
-                    salarySpan.style.color = '';
-                }, 100);
-                
-                console.log('Salary display updated from:', oldContent, 'to:', newContent);
-                console.log('New salary span content after update:', salarySpan.textContent);
-            } else {
-                console.warn('Salary span not found in DOM');
-                console.log('Salary box HTML:', salaryBox.innerHTML);
+                const calculatedSalary = this.calculateSalary(displayGrade, this.getSliderValues().education, this.horizonYears);
+                salarySpan.textContent = `${calculatedSalary} €/mois`;
+                this.updateSalaryChart(displayGrade, this.getSliderValues().education);
             }
         }
-
         // Mettre à jour barre mobile si présente
         const mobGrade = document.getElementById('mobile-grade');
         const mobSalary = document.getElementById('mobile-salary');
         if(mobGrade && mobSalary){
             mobGrade.textContent = displayGrade.toFixed(1);
-            const mobileSalary = this.calculateSalary(displayGrade, this.getSliderValues().education);
+            const mobileSalary = this.calculateSalary(displayGrade, this.getSliderValues().education, this.horizonYears);
             mobSalary.textContent = `${mobileSalary} €`;
-            console.log('Mobile salary updated to:', mobileSalary);
         }
     }
     calculatePercentile(grade) {
@@ -672,34 +698,60 @@ class Simulateur {
         let percentile = 100 * norm_cdf(grade, mean, std);
         return Math.max(0, Math.min(100, percentile));
     }
-    calculateSalary(grade, education) {
-        // 💰 CALCUL RÉALISTE DU SALAIRE NET MENSUEL (premier emploi, hors région parisienne)
-        // Sources : INSEE "Revenus d’activité", APEC "Salaires jeunes diplômés 2024", DARES, CGE.
-        // + Études économétriques (Belzil & Hansen 2002 ; French Returns to GPA – INSEE 2020) montrant
-        //   une élasticité d’environ 2-4 % de salaire par point de moyenne.
+    calculateSalary(grade, education, years = 0) {
+        // 💰 CALCUL RÉALISTE avec prise en compte du secteur
+        const sector = window.sectorManager?.current();
+        if(!sector){
+            console.warn('[Salaire] Pas de données secteur, utilisation fallback');
+        }
 
-        // Table des salaires nets mensuels médians par niveau de diplôme (province, 2024)
-        const salaryByEducation = {
-            0: 1380, // Sans diplôme (SMIC net)
-            1: 1480, // BAC
-            2: 1650, // BAC+2 (BTS/DUT)
-            3: 1850  // BAC+5+ (Master/Ingénieur)
-        };
-
-        // Sécurisation des paramètres
+        const bases = sector?.base || [1480,1650,1850];
         const eduLevel = (education ?? 0);
-        const baseSalary = salaryByEducation[eduLevel] ?? salaryByEducation[0];
+        const baseSalary = bases[Math.min(eduLevel, bases.length-1)] || bases[0];
 
-        // ---- Impact continu des performances scolaires ----
-        // Référence : moyenne nationale 12 (bac). Chaque point au-dessus => +3 %.
-        // Chaque point en dessous => –3 %. Borne à [-30 %, +30 %] (8 pts ≈ note 4 à 20).
-        const impactPerPoint = 0.03; // 3 %
+        // Projection dans le temps selon les croissances du secteur
+        const risk = sector?.automationRisk ?? 0;
+        const impactAI = 1 - risk * 0.5; // max -50%
+        const g1 = (sector?.growthEarly ?? 0.03) * impactAI;
+        const g2 = (sector?.growthLate ?? 0.015) * impactAI;
+
+        let projectedSalary;
+        if(years <= 5){
+            projectedSalary = baseSalary * Math.pow(1 + g1, years);
+        } else {
+            const salary5 = baseSalary * Math.pow(1 + g1, 5);
+            projectedSalary = salary5 * Math.pow(1 + g2, years - 5);
+        }
+
+        // Impact continu de la note (±3 % par point autour de 12, borné ±30 %)
+        const impactPerPoint = 0.03;
         const gradeDiff = grade - 12;
         let performanceMultiplier = 1 + (gradeDiff * impactPerPoint);
         performanceMultiplier = Math.max(0.7, Math.min(1.3, performanceMultiplier));
 
-        const finalSalary = Math.round(baseSalary * performanceMultiplier);
-        return finalSalary;
+        return Math.round(projectedSalary * performanceMultiplier);
+    }
+    initSalaryChart(){
+        const ctx = document.getElementById('salary-chart');
+        if(!ctx || window.Chart === undefined) return;
+        this.salaryChart = new Chart(ctx, {
+            type:'line',
+            data:{
+                labels:[...Array(11).keys()],
+                datasets:[{label:'Salaire projeté',data:[],backgroundColor:'#2563EB33',borderColor:'#2563EB',fill:true,tension:0.25}]
+            },
+            options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'Années'}},y:{title:{display:true,text:'€ net/mois'},beginAtZero:false}}}
+        });
+    }
+
+    updateSalaryChart(grade, education){
+        if(!this.salaryChart) return;
+        const arr=[];
+        for(let n=0;n<=10;n++){
+            arr.push(this.calculateSalary(grade, education, n));
+        }
+        this.salaryChart.data.datasets[0].data = arr;
+        this.salaryChart.update();
     }
     adjustGrade(delta) {
         this.manualGrade = Math.max(0, Math.min(20, this.manualGrade + delta));
@@ -1016,19 +1068,6 @@ class MobileUIManager {
     }
 }
 
-// Initialisation au chargement de la page
-document.addEventListener('DOMContentLoaded', () => {
-    window.simulateur = new Simulateur();
-    window.toggleTooltip = toggleTooltip;
-    window.switchMode = (mode) => window.simulateur.switchMode(mode);
-    window.resetSliders = () => window.simulateur.resetSliders();
-    window.updateResults = () => window.simulateur.updateResults();
-    window.simulateur.resetSliders();
-    
-    // Instance globale du gestionnaire mobile
-    const mobileUIManager = new MobileUIManager();
-});
-
 // Ancienne gestion des tooltips supprimée - maintenant gérée par TooltipManager
 
 // Gestion des modales
@@ -1050,3 +1089,30 @@ window.onclick = function(event) {
 function showInstructions() {
     document.getElementById('instructions-modal').style.display = 'block';
 } 
+
+// -------- Initialisation asynchrone --------
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('data/salary_sectors.json')
+        .then(res => res.ok ? res.json() : Promise.reject('HTTP '+res.status))
+        .then(json => {
+            window.sectorManager = new SectorManager(json);
+        })
+        .catch(err => {
+            console.warn('[SectorManager] Chargement JSON échoué :', err);
+            window.sectorManager = new SectorManager({
+                sectors: [{ id: 'general', label: 'Général', base: [1480, 1650, 1850], growthEarly: 0.03, growthLate: 0.015 }]
+            });
+        })
+        .finally(() => {
+            // Instanciation du simulateur après disponibilité du SectorManager
+            window.simulateur = new Simulateur();
+            window.simulateur.initSalaryChart();
+            window.toggleTooltip = toggleTooltip;
+            window.switchMode = mode => window.simulateur.switchMode(mode);
+            window.resetSliders = () => window.simulateur.resetSliders();
+            window.updateResults = () => window.simulateur.updateResults();
+            // Initialisation mobile
+            new MobileUIManager();
+        });
+}); 
