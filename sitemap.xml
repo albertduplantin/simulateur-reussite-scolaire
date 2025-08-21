@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://votre-domaine.com/</loc>
-        <lastmod>2024-01-01</lastmod>
-        <changefreq>monthly</changefreq>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/</loc>
+        <lastmod>2024-12-19</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://votre-domaine.com/about.html</loc>
-        <lastmod>2024-01-01</lastmod>
-        <changefreq>yearly</changefreq>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/about.html</loc>
+        <lastmod>2024-12-19</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://votre-domaine.com/contact.html</loc>
-        <lastmod>2024-01-01</lastmod>
-        <changefreq>yearly</changefreq>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/contact.html</loc>
+        <lastmod>2024-12-19</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://votre-domaine.com/sources_scientifiques.html</loc>
-        <lastmod>2024-01-01</lastmod>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/sources_scientifiques.html</loc>
+        <lastmod>2024-12-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/merci.html</loc>
+        <lastmod>2024-12-19</lastmod>
         <changefreq>yearly</changefreq>
-        <priority>0.9</priority>
+        <priority>0.5</priority>
     </url>
 </urlset>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    
+    <!-- Actualités principales -->
+    <url>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/</loc>
+        <news:news>
+            <news:publication>
+                <news:name>Simulateur de Réussite Scolaire</news:name>
+                <news:language>fr</news:language>
+            </news:publication>
+            <news:publication_date>2024-12-19T00:00:00+01:00</news:publication_date>
+            <news:title>Simulateur de Réussite Scolaire - Version 2.0</news:title>
+            <news:keywords>réussite scolaire, simulateur, performance académique, sommeil, sport, alimentation</news:keywords>
+            <news:stock_tickers>EDU</news:stock_tickers>
+        </news:news>
+    </url>
+    
+    <!-- Mise à jour des sources scientifiques -->
+    <url>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/sources_scientifiques.html</loc>
+        <news:news>
+            <news:publication>
+                <news:name>Simulateur de Réussite Scolaire</news:name>
+                <news:language>fr</news:language>
+            </news:publication>
+            <news:publication_date>2024-12-19T00:00:00+01:00</news:publication_date>
+            <news:title>Sources Scientifiques - Études sur la Réussite Scolaire</news:title>
+            <news:keywords>sources scientifiques, études, recherche, réussite scolaire, France</news:keywords>
+            <news:stock_tickers>EDU</news:stock_tickers>
+        </news:news>
+    </url>
+    
+    <!-- Nouvelle page À propos -->
+    <url>
+        <loc>https://albertduplantin.github.io/simulateur-reussite-scolaire/about.html</loc>
+        <news:news>
+            <news:publication>
+                <news:name>Simulateur de Réussite Scolaire</news:name>
+                <news:language>fr</news:language>
+            </news:publication>
+            <news:publication_date>2024-12-19T00:00:00+01:00</news:publication_date>
+            <news:title>À Propos - Notre Mission Éducative</news:title>
+            <news:keywords>à propos, mission, éducation, Albert Duplantin</news:keywords>
+            <news:stock_tickers>EDU</news:stock_tickers>
+        </news:news>
+    </url>
+</urlset>

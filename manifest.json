@@ -1,0 +1,35 @@
+{
+    "name": "Simulateur de Réussite Scolaire",
+    "short_name": "Simulateur Réussite",
+    "description": "Simulateur interactif gratuit pour évaluer l'impact des facteurs de vie sur la réussite scolaire",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#F9FAFB",
+    "theme_color": "#2563EB",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "fr",
+    "categories": ["education", "productivity", "utilities"],
+    "icons": [
+        {
+            "src": "albertduplantin.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "albertduplantin.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "albertduplantin.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ]
+}

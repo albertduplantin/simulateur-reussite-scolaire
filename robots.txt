@@ -1,8 +1,26 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://votre-domaine.com/sitemap.xml
+# Sitemaps
+Sitemap: https://albertduplantin.github.io/simulateur-reussite-scolaire/sitemap.xml
+Sitemap: https://albertduplantin.github.io/simulateur-reussite-scolaire/sitemap-news.xml
 
-# Optimisation pour les moteurs de recherche
+# Crawl-delay pour éviter de surcharger le serveur
 Crawl-delay: 1
+
+# Autoriser l'indexation de toutes les pages
+Allow: /index.html
+Allow: /about.html
+Allow: /contact.html
+Allow: /sources_scientifiques.html
+Allow: /merci.html
+
+# Autoriser l'indexation des ressources importantes
+Allow: /simulateur.js
+Allow: /modern-features.js
+Allow: /modern-styles.css
+
+# Empêcher l'indexation des fichiers techniques
+Disallow: /.git/
+Disallow: /v10.code-workspace
+Disallow: /prompt.txt

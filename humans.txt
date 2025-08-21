@@ -1,0 +1,13 @@
+/* TEAM */
+    Développeur: Albert Duplantin
+    Site: https://albertduplantin.github.io/
+    Localisation: France
+    Contact: contact@albertduplantin.github.io
+
+/* SITE */
+    Dernière mise à jour: 2024/12/19
+    Standards: HTML5, CSS3, JavaScript ES6+
+    Composants: Simulateur interactif, Interface moderne, PWA
+    Logiciels: Visual Studio Code, Git, GitHub Pages
+    Langage: Français
+    Inspiration: Études scientifiques sur la réussite scolaire

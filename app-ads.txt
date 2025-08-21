@@ -1,0 +1,10 @@
+# Fichier app-ads.txt pour applications mobiles et PWA
+# Format: domaine, ID éditeur, type de relation, certificat d'autorité, ID application
+# Exemple pour Google AdMob (à activer plus tard):
+# google.com, ca-app-pub-VOTRE_ID_ADMOB, DIRECT, f08c47fec0942fa0, com.albertduplantin.simulateur
+
+# Exemple pour d'autres plateformes publicitaires mobiles:
+# facebook.com, VOTRE_ID_FACEBOOK, DIRECT, f08c47fec0942fa0, com.albertduplantin.simulateur
+
+# Note: Ce fichier est préparé pour l'avenir, aucune publicité mobile n'est actuellement active
+# Contact: contact@albertduplantin.github.io

@@ -1,0 +1,10 @@
+# Fichier ads.txt pour la monétisation future
+# Format: domaine, ID éditeur, type de relation, certificat d'autorité
+# Exemple pour Google AdSense (à activer plus tard):
+# google.com, pub-VOTRE_ID_ADSENSE, DIRECT, f08c47fec0942fa0
+
+# Exemple pour d'autres plateformes publicitaires:
+# amazon-adsystem.com, VOTRE_ID_AMAZON, DIRECT, f08c47fec0942fa0
+
+# Note: Ce fichier est préparé pour l'avenir, aucune publicité n'est actuellement active
+# Contact: contact@albertduplantin.github.io

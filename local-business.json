@@ -1,0 +1,43 @@
+{
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Simulateur de Réussite Scolaire",
+    "description": "Outil pédagogique gratuit pour évaluer l'impact des facteurs de vie sur la réussite scolaire",
+    "url": "https://albertduplantin.github.io/simulateur-reussite-scolaire/",
+    "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "FR",
+        "addressRegion": "France"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://albertduplantin.github.io/simulateur-reussite-scolaire/contact.html"
+    },
+    "sameAs": [
+        "https://www.youtube.com/@AlbertDuplantin",
+        "https://github.com/albertduplantin"
+    ],
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services Éducatifs",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Simulation de Réussite Scolaire",
+                    "description": "Simulateur interactif gratuit pour évaluer l'impact des facteurs de vie sur la réussite scolaire"
+                },
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        ]
+    },
+    "areaServed": {
+        "@type": "Country",
+        "name": "France"
+    },
+    "serviceType": "Outil pédagogique en ligne",
+    "availableLanguage": "French"
+}

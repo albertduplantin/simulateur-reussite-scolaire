@@ -1,0 +1,6 @@
+Contact: mailto:contact@albertduplantin.github.io
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: fr, en
+Canonical: https://albertduplantin.github.io/.well-known/security.txt
+Policy: https://albertduplantin.github.io/simulateur-reussite-scolaire/security-policy.html
+Hiring: https://albertduplantin.github.io/simulateur-reussite-scolaire/careers.html

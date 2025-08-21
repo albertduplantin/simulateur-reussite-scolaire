@@ -1,0 +1,21 @@
+# Fichier de vérification pour les moteurs de recherche
+# Ce fichier contient des informations pour vérifier la propriété du site
+
+# Google Search Console
+# Ajoutez cette balise dans votre <head>:
+# <meta name="google-site-verification" content="VOTRE_CODE_VERIFICATION" />
+
+# Bing Webmaster Tools
+# Ajoutez cette balise dans votre <head>:
+# <meta name="msvalidate.01" content="VOTRE_CODE_VERIFICATION" />
+
+# Yandex Webmaster
+# Ajoutez cette balise dans votre <head>:
+# <meta name="yandex-verification" content="VOTRE_CODE_VERIFICATION" />
+
+# Baidu Webmaster
+# Ajoutez cette balise dans votre <head>:
+# <meta name="baidu-site-verification" content="VOTRE_CODE_VERIFICATION" />
+
+# Note: Remplacez VOTRE_CODE_VERIFICATION par les codes fournis par chaque plateforme
+# Contact: contact@albertduplantin.github.io
