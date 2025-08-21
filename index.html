@@ -1877,6 +1877,36 @@
                 padding: 12px 8px 8px 8px;
             }
         }
+
+        /* Styles pour les exemples de salaires */
+        .salary-examples {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .salary-examples p {
+            font-weight: 600;
+            color: #166534;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .salary-examples p:first-child {
+            margin-top: 0;
+        }
+
+        .salary-examples ul {
+            margin-left: 15px;
+            margin-bottom: 10px;
+        }
+
+        .salary-examples li {
+            margin-bottom: 4px;
+            color: #15803d;
+        }
         .instructions-modal-content {
             box-shadow: 0 12px 40px 0 rgba(37,99,235,0.18), 0 2px 12px rgba(0,0,0,0.10);
             border-radius: 22px;
@@ -2869,37 +2899,76 @@
                 </p>
 
                 <h3><span class="calcul-section-icon">💶</span> Calcul du salaire net mensuel (premier emploi)</h3>
-                <p><strong>Nouvelle méthode réaliste basée sur les données 2024 :</strong></p>
+                <p><strong>Méthode réaliste basée sur les données sectorielles 2024 :</strong></p>
                 
-                <h4>1. Salaires de référence par diplôme (hors Île-de-France) :</h4>
+                <h4>1. Salaires de base par secteur et diplôme :</h4>
+                <div class="salary-examples calcul-card">
+                    <p><strong>Secteurs généralistes :</strong></p>
+                    <ul>
+                        <li><strong>Sans diplôme :</strong> 1480€ net</li>
+                        <li><strong>BAC+2 (BTS/DUT) :</strong> 1650€ net</li>
+                        <li><strong>BAC+5+ (Master/Ingénieur) :</strong> 1850€ net</li>
+                    </ul>
+                    
+                    <p><strong>Secteurs techniques (exemples) :</strong></p>
+                    <ul>
+                        <li><strong>Maintenance industrielle :</strong> 1600€ → 2300€ net</li>
+                        <li><strong>Électricien/Plombier :</strong> 1500€ → 2100€ net</li>
+                        <li><strong>Soudeur spécialisé :</strong> 1550€ → 2100€ net</li>
+                    </ul>
+                    
+                    <p><strong>Secteurs santé/social :</strong></p>
+                    <ul>
+                        <li><strong>Aide-soignant :</strong> 1600€ → 1950€ net</li>
+                        <li><strong>Infirmier :</strong> 1850€ → 2350€ net</li>
+                        <li><strong>Médecin (interne) :</strong> 2400€ → 4500€ net</li>
+                    </ul>
+                    
+                    <p><strong>Secteurs technologiques :</strong></p>
+                    <ul>
+                        <li><strong>Développeur web :</strong> 1700€ → 2500€ net</li>
+                        <li><strong>Data Scientist :</strong> 2000€ → 3200€ net</li>
+                        <li><strong>Ingénieur IA :</strong> 2100€ → 3300€ net</li>
+                        <li><strong>Cybersécurité :</strong> 2000€ → 3100€ net</li>
+                    </ul>
+                </div>
+                
+                <h4>2. Impact continu des résultats scolaires :</h4>
+                <p><strong>Nouvelle formule plus réaliste :</strong> ±3% par point autour de la moyenne (12/20), borné à ±30%</p>
                 <ul>
-                    <li><strong>Sans diplôme :</strong> 1380€ net (SMIC)</li>
-                    <li><strong>BAC :</strong> 1480€ net</li>
-                    <li><strong>BAC+2 (BTS/DUT) :</strong> 1650€ net</li>
-                    <li><strong>BAC+5+ (Master/Ingénieur) :</strong> 1850€ net</li>
+                    <li><strong>Excellence (18/20) :</strong> +18% (×1.18)</li>
+                    <li><strong>Très bien (16/20) :</strong> +12% (×1.12)</li>
+                    <li><strong>Bien (14/20) :</strong> +6% (×1.06)</li>
+                    <li><strong>Moyen (12/20) :</strong> 0% (×1.00)</li>
+                    <li><strong>Difficultés (10/20) :</strong> -6% (×0.94)</li>
+                    <li><strong>Échec (8/20) :</strong> -12% (×0.88)</li>
                 </ul>
                 
-                <h4>2. Impact des résultats scolaires :</h4>
-                <p>Les bonnes notes facilitent l'accès aux meilleures entreprises et opportunités :</p>
+                <h4>3. Évolution temporelle et impact IA :</h4>
                 <ul>
-                    <li><strong>Excellence (16+/20) :</strong> +15% (grandes entreprises, cabinets prestigieux)</li>
-                    <li><strong>Très bien (14-16/20) :</strong> +8% (bonnes entreprises)</li>
-                    <li><strong>Bien (12-14/20) :</strong> +3% (léger avantage)</li>
-                    <li><strong>Difficultés (&lt;10/20) :</strong> -5% (accès limité)</li>
+                    <li><strong>Croissance précoce :</strong> 3-6% par an (5 premières années)</li>
+                    <li><strong>Croissance tardive :</strong> 1,5-3,5% par an (après 5 ans)</li>
+                    <li><strong>Risque d'automatisation :</strong> Réduit la croissance selon le secteur</li>
                 </ul>
                 
-                <p><strong>Formule :</strong> <code>Salaire final = Salaire_base × Multiplicateur_performance</code></p>
+                <p><strong>Formule complète :</strong></p>
+                <code>Salaire(année_N) = Salaire_base_secteur × Croissance_temporelle × Impact_performance × Impact_IA</code>
                 
-                <p><em>Ces montants correspondent aux salaires nets mensuels d'embauche moyens en province (hors région parisienne où ils sont 15-20% plus élevés).</em></p>
+                <p><em>Ces montants correspondent aux salaires nets mensuels moyens en province. En région parisienne, ajoutez 15-20%.</em></p>
                 
                 <p><strong>Sources :</strong> 
                     <a href="https://www.insee.fr/fr/statistiques/6524161" target="_blank" class="study-link">
-                        <span class="link-icon">🔗</span> INSEE 2024
+                        <span class="link-icon">🔗</span> INSEE 2024 - Salaires par secteur
                     </a>, 
-                    <a href="https://corporate.apec.fr/" target="_blank" class="study-link">
-                        <span class="link-icon">🔗</span> APEC Jeunes diplômés
-                    </a>, 
-                    DARES, CGE 2024
+                    <a href="https://corporate.apec.fr/nos-etudes/toutes-nos-etudes/insertion-des-jeunes-diplomes-2024.html" target="_blank" class="study-link">
+                        <span class="link-icon">🔗</span> APEC 2024 - Insertion des jeunes diplômés
+                    </a>,
+                    <a href="https://dares.travail-emploi.gouv.fr/donnees/linsertion-professionnelle-des-jeunes" target="_blank" class="study-link">
+                        <span class="link-icon">🔗</span> DARES - Insertion professionnelle
+                    </a>,
+                    <a href="https://www.francecompetences.fr/" target="_blank" class="study-link">
+                        <span class="link-icon">🔗</span> France Compétences - Évolution des métiers
+                    </a>
                 </p>
             </div>
         </div>
